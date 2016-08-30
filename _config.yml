@@ -1,15 +1,16 @@
 # Site settings
 title: Clean Blog
 header-img: img/home-bg.jpg
-email: your-email@yourdomain.com
-copyright_name: Your/Project/Corporate Name
-description: "Write your site description here. It will be used as your sites meta description as well!"
-baseurl: "/startbootstrap-clean-blog-jekyll"
-url: "http://yourdomain.com"
-twitter_username: SBootstrap
-github_username:  davidtmiller
-facebook_username:  StartBootstrap
-email_username:  your-email@yourdomain.com
+email: your-mikelui@drexel.edu
+copyright_name: Mike Lui
+description: "A blog of my experiences in the tech world and sometimes the real world too"
+baseurl: ""
+url: "http://mikelui.io"
+# twitter_username: SBootstrap
+github_username:  mikelui
+# facebook_username:  StartBootstrap
+email_username:  mikelui@drexel.edu
+linkedin_username: mikelui
 
 # Google Analytics
 # To enable google analytics, uncomment below line with a valid Google Tracking ID
