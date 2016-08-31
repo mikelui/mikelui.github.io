@@ -3,7 +3,7 @@ published: true
 layout: post
 date: 2016-08-30T12:00:00.000Z
 author: Mike Lui
-header-img: img/post-bg-02.jpg
+header-img: img/lassen-geo.jpg
 ---
 ## My First Post
 
