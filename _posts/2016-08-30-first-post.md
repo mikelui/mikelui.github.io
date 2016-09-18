@@ -1,7 +1,7 @@
 ---
 published: true
 layout: post
-date: {}
+date: 2016-08-30T00:00:00.000Z
 author: Mike Lui
 header-img: img/lassen-geo.jpg
 ---
