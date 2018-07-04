@@ -71,9 +71,10 @@
 //.highlight .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 
 // These aren't in rouge :(
+.highlighter-rouge { background: #ffcccc } /* in-line */
 .highlight .n { color: #f8f8f2 } /* Name */
 .highlight .p { color: #f8f8f2 } /* Punctuation */
-pre.lineno { color: #f8f8f2 } 
+pre.lineno { color: #f8f8f2 } /* line numbers */
 
 // rougify style monokai
 .highlight table td { padding: 5px; }
