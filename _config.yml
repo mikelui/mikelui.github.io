@@ -1,26 +1,21 @@
-# Site settings
-title: No TV and No Beer
-header-img: img/pineapple-farm.jpg
-email: mikelui@drexel.edu
-copyright_name: Mike Lui
-description: "Experiences in the digital world and sometimes the real world, too"
-baseurl: ""
-url: "http://mikelui.io"
-# twitter_username: SBootstrap
-github_username:  mikelui
-# facebook_username:  StartBootstrap
-email_username:  mikelui@drexel.edu
+title:             No TV and No Beer
+email:             mikelui@drexel.edu
+description:       "Experiences in the digital world and sometimes the real world, too"
+author:            Mike Lui
+baseurl:           "/"
+url:               "http://mikelui.io"
+header-img:        img/pineapple-farm.jpg
+copyright_name:    Mike Lui
+github_username:   mikelui
+email_username:    mikelui@drexel.edu
 linkedin_username: mikelui
-
-# Google Analytics
-# To enable google analytics, uncomment below line with a valid Google Tracking ID
-# google_tracking_id:
+# twitter_username: SBootstrap
+# facebook_username:  StartBootstrap
 
 # Build settings
-markdown: kramdown
-highlighter: rouge
-permalink: pretty
-paginate: 5
-exclude: ["less","node_modules","Gruntfile.js","package.json","README.md"]
-
-gems: [jekyll-paginate, jekyll-feed]
+markdown:          kramdown
+paginate:          5
+paginate_path:     "/posts/page:num/"
+plugins:
+  - jekyll-feed
+  - jekyll-paginate
