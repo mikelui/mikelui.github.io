@@ -2,9 +2,12 @@
 layout: page
 title: Guides
 background: '/img/lassen-geo.jpg'
+pagination:
+  enabled: true
+  collection: guides
 ---
 
-{% for guide in paginator.guides %}
+{% for guide in paginator.posts %}
 
   <article class="post-preview">
     <a href="{{ guide.url | prepend: site.baseurl | replace: '//', '/' }}">
