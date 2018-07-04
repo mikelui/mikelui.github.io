@@ -1,5 +1,5 @@
 ---
-published: false
+published: true
 layout: post
 title: "VHDL Quickstart Guide"
 subtitle: "Important Concepts"
@@ -28,7 +28,7 @@ But, instead of describing a series of steps for the computer to execute,
 in VHDL you describe how a circuit looks.
 
 Remember the **thing** I drew before?
-Let's describe how that looks with VHDL.
+Let's describe how that with VHDL.
 
 {% highlight vhdl linenos %}
 -- Inputs and Outputs of a thing!

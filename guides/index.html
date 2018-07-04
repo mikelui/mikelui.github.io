@@ -1,29 +1,27 @@
 ---
 layout: page
-title: Posts
+title: Guides
 background: '/img/lassen-geo.jpg'
-pagination:
-  enabled: true
 ---
 
-{% for post in paginator.posts %}
+{% for guide in paginator.guides %}
 
   <article class="post-preview">
-    <a href="{{ post.url | prepend: site.baseurl | replace: '//', '/' }}">
-      <h2 class="post-title">{{ post.title }}</h2>
-      {% if post.subtitle %}
-      <h3 class="post-subtitle">{{ post.subtitle }}</h3>
+    <a href="{{ guide.url | prepend: site.baseurl | replace: '//', '/' }}">
+      <h2 class="post-title">{{ guide.title }}</h2>
+      {% if guide.subtitle %}
+      <h3 class="post-subtitle">{{ guide.subtitle }}</h3>
       {% else %}
-      <h3 class="post-subtitle">{{ post.excerpt | strip_html | truncatewords: 15 }}</h3>
+      <h3 class="post-subtitle">{{ guide.excerpt | strip_html | truncatewords: 15 }}</h3>
       {% endif %}
     </a>
     <p class="post-meta">Posted by
-      {% if post.author %}
-        {{ post.author }}
+      {% if guide.author %}
+        {{ guide.author }}
       {% else %}
         {{ site.author }}
       {% endif %}
-      on {{ post.date | date: '%B %d, %Y' }}</p>
+      on {{ guide.date | date: '%B %d, %Y' }}</p>
   </article>
 
   <hr>

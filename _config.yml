@@ -13,11 +13,9 @@ linkedin_username: mikelui
 
 # Build settings
 future:            true
-paginate:          5
-paginate_path:     "/posts/page:num/"
 plugins:
   - jekyll-feed
-  - jekyll-paginate
+  - jekyll-paginate-v2
 
 # Conversion
 markdown:          kramdown
@@ -27,4 +25,16 @@ highlighter:       rouge
 kramdownn:
   input: GFM
   show_warnings: true
-  syntax_highlighter: rouge
+
+# Extra collections
+collections:
+  guides:
+    output: true
+    permalink: /guides/:path/
+
+# Pagination (v2)
+pagination:
+  enabled: true
+  debug: true
+  per_page: 5
+  permalink : '/posts/page:num/'
