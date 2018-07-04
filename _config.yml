@@ -2,7 +2,6 @@ title:             No TV and No Beer
 email:             mikelui@drexel.edu
 description:       "Experiences in the digital world and sometimes the real world, too"
 author:            Mike Lui
-baseurl:           "/"
 url:               "http://mikelui.io"
 header-img:        img/pineapple-farm.jpg
 copyright_name:    Mike Lui
@@ -13,9 +12,19 @@ linkedin_username: mikelui
 # facebook_username:  StartBootstrap
 
 # Build settings
-markdown:          kramdown
+future:            true
 paginate:          5
 paginate_path:     "/posts/page:num/"
 plugins:
   - jekyll-feed
   - jekyll-paginate
+
+# Conversion
+markdown:          kramdown
+highlighter:       rouge
+
+# Markdown Processors
+kramdownn:
+  input: GFM
+  show_warnings: true
+  syntax_highlighter: rouge
