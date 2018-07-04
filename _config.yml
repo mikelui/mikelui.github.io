@@ -38,3 +38,12 @@ pagination:
   debug: true
   per_page: 5
   permalink : '/posts/page:num/'
+
+# Don't clobber
+exclude:
+  - guides/index.html
+  - posts/index.html
+keep_files:
+  - guides/index.html
+  - posts/index.html
+

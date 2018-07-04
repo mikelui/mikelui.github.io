@@ -1,4 +1,6 @@
 _site
+!_site/guides/index.html
+!_site/posts/index.html
 node_modules
 Gemfile.lock
 .sass-cache
