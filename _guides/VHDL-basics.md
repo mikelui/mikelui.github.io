@@ -1,58 +1,105 @@
 ---
 published: true
 layout: post
-title: "VHDL Quickstart Guide"
+title: "VHDL Student Primer"
 subtitle: "Important Concepts"
 date: 2018-07-07T00:00:00.000Z
 author: Mike Lui
 ---
 
-The introductory Digital Design and VHDL class I've had to TA attracts students
-with a wide variety of backgrounds, so I've decided to make my own quickstart guide
-since the disseminated tutorials and labs can be dry.
+The introductory digital design and VHDL class I've had to TA ([ECE-200][ece200]) attracts students
+with a wide variety of backgrounds.
+While some students learn just fine with the provided tutorials and labs,
+others can be turned off by them.
+Even then, students tend to miss some fundamental concepts when going through the
+motions of the labs.
+
+As such, I've decided to provide a quickstart guide with a slightly different flavor.
+
+[ece200]: http://catalog.drexel.edu/coursedescriptions/quarter/undergrad/ece/
+
+-----------
 
 # Why are we using VHDL?
 
-So you're taking the **Digital Logic** class and imagine 
+So you're taking the **Digital Logic** class and figure you'll be doing some `beep boop bop` 🤖 binary things.
+You'd be right.
+In class, you'll learn boolean logic theory.
+With the VHDL labs, you'll see how that theory can be used to make something more concrete.
 
 # So what is it used for?
+
+Digital circuits are used for...
 
 # Cool.
 
 ![Cool](https://i.imgflip.com/1oq3ej.jpg)
 
+-----------
+
 # But how do I make these things?
 
-Just like any other programming language.
-But, instead of describing a series of steps for the computer to execute,
-in VHDL you describe how a circuit looks.
+You *model* the circuit with a programming language,
+just like you'd *model* a series of computations with any other programming language.
+But instead of describing a series of steps for the computer to execute,
+you use VHDL to describe how the circuit is connected.
 
 Remember the **thing** I drew before?
-Let's describe how that with VHDL.
+Let's describe it with VHDL.
 
 {% highlight vhdl linenos %}
 -- Inputs and Outputs of a thing!
 ENTITY a_thing IS
-    PORT ( A : in bit;
-           B : in bit;
-           C : out bit
+    PORT ( a : IN BIT;
+           b : IN BIT;
+           c : OUT BIT
          );
 END a_thing;
 
--- The insides of a thing!
+-- The inside guts of a thing!
 ARCHITECTURE behav OF a_thing IS
 BEGIN
-    C <= A and B; -- Assign C to the result of the built-in 'and'
+    c <= a AND b; -- Assign C to the result of the built-in 'AND'
 END behav;
 {% endhighlight %}
 
-There's a few things to unpack here.
+There's a bunch to unpack here.
 
- - First, we have what's called a VHDL *module*.
-A module is just something.
- - Second
+#### 1) a_thing is a module
 
+We have what's called a VHDL ***module***.
+A module is a full description of a thing.
+It describes:
+  1. The `ENTITY` -- the inputs and outputs
+  2. The `ARCHITECTURE` -- how the inputs get transformed into the output
 
-# Trivia
+#### 2) Syntax
 
-This language looks pretty wonky.
+Keywords, Identifiers, operators
+
+-----------
+
+# ModelSim
+
+VHDL is just the language we use to describe the circuit.
+
+We need another piece of software to simulate that circuit,
+by setting different inputs and seeing how that changes the output over time.
+
+For this class,
+
+# Syntax Reference
+
+Let's look at a stripped down VHDL module.
+
+{% highlight vhdl linenos %}
+ENTITY entity_identifier IS
+    PORT (port_identifier_1 : in bit; port_identifier_2 : out bit);
+END <entity_identifier>;
+
+ARCHITECTURE architecture_identifier OF entity_identifier IS
+BEGIN
+    signal_identifier <= expression;
+END architecture_identifier;
+{% endhighlight %}
+
