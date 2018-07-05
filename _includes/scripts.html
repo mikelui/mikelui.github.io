@@ -86,6 +86,6 @@
 
 {% if page.url contains 'guides' or page.url contains 'posts' %}
   <script>
-    anchors.add('h1, h2');
+    anchors.add('h1, h2').remove('header h1, header h2');
   </script>
 {% endif %}
