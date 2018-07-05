@@ -25,6 +25,8 @@ highlighter: rouge
 kramdown:
   input: GFM
   show_warnings: true
+  syntax_highlighter: rouge
+  auto_ids: true
 
 # Extra collections
 collections:
@@ -35,6 +37,5 @@ collections:
 # Pagination (v2)
 pagination:
   enabled: true
-  debug: true
   per_page: 5
   permalink : '/posts/page:num/'

@@ -72,7 +72,7 @@ END a_thing;
 
 -- The inside guts of a thing!
 ARCHITECTURE behav OF a_thing IS
-    signal s1, s2 : bit;
+    SIGNAL s1, s2 : BIT;
 BEGIN
     s1 <= a AND b; -- Assign/Map c to the result of
                    -- the built-in 'AND' operation
@@ -92,8 +92,8 @@ There's a bunch to unpack here.
 We have what's called a VHDL ***module***.
 A module is a full description of a thing. 
 It describes:
- - The `ENTITY` -- the inputs and outputs
- - The `ARCHITECTURE` -- how the inputs get transformed into the output
+ - The **`ENTITY`** -- the inputs and outputs; our interface to `a_thing`
+ - The **`ARCHITECTURE`** -- how the inputs get transformed into the output
 
 A module **is not** a VHDL file.
 A module could be spread across one or more files, and a single file might have multiple modules.
