@@ -29,11 +29,24 @@ With the VHDL labs, you'll see how that theory can be used to make something mor
 
 # So what is it used for?
 
-Digital circuits are used for...
+Modeling digital circuits!
+Digital circuits are different than analog circuits.
+Generally,
+ - Analog circuits consider electrical properties like impedance, capacitance, et al.
+ - Digital circuits consider logical properties. 1's and 0's. Yes's and No's.
 
+#### Why would we want to model digital circuits?
+
+Remember circuits are a physical thing.
+and it's usually easier and cheaper simulate circuits than
+to go through the process of building them 
+
+![a_thing](/img/posts/a_thing.png){:width="100%"}
+
+{::comment}
 # Cool.
-
-![Cool](https://i.imgflip.com/1oq3ej.jpg)
+![Cool](https://i.imgflip.com/1oq3ej.jpg){:width="100%"}
+{:/comment}
 
 -----------
 
@@ -52,14 +65,23 @@ Let's describe it with VHDL.
 ENTITY a_thing IS
     PORT ( a : IN BIT;
            b : IN BIT;
-           c : OUT BIT
+           c : OUT BIT;
+           d : OUT BIT;
          );
 END a_thing;
 
 -- The inside guts of a thing!
 ARCHITECTURE behav OF a_thing IS
+    signal s1, s2 : bit;
 BEGIN
-    c <= a AND b; -- Assign C to the result of the built-in 'AND'
+    s1 <= a AND b; -- Assign/Map c to the result of
+                   -- the built-in 'AND' operation
+
+    s2 <= a XOR b; -- Assign/Map d to the result of
+                   -- the built-in 'XOR' operation
+
+    c <= s1; -- Assign/Map output c to s1
+    d <= s2; -- Assign/Map output d to s2
 END behav;
 {% endhighlight %}
 
@@ -68,10 +90,13 @@ There's a bunch to unpack here.
 #### 1) a_thing is a module
 
 We have what's called a VHDL ***module***.
-A module is a full description of a thing.
+A module is a full description of a thing. 
 It describes:
-  1. The `ENTITY` -- the inputs and outputs
-  2. The `ARCHITECTURE` -- how the inputs get transformed into the output
+ - The `ENTITY` -- the inputs and outputs
+ - The `ARCHITECTURE` -- how the inputs get transformed into the output
+
+A module **is not** a VHDL file.
+A module could be spread across one or more files, and a single file might have multiple modules.
 
 #### 2) Syntax
 
