@@ -3,6 +3,7 @@ published: true
 layout: post
 title: "VHDL Student Primer"
 subtitle: "Important Concepts"
+background: /img/The-Simpsons-Season-23-Episode-11-25-6c0b.jpg
 date: 2018-07-07T00:00:00.000Z
 author: Mike Lui
 ---
@@ -15,8 +16,11 @@ Even then, students tend to miss some fundamental concepts when going through th
 motions of the labs.
 
 As such, I've decided to provide a quickstart guide with a slightly different flavor.
+This is **not** meant to be a full reference.
+If you need to know something specific please [find a more complete reference][searchvhdl].
 
 [ece200]: http://catalog.drexel.edu/coursedescriptions/quarter/undergrad/ece/
+[searchvhdl]: https://duckduckgo.com/?q=vhdl+reference
 
 -----------
 
@@ -31,26 +35,38 @@ With the VHDL labs, you'll see how that theory can be used to make something mor
 
 Modeling digital circuits!
 Digital circuits are different than analog circuits.
-Generally,
+Generally speaking,
  - Analog circuits consider electrical properties like impedance, capacitance, et al.
  - Digital circuits consider logical properties. 1's and 0's. Yes's and No's.
 
 #### Why would we want to model digital circuits?
 
-Remember circuits are a physical thing.
-and it's usually easier and cheaper simulate circuits than
-to go through the process of building them 
+Our model defines our circuit.
+That ends up getting used to create our circuit (*duh*)!
+It's used starting from testing our circuit,
+to laying out all the transistors and electrical components, wiring them together,
+and eventually manufacturing.
+
+In the intro class, we start off simulating circuits to make sure they work as intended.
+For example imagine trying to build this **thing**:
 
 ![a_thing](/img/posts/a_thing.png){:width="100%"}
+
+That doesn't look too complicated.
+I have some wires on the left going into a couple components which do something,
+then we read from the outputs on the right.
+
+-----------
+
+# What do I need to know?
+
 
 {::comment}
 # Cool.
 ![Cool](https://i.imgflip.com/1oq3ej.jpg){:width="100%"}
 {:/comment}
 
------------
 
-# But how do I make these things?
 
 You *model* the circuit with a programming language,
 just like you'd *model* a series of computations with any other programming language.
@@ -92,7 +108,7 @@ There's a bunch to unpack here.
 We have what's called a VHDL ***module***.
 A module is a full description of a thing. 
 It describes:
- - The **`ENTITY`** -- the inputs and outputs; our interface to `a_thing`
+ - The **`ENTITY`** -- the inputs and outputs; our interface to *a_thing*
  - The **`ARCHITECTURE`** -- how the inputs get transformed into the output
 
 A module **is not** a VHDL file.
