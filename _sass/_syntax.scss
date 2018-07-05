@@ -71,7 +71,20 @@
 //.highlight .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 
 // These aren't in rouge :(
-.highlighter-rouge { background: #ffcccc } /* in-line */
+figure.highlight {
+  color: #f8f8f2;
+  // Use the pygments-css background, better contrast
+  //background-color: #49483e;
+  background: #272822;
+}
+figure.highlight, code.highlighter-rouge {
+    border-radius: 3px;
+}
+code.highlighter-rouge { /* in-line */
+    background: #ffcccc;
+    padding: 2px 4px;
+    border: 1px solid;
+}
 .highlight .n { color: #f8f8f2 } /* Name */
 .highlight .p { color: #f8f8f2 } /* Punctuation */
 pre.lineno { color: #f8f8f2 } /* line numbers */
@@ -282,10 +295,4 @@ pre.lineno { color: #f8f8f2 } /* line numbers */
 }
 .highlight .nt {
   color: #f92672;
-}
-.highlight {
-  color: #f8f8f2;
-  // Use the pygments-css background, better contrast
-  //background-color: #49483e;
-  background: #272822;
 }
