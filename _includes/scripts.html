@@ -1,6 +1,7 @@
 <script src="{{"/assets/vendor/jquery/jquery.min.js" | relative_url }}"></script>
 <script src="{{"/assets/vendor/bootstrap/js/bootstrap.bundle.min.js" | relative_url }}"></script>
 <script src="{{"/assets/vendor/startbootstrap-clean-blog/js/clean-blog.min.js" | relative_url }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.1/anchor.min.js"></script>
 
 <script src="{{"/assets/scripts.js" | relative_url }}"></script>
 
@@ -80,5 +81,11 @@
     $('#name').focus(function () {
       $('#success').html('');
     });
+  </script>
+{% endif %}
+
+{% if page.url contains 'guides' or page.url contains 'posts' %}
+  <script>
+    anchors.add('h1, h2');
   </script>
 {% endif %}
