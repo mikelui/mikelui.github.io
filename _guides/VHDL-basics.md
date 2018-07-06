@@ -24,20 +24,22 @@ If you need to know something specific please [find a more complete reference][s
 
 -----------
 
-# Why are we using VHDL?
+# What is VHDL?
 
 So you're taking the **Digital Logic** class and figure you'll be doing some `beep boop bop` 🤖 binary things.
 You'd be right.
 In class, you'll learn boolean logic theory.
 With the VHDL labs, you'll see how that theory can be used to make something more concrete.
 
-# So what is it used for?
-
 Modeling digital circuits!
 Digital circuits are different than analog circuits.
 Generally speaking,
  - Analog circuits consider electrical properties like impedance, capacitance, et al.
  - Digital circuits consider logical properties. 1's and 0's. Yes's and No's.
+
+-----------
+
+# Why is VHDL?
 
 #### Why would we want to model digital circuits?
 
@@ -58,7 +60,7 @@ then we read from the outputs on the right.
 
 -----------
 
-# What do I need to know?
+# How is VHDL?
 
 
 {::comment}
@@ -120,7 +122,8 @@ Keywords, Identifiers, operators
 
 -----------
 
-# ModelSim
+# Where is VHDL?
+###  ModelSim
 
 VHDL is just the language we use to describe the circuit.
 
@@ -128,19 +131,4 @@ We need another piece of software to simulate that circuit,
 by setting different inputs and seeing how that changes the output over time.
 
 For this class,
-
-# Syntax Reference
-
-Let's look at a stripped down VHDL module.
-
-{% highlight vhdl linenos %}
-ENTITY entity_identifier IS
-    PORT (port_identifier_1 : in bit; port_identifier_2 : out bit);
-END <entity_identifier>;
-
-ARCHITECTURE architecture_identifier OF entity_identifier IS
-BEGIN
-    signal_identifier <= expression;
-END architecture_identifier;
-{% endhighlight %}
 

@@ -169,8 +169,8 @@
 
   <script>
     anchors.options.placement = 'left'
-    anchors.options.visible = 'hover'
-    anchors.add(':not(.post-heading) > h1, :not(.post-heading) > h2')
+    anchors.options.visible = 'touch'
+    anchors.add('h1, h2').remove('header h1, header h2, .post-preview h1, .post-preview h2')
   </script>
 
 
