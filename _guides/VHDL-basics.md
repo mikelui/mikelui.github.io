@@ -16,32 +16,34 @@ In class, you'll learn boolean logic theory.
 With the VHDL labs, you'll see how that theory can be used to make something more concrete.
 
 VHDL is a programming language to describe circuits.
-It literally stands for: **V**HSIC (a nested acronym 🙄) **Hardware Description Language**.
+It literally stands for: **V**HSIC (another acronym 🙄) **Hardware Description Language**.
 VHDL targets digital circuits in contrast to analog circuits.
 While *analog* circuits consider electrical properties like impedance, capacitance, et al,
 *digital* circuits consider logical properties; 1's and 0's; Yes's and No's.
 
 Here's a taste:
 
-{% highlight vhdl linenos %}
+``` vhdl
 ENTITY inverter IS
-    PORT ( in1 : IN BIT; out1 : OUT BIT);
+    PORT ( in1 : IN BIT; out1 : OUT BIT );
 END inverter;
 
-ARCHITECTURE behav OF inverter IS
+ARCHITECTURE df OF inverter IS
 BEGIN
     out1 <= NOT in1;
-END behav;
-{% endhighlight %}
+END df;
+```
 
-Although the syntax is a bit clunky, you can see how we're just defining an inverter.
+{% include note.html content="`<=` is a signal assignment in VHDL. It essentially ties two signals together." %}
+
+Although the syntax is a bit clunky, you can see how we're just defining an inverter; a `NOT` gate.
 First, we declare the inputs and outputs of our circuit block.
 Then, we describe how the input is transformed into the output.
 We're describing the following equation:
 
 $$
 \begin{align*}
-inverter(a) = a'
+inverter(in_1) = {in_1}'
 \end{align*}
 $$
 
@@ -68,47 +70,76 @@ $$
 
 Why would we want to model digital circuits?
 It's easier to understand, modify, simulate, and test our designs by modeling our circuits in VHDL.
-VHDL also provides a common format to use starting from initial prototyping and eventually ending at design for manufacturing.
+VHDL also provides a common format starting from initial prototyping and eventually ending at design for manufacturing.
 
-For example imagine trying to build this **thing**:
+Let's use the following circuit diagram for the rest of this post:
 
 ![a_thing](/img/posts/a_thing.png){:width="100%"}
 
-I could pass this around as just my *schematic*
-
-That doesn't look too complicated.
-I have some wires on the left going into a couple components which do something,
-then we read from the outputs on the right.
+It's much easier to pass around a standardized formal description of this ***thing*** than just its schematic:
 
 -----------
 
 # How is VHDL?
 
+VHDL describes a circuit just like any other programming language describes a set of computations.
+Instead of describing a series of steps for the computer to execute,
+you use VHDL to describe how a circuit is connected and how bits are transformed.
 
-{::comment}
-# Cool.
-![Cool](https://i.imgflip.com/1oq3ej.jpg){:width="100%"}
-{:/comment}
+#### Time in VHDL
+Before we move on, we have to distinguish one more difference between between traditional programming and Hardware Description Languages.
+Traditional programming languages are based on some abstract machine.
+For example, imperative languages guarantee that each statement happen sequentially,
+so we can set data in one step and read it back afterwards.
+
+``` python
+a = 5
+a.increment()
+a  # a == 6
+```
+
+In VHDL, we model a real schematic, so data is set as soon as physically possible.
 
 
+``` vhdl
+ENTITY pass_through IS
+    PORT ( a    : IN BIT; 
+           b, c : OUT BIT);
+END pass_through;
 
-You *model* the circuit with a programming language,
-just like you'd *model* a series of computations with any other programming language.
-But instead of describing a series of steps for the computer to execute,
-you use VHDL to describe how the circuit is connected.
+ARCHITECTURE df OF pass_through IS
+    SIGNAL between : BIT;
+BEGIN
+    -- b and between are set at the same time!
+    b <= between;
+    between <= a;
+    c <= between
+END df;
+```
+
+In the above VHDL example, it looks like `between` is being assigned to `b`.
+However, we don't set `between` until the next line.
+When we go to run the circuit, we'll see `b` and `c` will have the same value at the same time.
+This is because we're just connecting *signals* together, and when we simulate this circuit all of our
+1's and 0's flow through the circuit in a real-time(ish) way.
+In later labs you'll learn how we sequential statements are implemented in VHDL.
+
+#### Back to our Thing
 
 Remember the **thing** I drew before?
 Let's describe it with VHDL.
 
-{% highlight vhdl linenos %}
+``` vhdl
+-- Comments start with '--'
 -- Inputs and Outputs of a thing!
 ENTITY a_thing IS
     PORT ( a : IN BIT;
            b : IN BIT;
            c : OUT BIT;
-           d : OUT BIT;
+           d : OUT BIT
          );
 END a_thing;
+
 
 -- The inside guts of a thing!
 ARCHITECTURE behav OF a_thing IS
@@ -123,11 +154,11 @@ BEGIN
     c <= s1; -- Assign/Map output c to s1
     d <= s2; -- Assign/Map output d to s2
 END behav;
-{% endhighlight %}
+```
 
-There's a bunch to unpack here.
+Let's unpack this code.
 
-#### 1) a_thing is a module
+#### Program Structure
 
 We have what's called a VHDL ***module***.
 A module is a full description of a thing. 
@@ -138,20 +169,53 @@ It describes:
 A module **is not** a VHDL file.
 A module could be spread across one or more files, and a single file might have multiple modules.
 
-#### 2) Syntax
+**Entities** declare the inputs and outputs with the `PORT` structure.
 
-Keywords, Identifiers, operators
+Lastly, take note of where semicolons are required. Usually they are at the ***end*** of *declarations*,
+like at the ends of: the entity, the ports, the architecture, and then also the end of the assignment statements.
+
+#### Keywords and Identifiers
+
+Different parts of the code should be colored differently in the above examples.
+This is to differentiate between:
+ - *keywords* like `ENTITY`, `ARCHITECTURE`, and `BEGIN` which denote the structure of our code.
+ - *identifiers* like `s1`, `a`, `a_thing`, and `df`, which are just names we've chosen for different values.
+ - *operators* like `<=`, `AND`, et al, which can modify values held by identifiers.
+
+{% include note.html content="VHDL is case-insensitive.
+That means it doesn't matter if you capitalize letters or not: `a_thing`, `A_THING`, `a_ThINg`, etc all refer to the same identifier.
+In the examples shown, I made keywords ALL-CAPS and identifiers lower-case, to differentiate them.
+In your code, you can choose whichever you're comfortable with.
+Just remember to stay consistent."
+%}
+
+
+#### Inputs and Outputs
+
+The *interface* to our thing, the *inputs and outputs*, the wires we can *set* and *read* from, is described in the `ENTITY`.
+In the electrical engineering domain, these are referred to as *ports*Because the terminology is to refer to inputs.
+Inputs can only be read and cannot be assigned. Outputs can only be assigned and cannot be read.
+
+You can see that we each port is assigned: 1) a name, 2) a direction, and 3) a *type*.
+For example: `a : IN BIT;` is named *a*, is an *input*, and is a single *bit*.
+
+#### Operators
+
+
+
+#### More things
+
+This is not an exhaustive explanation of building circuits in VHDL.
+You'll learn how to compose simple circuits to build more complex circuits that can do math like $$ (4+5) $$ in the coming weeks.
 
 -----------
 
 # Where is VHDL?
-###  ModelSim
 
 VHDL is just the language we use to describe the circuit.
-
-We need another piece of software to simulate that circuit,
-by setting different inputs and seeing how that changes the output over time.
-
-For this class,
+We need another piece of software to simulate that circuit.
+In this class we'll use *Modelsim* both for coding our circuits and simulating them.
 
 -----------
+
+

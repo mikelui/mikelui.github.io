@@ -71,17 +71,18 @@
 //.highlight .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 
 // These aren't in rouge :(
-figure.highlight {
+.highlight {
   color: #f8f8f2;
+  padding-left: 2px;
   // Use the pygments-css background, better contrast
   //background-color: #49483e;
   background: #272822;
 }
-figure.highlight, code.highlighter-rouge {
+.highlight, .highlighter-rouge {
     border-radius: 3px;
 }
 code.highlighter-rouge { /* in-line */
-    background: #ffcccc;
+    background: #ffdddd;
     padding: 2px 4px;
     border: 1px solid;
 }
