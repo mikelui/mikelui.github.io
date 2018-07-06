@@ -1,7 +1,6 @@
 <script src="{{"/assets/vendor/jquery/jquery.min.js" | relative_url }}"></script>
 <script src="{{"/assets/vendor/bootstrap/js/bootstrap.bundle.min.js" | relative_url }}"></script>
 <script src="{{"/assets/vendor/startbootstrap-clean-blog/js/clean-blog.min.js" | relative_url }}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.1/anchor.min.js"></script>
 
 <script src="{{"/assets/scripts.js" | relative_url }}"></script>
 
@@ -85,6 +84,8 @@
 {% endif %}
 
 {% if page.url contains 'guides' or page.url contains 'posts' %}
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.1/anchor.min.js"></script>
   <script>
     anchors.options.placement = 'left'
     anchors.options.visible = 'touch'

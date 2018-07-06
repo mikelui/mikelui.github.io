@@ -8,51 +8,73 @@ date: 2018-07-07T00:00:00.000Z
 author: Mike Lui
 ---
 
-The introductory digital design and VHDL class I've had to TA ([ECE-200][ece200]) attracts students
-with a wide variety of backgrounds.
-While some students learn just fine with the provided tutorials and labs,
-others can be turned off by them.
-Even then, students tend to miss some fundamental concepts when going through the
-motions of the labs.
+# What is VHDL?
 
-As such, I've decided to provide a quickstart guide with a slightly different flavor.
-This is **not** meant to be a full reference.
-If you need to know something specific please [find a more complete reference][searchvhdl].
+You're taking the **Digital Logic** class[^1] and figure you'll be doing some `beep boop bop` 🤖 binary things.
+You'd be right.
+In class, you'll learn boolean logic theory.
+With the VHDL labs, you'll see how that theory can be used to make something more concrete.
+
+VHDL is a programming language to describe circuits.
+It literally stands for: **V**HSIC (a nested acronym 🙄) **Hardware Description Language**.
+VHDL targets digital circuits in contrast to analog circuits.
+While *analog* circuits consider electrical properties like impedance, capacitance, et al,
+*digital* circuits consider logical properties; 1's and 0's; Yes's and No's.
+
+Here's a taste:
+
+{% highlight vhdl linenos %}
+ENTITY inverter IS
+    PORT ( in1 : IN BIT; out1 : OUT BIT);
+END inverter;
+
+ARCHITECTURE behav OF inverter IS
+BEGIN
+    out1 <= NOT in1;
+END behav;
+{% endhighlight %}
+
+Although the syntax is a bit clunky, you can see how we're just defining an inverter.
+First, we declare the inputs and outputs of our circuit block.
+Then, we describe how the input is transformed into the output.
+We're describing the following equation:
+
+$$
+\begin{align*}
+inverter(a) = a'
+\end{align*}
+$$
+
+*Amaaahzing* right? Later on we'll go into more details on the syntax.
+
+[^1]:
+    The introductory digital design and VHDL class I've had to TA ([ECE-200][ece200]) attracts students
+    with a wide variety of backgrounds.
+    While some students learn just fine with the provided tutorials and labs,
+    others can be turned off by them.
+    Even then, students tend to miss some fundamental concepts when going through the
+    motions of the labs.
+
+    As such, I've decided to provide a quickstart guide with a slightly different flavor.
+    This is **not** meant to be a full reference.
+    If you need to know something specific please [find a more complete reference][searchvhdl].
 
 [ece200]: http://catalog.drexel.edu/coursedescriptions/quarter/undergrad/ece/
 [searchvhdl]: https://duckduckgo.com/?q=vhdl+reference
 
 -----------
 
-# What is VHDL?
-
-So you're taking the **Digital Logic** class and figure you'll be doing some `beep boop bop` 🤖 binary things.
-You'd be right.
-In class, you'll learn boolean logic theory.
-With the VHDL labs, you'll see how that theory can be used to make something more concrete.
-
-Modeling digital circuits!
-Digital circuits are different than analog circuits.
-Generally speaking,
- - Analog circuits consider electrical properties like impedance, capacitance, et al.
- - Digital circuits consider logical properties. 1's and 0's. Yes's and No's.
-
------------
-
 # Why is VHDL?
 
-#### Why would we want to model digital circuits?
+Why would we want to model digital circuits?
+It's easier to understand, modify, simulate, and test our designs by modeling our circuits in VHDL.
+VHDL also provides a common format to use starting from initial prototyping and eventually ending at design for manufacturing.
 
-Our model defines our circuit.
-That ends up getting used to create our circuit (*duh*)!
-It's used starting from testing our circuit,
-to laying out all the transistors and electrical components, wiring them together,
-and eventually manufacturing.
-
-In the intro class, we start off simulating circuits to make sure they work as intended.
 For example imagine trying to build this **thing**:
 
 ![a_thing](/img/posts/a_thing.png){:width="100%"}
+
+I could pass this around as just my *schematic*
 
 That doesn't look too complicated.
 I have some wires on the left going into a couple components which do something,
@@ -132,3 +154,4 @@ by setting different inputs and seeing how that changes the output over time.
 
 For this class,
 
+-----------
