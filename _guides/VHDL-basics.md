@@ -34,7 +34,7 @@ BEGIN
 END df;
 ```
 
-{% include note.html content="`<=` is a signal assignment in VHDL. It essentially ties two signals together." %}
+{% include note.html content="`<=` is a signal assignment in VHDL; it isn't *less than or equal to*." %}
 
 Although the syntax is a bit clunky, you can see how we're just defining an inverter; a `NOT` gate.
 First, we declare the inputs and outputs of our circuit block.
@@ -86,6 +86,7 @@ VHDL describes a circuit just like any other programming language describes a se
 Instead of describing a series of steps for the computer to execute,
 you use VHDL to describe how a circuit is connected and how bits are transformed.
 
+
 #### Time in VHDL
 Before we move on, we have to distinguish one more difference between between traditional programming and Hardware Description Languages.
 Traditional programming languages are based on some abstract machine.
@@ -93,6 +94,7 @@ For example, imperative languages guarantee that each statement happen sequentia
 so we can set data in one step and read it back afterwards.
 
 ``` python
+# pseudo-code
 a = 5
 a.increment()
 a  # a == 6
@@ -129,7 +131,7 @@ In later labs you'll learn how we sequential statements are implemented in VHDL.
 Remember the **thing** I drew before?
 Let's describe it with VHDL.
 
-``` vhdl
+{% highlight vhdl linenos %}
 -- Comments start with '--'
 -- Inputs and Outputs of a thing!
 ENTITY a_thing IS
@@ -142,7 +144,7 @@ END a_thing;
 
 
 -- The inside guts of a thing!
-ARCHITECTURE behav OF a_thing IS
+ARCHITECTURE df OF a_thing IS
     SIGNAL s1, s2 : BIT;
 BEGIN
     s1 <= a AND b; -- Assign/Map c to the result of
@@ -153,8 +155,8 @@ BEGIN
 
     c <= s1; -- Assign/Map output c to s1
     d <= s2; -- Assign/Map output d to s2
-END behav;
-```
+END df;
+{% endhighlight %}
 
 Let's unpack this code.
 
@@ -163,8 +165,8 @@ Let's unpack this code.
 We have what's called a VHDL ***module***.
 A module is a full description of a thing. 
 It describes:
- - The **`ENTITY`** -- the inputs and outputs; our interface to *a_thing*
- - The **`ARCHITECTURE`** -- how the inputs get transformed into the output
+ - The `ENTITY` -- the inputs and outputs; our interface to *a_thing*
+ - The `ARCHITECTURE` -- how the inputs get transformed into the output
 
 A module **is not** a VHDL file.
 A module could be spread across one or more files, and a single file might have multiple modules.
