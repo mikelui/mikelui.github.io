@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+
+<html>
+
+  <head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>
+    VHDL Student Primer - No TV and No Beer
+    
+  </title>
+
+  <meta name="description" content="What is VHDL?">
+
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
+
+  <link rel="stylesheet" href="/assets/vendor/font-awesome/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="/assets/main.css">
+  <link rel="canonical" href="http://localhost:4000/guides/VHDL-basics/">
+  <link rel="alternate" type="application/rss+xml" title="No TV and No Beer" href="/feed.xml">
+
+</head>
+
+
+  <body>
+
+    <!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand" href="/">No TV and No Beer</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      Menu
+      <i class="fa fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/about">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/posts">Posts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/guides">Guides</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/contact">Contact</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+    <!-- Page Header -->
+
+<header class="masthead" style="background-image: url('/img/The-Simpsons-Season-23-Episode-11-25-6c0b.jpg')">
+
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="post-heading">
+          <h1>VHDL Student Primer</h1>
+          
+          <h2 class="subheading">Important Concepts</h2>
+          
+          <span class="meta">Posted by
+              <a href="#">Mike Lui</a>
+            on July 07, 2018</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-8 col-md-10 mx-auto">
+
+      <h1 id="what-is-vhdl">What is VHDL?</h1>
+
+<p>You’re taking the <strong>Digital Logic</strong> class<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup> and figure you’ll be doing some <code class="highlighter-rouge">beep boop bop</code> 🤖 binary things.
+You’d be right.
+In class, you’ll learn boolean logic theory.
+With the VHDL labs, you’ll see how that theory can be used to make something more concrete.</p>
+
+<p>VHDL is a programming language to describe circuits.
+It literally stands for: <strong>V</strong>HSIC (another acronym 🙄) <strong>Hardware Description Language</strong>.
+VHDL targets digital circuits in contrast to analog circuits.
+While <em>analog</em> circuits consider electrical properties like impedance, capacitance, et al,
+<em>digital</em> circuits consider logical properties; 1’s and 0’s; Yes’s and No’s.</p>
+
+<p>Here’s a taste:</p>
+
+<div class="language-vhdl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">ENTITY</span> <span class="n">inverter</span> <span class="k">IS</span>
+    <span class="k">PORT</span> <span class="p">(</span> <span class="n">in1</span> <span class="p">:</span> <span class="k">IN</span> <span class="kt">BIT</span><span class="p">;</span> <span class="n">out1</span> <span class="p">:</span> <span class="k">OUT</span> <span class="kt">BIT</span> <span class="p">);</span>
+<span class="k">END</span> <span class="n">inverter</span><span class="p">;</span>
+
+<span class="k">ARCHITECTURE</span> <span class="n">df</span> <span class="k">OF</span> <span class="n">inverter</span> <span class="k">IS</span>
+<span class="k">BEGIN</span>
+    <span class="n">out1</span> <span class="o">&lt;=</span> <span class="ow">NOT</span> <span class="n">in1</span><span class="p">;</span>
+<span class="k">END</span> <span class="n">df</span><span class="p">;</span>
+</code></pre></div></div>
+
+<div class="alert alert-info" role="alert">
+    <i class="fa fa-info-circle"></i> <b>Note:</b>
+    <code class="highlighter-rouge">&lt;=</code> is a signal assignment in VHDL; it isn’t <em>less than or equal to</em>.
+</div>
+
+<p>Although the syntax is a bit clunky, you can see how we’re just defining an inverter; a <code class="highlighter-rouge">NOT</code> gate.
+First, we declare the inputs and outputs of our circuit block.
+Then, we describe how the input is transformed into the output.
+We’re describing the following equation:</p>
+
+<script type="math/tex; mode=display">\begin{align*}
+inverter(in_1) = {in_1}'
+\end{align*}</script>
+
+<p><em>Amaaahzing</em> right? Later on we’ll go into more details on the syntax.</p>
+
+<hr />
+
+<h1 id="why-is-vhdl">Why is VHDL?</h1>
+
+<p>Why would we want to model digital circuits?
+It’s easier to understand, modify, simulate, and test our designs by modeling our circuits in VHDL.
+VHDL also provides a common format starting from initial prototyping and eventually ending at design for manufacturing.</p>
+
+<p>Let’s use the following circuit diagram for the rest of this post:</p>
+
+<p><img src="/img/posts/a_thing.png" alt="a_thing" width="100%" /></p>
+
+<p>It’s much easier to pass around a standardized formal description of this <strong><em>thing</em></strong> than just its schematic:</p>
+
+<hr />
+
+<h1 id="how-is-vhdl">How is VHDL?</h1>
+
+<p>VHDL describes a circuit just like any other programming language describes a set of computations.
+Instead of describing a series of steps for the computer to execute,
+you use VHDL to describe how a circuit is connected and how bits are transformed.</p>
+
+<h4 id="time-in-vhdl">Time in VHDL</h4>
+<p>Before we move on, we have to distinguish one more difference between between traditional programming and Hardware Description Languages.
+Traditional programming languages are based on some abstract machine.
+For example, imperative languages guarantee that each statement happen sequentially,
+so we can set data in one step and read it back afterwards.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># pseudo-code</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">a</span><span class="o">.</span><span class="n">increment</span><span class="p">()</span>
+<span class="n">a</span>  <span class="c"># a == 6</span>
+</code></pre></div></div>
+
+<p>In VHDL, we model a real schematic, so data is set as soon as physically possible.</p>
+
+<div class="language-vhdl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">ENTITY</span> <span class="n">pass_through</span> <span class="k">IS</span>
+    <span class="k">PORT</span> <span class="p">(</span> <span class="n">a</span>    <span class="p">:</span> <span class="k">IN</span> <span class="kt">BIT</span><span class="p">;</span> 
+           <span class="n">b</span><span class="p">,</span> <span class="n">c</span> <span class="p">:</span> <span class="k">OUT</span> <span class="kt">BIT</span><span class="p">);</span>
+<span class="k">END</span> <span class="n">pass_through</span><span class="p">;</span>
+
+<span class="k">ARCHITECTURE</span> <span class="n">df</span> <span class="k">OF</span> <span class="n">pass_through</span> <span class="k">IS</span>
+    <span class="k">SIGNAL</span> <span class="n">between</span> <span class="p">:</span> <span class="kt">BIT</span><span class="p">;</span>
+<span class="k">BEGIN</span>
+    <span class="c1">-- b and between are set at the same time!</span>
+    <span class="n">b</span> <span class="o">&lt;=</span> <span class="n">between</span><span class="p">;</span>
+    <span class="n">between</span> <span class="o">&lt;=</span> <span class="n">a</span><span class="p">;</span>
+    <span class="n">c</span> <span class="o">&lt;=</span> <span class="n">between</span>
+<span class="k">END</span> <span class="n">df</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>In the above VHDL example, it looks like <code class="highlighter-rouge">between</code> is being assigned to <code class="highlighter-rouge">b</code>.
+However, we don’t set <code class="highlighter-rouge">between</code> until the next line.
+When we go to run the circuit, we’ll see <code class="highlighter-rouge">b</code> and <code class="highlighter-rouge">c</code> will have the same value at the same time.
+This is because we’re just connecting <em>signals</em> together, and when we simulate this circuit all of our
+1’s and 0’s flow through the circuit in a real-time(ish) way.
+In later labs you’ll learn how we sequential statements are implemented in VHDL.</p>
+
+<h4 id="back-to-our-thing">Back to our Thing</h4>
+
+<p>Remember the <strong>thing</strong> I drew before?
+Let’s describe it with VHDL.</p>
+
+<figure class="highlight"><pre><code class="language-vhdl" data-lang="vhdl"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+</pre></td><td class="code"><pre><span class="c1">-- Comments start with '--'</span>
+<span class="c1">-- Inputs and Outputs of a thing!</span>
+<span class="k">ENTITY</span> <span class="n">a_thing</span> <span class="k">IS</span>
+    <span class="k">PORT</span> <span class="p">(</span> <span class="n">a</span> <span class="p">:</span> <span class="k">IN</span> <span class="kt">BIT</span><span class="p">;</span>
+           <span class="n">b</span> <span class="p">:</span> <span class="k">IN</span> <span class="kt">BIT</span><span class="p">;</span>
+           <span class="n">c</span> <span class="p">:</span> <span class="k">OUT</span> <span class="kt">BIT</span><span class="p">;</span>
+           <span class="n">d</span> <span class="p">:</span> <span class="k">OUT</span> <span class="kt">BIT</span>
+         <span class="p">);</span>
+<span class="k">END</span> <span class="n">a_thing</span><span class="p">;</span>
+
+
+<span class="c1">-- The inside guts of a thing!</span>
+<span class="k">ARCHITECTURE</span> <span class="n">df</span> <span class="k">OF</span> <span class="n">a_thing</span> <span class="k">IS</span>
+    <span class="k">SIGNAL</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span> <span class="p">:</span> <span class="kt">BIT</span><span class="p">;</span>
+<span class="k">BEGIN</span>
+    <span class="n">s1</span> <span class="o">&lt;=</span> <span class="n">a</span> <span class="ow">AND</span> <span class="n">b</span><span class="p">;</span> <span class="c1">-- Assign/Map c to the result of</span>
+                   <span class="c1">-- the built-in 'AND' operation</span>
+
+    <span class="n">s2</span> <span class="o">&lt;=</span> <span class="n">a</span> <span class="ow">XOR</span> <span class="n">b</span><span class="p">;</span> <span class="c1">-- Assign/Map d to the result of</span>
+                   <span class="c1">-- the built-in 'XOR' operation</span>
+
+    <span class="n">c</span> <span class="o">&lt;=</span> <span class="n">s1</span><span class="p">;</span> <span class="c1">-- Assign/Map output c to s1</span>
+    <span class="n">d</span> <span class="o">&lt;=</span> <span class="n">s2</span><span class="p">;</span> <span class="c1">-- Assign/Map output d to s2</span>
+<span class="k">END</span> <span class="n">df</span><span class="p">;</span></pre></td></tr></tbody></table></code></pre></figure>
+
+<p>Let’s unpack this code.</p>
+
+<h4 id="program-structure">Program Structure</h4>
+
+<p>We have what’s called a VHDL <strong><em>module</em></strong>.
+A module is a full description of a thing. 
+It describes:</p>
+<ul>
+  <li>The <code class="highlighter-rouge">ENTITY</code> – the inputs and outputs; our interface to <em>a_thing</em></li>
+  <li>The <code class="highlighter-rouge">ARCHITECTURE</code> – how the inputs get transformed into the output</li>
+</ul>
+
+<p>A module <strong>is not</strong> a VHDL file.
+A module could be spread across one or more files, and a single file might have multiple modules.</p>
+
+<p><strong>Entities</strong> declare the inputs and outputs with the <code class="highlighter-rouge">PORT</code> structure.</p>
+
+<p>Lastly, take note of where semicolons are required. Usually they are at the <strong><em>end</em></strong> of <em>declarations</em>,
+like at the ends of: the entity, the ports, the architecture, and then also the end of the assignment statements.</p>
+
+<h4 id="keywords-and-identifiers">Keywords and Identifiers</h4>
+
+<p>Different parts of the code should be colored differently in the above examples.
+This is to differentiate between:</p>
+<ul>
+  <li><em>keywords</em> like <code class="highlighter-rouge">ENTITY</code>, <code class="highlighter-rouge">ARCHITECTURE</code>, and <code class="highlighter-rouge">BEGIN</code> which denote the structure of our code.</li>
+  <li><em>identifiers</em> like <code class="highlighter-rouge">s1</code>, <code class="highlighter-rouge">a</code>, <code class="highlighter-rouge">a_thing</code>, and <code class="highlighter-rouge">df</code>, which are just names we’ve chosen for different values.</li>
+  <li><em>operators</em> like <code class="highlighter-rouge">&lt;=</code>, <code class="highlighter-rouge">AND</code>, et al, which can modify values held by identifiers.</li>
+</ul>
+
+<div class="alert alert-info" role="alert">
+    <i class="fa fa-info-circle"></i> <b>Note:</b>
+    VHDL is case-insensitive.
+That means it doesn’t matter if you capitalize letters or not: <code class="highlighter-rouge">a_thing</code>, <code class="highlighter-rouge">A_THING</code>, <code class="highlighter-rouge">a_ThINg</code>, etc all refer to the same identifier.
+In the examples shown, I made keywords ALL-CAPS and identifiers lower-case, to differentiate them.
+In your code, you can choose whichever you’re comfortable with.
+Just remember to stay consistent.
+</div>
+
+<h4 id="inputs-and-outputs">Inputs and Outputs</h4>
+
+<p>The <em>interface</em> to our thing, the <em>inputs and outputs</em>, the wires we can <em>set</em> and <em>read</em> from, is described in the <code class="highlighter-rouge">ENTITY</code>.
+In the electrical engineering domain, these are referred to as <em>ports</em>Because the terminology is to refer to inputs.
+Inputs can only be read and cannot be assigned. Outputs can only be assigned and cannot be read.</p>
+
+<p>You can see that we each port is assigned: 1) a name, 2) a direction, and 3) a <em>type</em>.
+For example: <code class="highlighter-rouge">a : IN BIT;</code> is named <em>a</em>, is an <em>input</em>, and is a single <em>bit</em>.</p>
+
+<h4 id="operators">Operators</h4>
+
+<h4 id="more-things">More things</h4>
+
+<p>This is not an exhaustive explanation of building circuits in VHDL.
+You’ll learn how to compose simple circuits to build more complex circuits that can do math like <script type="math/tex">(4+5)</script> in the coming weeks.</p>
+
+<hr />
+
+<h1 id="where-is-vhdl">Where is VHDL?</h1>
+
+<p>VHDL is just the language we use to describe the circuit.
+We need another piece of software to simulate that circuit.
+In this class we’ll use <em>Modelsim</em> both for coding our circuits and simulating them.</p>
+
+<hr />
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+
+      <p>The introductory digital design and VHDL class I’ve had to TA (<a href="http://catalog.drexel.edu/coursedescriptions/quarter/undergrad/ece/">ECE-200</a>) attracts students
+with a wide variety of backgrounds.
+While some students learn just fine with the provided tutorials and labs,
+others can be turned off by them.
+Even then, students tend to miss some fundamental concepts when going through the
+motions of the labs.</p>
+
+      <p>As such, I’ve decided to provide a quickstart guide with a slightly different flavor.
+This is <strong>not</strong> meant to be a full reference.
+If you need to know something specific please <a href="https://duckduckgo.com/?q=vhdl+reference">find a more complete reference</a>. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+
+      <hr>
+
+      <div class="clearfix">
+
+        
+        
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+    <!-- Footer -->
+
+<hr>
+
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <ul class="list-inline text-center">
+          
+          
+          
+          <li class="list-inline-item">
+            <a href="https://github.com/mikelui">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+              </span>
+            </a>
+          </li>
+          
+            
+            <li class="list-inline-item">
+              <a href="https://linkedin.com/in/mikelui">
+              <span class="fa-stack fa-lg">
+                <i class="fa fa-circle fa-stack-2x"></i>
+                <i class="fa fa-linkedin fa-stack-1x fa-inverse"></i>
+              </span>
+              </a>
+            </li>
+            
+            
+            <li class="list-inline-item">
+              <a href="mailto:mikelui@drexel.edu">
+                <span class="fa-stack fa-lg">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+                                
+        </ul>
+        <p class="copyright text-muted">Copyright &copy; Mike Lui 2018</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+<script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/startbootstrap-clean-blog/js/clean-blog.min.js"></script>
+
+<script src="/assets/scripts.js"></script>
+
+
+
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.1/anchor.min.js"></script>
+  <script>
+    anchors.options.placement = 'left'
+    anchors.options.visible = 'touch'
+    anchors.add('h1, h2').remove('header h1, header h2, .post-preview h1, .post-preview h2')
+  </script>
+
+
+
+  </body>
+
+</html>
