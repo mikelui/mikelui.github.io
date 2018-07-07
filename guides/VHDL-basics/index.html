@@ -169,7 +169,8 @@ so we can set data in one step and read it back afterwards.</p>
 <span class="k">ARCHITECTURE</span> <span class="n">df</span> <span class="k">OF</span> <span class="n">pass_through</span> <span class="k">IS</span>
     <span class="k">SIGNAL</span> <span class="n">between</span> <span class="p">:</span> <span class="kt">BIT</span><span class="p">;</span>
 <span class="k">BEGIN</span>
-    <span class="c1">-- b and between are set at the same time!</span>
+    <span class="c1">-- b and between are set</span>
+    <span class="c1">-- at the same time!</span>
     <span class="n">b</span> <span class="o">&lt;=</span> <span class="n">between</span><span class="p">;</span>
     <span class="n">between</span> <span class="o">&lt;=</span> <span class="n">a</span><span class="p">;</span>
     <span class="n">c</span> <span class="o">&lt;=</span> <span class="n">between</span>
@@ -187,6 +188,8 @@ In later labs you’ll learn how we sequential statements are implemented in VHD
 
 <p>Remember the <strong>thing</strong> I drew before?
 Let’s describe it with VHDL.</p>
+
+<div class="code-title">a_thing.vhd</div>
 
 <figure class="highlight"><pre><code class="language-vhdl" data-lang="vhdl"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
 2
@@ -250,7 +253,8 @@ It describes:</p>
 </ul>
 
 <p>A module <strong>is not</strong> a VHDL file.
-A module could be spread across one or more files, and a single file might have multiple modules.</p>
+A module could be spread across one or more files.
+Conversely, a single file might have multiple modules.</p>
 
 <p><strong>Entities</strong> declare the inputs and outputs with the <code class="highlighter-rouge">PORT</code> structure.</p>
 

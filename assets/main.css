@@ -89,9 +89,15 @@ footer .copyright { font-size: 14px; margin-bottom: 0; text-align: center; }
 
 pre.highlight, .highlight > pre { padding-top: 8px; padding-left: 8px; padding-bottom: 8px; }
 
-div.highlight, figure.highlight { box-shadow: inset 0px 0px 20px 5px black; border-radius: 3px; background: #272822; color: #f8f8f2; }
+div.highlight, figure.highlight { box-shadow: inset 0px 0px 20px 3px black; border-radius: 3px; background: #272822; color: #f8f8f2; }
 
-code.highlighter-rouge { /* in-line */ background: #ffdddd; padding: 2px 4px; border: 1px solid; }
+pre code pre { font-size: inherit; }
+
+.code-title { border-radius: 3px 3px 0 0; text-align: center; font-size: 87.5%; padding: .25rem; background: #5e5e5e; color: #f8f8f2; }
+
+.code-title + .highlight { border-radius: 0 0 3px 3px; }
+
+code.highlighter-rouge { border-radius: 3px; border: 1px solid; background: #ffdddd; padding: 2px 4px; }
 
 .highlight .n { color: #f8f8f2; }
 
