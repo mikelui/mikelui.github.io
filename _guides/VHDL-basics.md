@@ -112,7 +112,8 @@ END pass_through;
 ARCHITECTURE df OF pass_through IS
     SIGNAL between : BIT;
 BEGIN
-    -- b and between are set at the same time!
+    -- b and between are set
+    -- at the same time!
     b <= between;
     between <= a;
     c <= between
@@ -131,6 +132,7 @@ In later labs you'll learn how we sequential statements are implemented in VHDL.
 Remember the **thing** I drew before?
 Let's describe it with VHDL.
 
+{% include code-title.html contents="a_thing.vhd" %}
 {% highlight vhdl linenos %}
 -- Comments start with '--'
 -- Inputs and Outputs of a thing!
@@ -169,7 +171,8 @@ It describes:
  - The `ARCHITECTURE` -- how the inputs get transformed into the output
 
 A module **is not** a VHDL file.
-A module could be spread across one or more files, and a single file might have multiple modules.
+A module could be spread across one or more files.
+Conversely, a single file might have multiple modules.
 
 **Entities** declare the inputs and outputs with the `PORT` structure.
 

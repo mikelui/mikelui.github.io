@@ -70,8 +70,7 @@
 //.highlight .vm { color: #f8f8f2 } /* Name.Variable.Magic */
 //.highlight .il { color: #ae81ff } /* Literal.Number.Integer.Long */
 
-// backticks vs {% %} highlighting
-// produces two different doms
+// support both rouge vs pygments highlighting
 pre.highlight, .highlight > pre {
   padding-top: 8px;
   padding-left: 8px;
@@ -79,18 +78,33 @@ pre.highlight, .highlight > pre {
   // Use the pygments-css background, better contrast
   //background-color: #49483e;
 }
-
 div.highlight, figure.highlight {
-  box-shadow: inset 0px 0px 20px 5px black;
+  box-shadow: inset 0px 0px 20px 3px black;
   border-radius: 3px;
   background: #272822;
   color: #f8f8f2;
 }
+pre code pre { font-size: inherit; }
 
-code.highlighter-rouge { /* in-line */
-    background: #ffdddd;
-    padding: 2px 4px;
-    border: 1px solid;
+.code-title { // pretty up big chunks with a title
+  border-radius: 3px 3px 0 0;
+  text-align: center;
+  font-size: 87.5%;
+  padding: .25rem;
+  background: #5e5e5e;
+  color: #f8f8f2;
+}
+// and then modify the following code block
+.code-title + .highlight {
+  border-radius: 0 0 3px 3px;
+}
+
+// in-line
+code.highlighter-rouge {
+  border-radius: 3px;
+  border: 1px solid;
+  background: #ffdddd;
+  padding: 2px 4px;
 }
 .highlight .n { color: #f8f8f2 } /* Name */
 .highlight .p { color: #f8f8f2 } /* Punctuation */
