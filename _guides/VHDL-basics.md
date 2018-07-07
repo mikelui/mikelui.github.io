@@ -34,7 +34,7 @@ BEGIN
 END df;
 ```
 
-{% include note.html content="`<=` is a signal assignment in VHDL; it isn't *less than or equal to*." %}
+{% include note.html content="`<=` is an assignment operator in VHDL; it isn't *less than or equal to*." %}
 
 Although the syntax is a bit clunky, you can see how we're just defining an inverter; a `NOT` gate.
 First, we declare the inputs and outputs of our circuit block.
@@ -58,7 +58,7 @@ $$
     motions of the labs.
 
     As such, I've decided to provide a quickstart guide with a slightly different flavor.
-    This is **not** meant to be a full reference.
+    This is **not** meant to be a full reference. I'm also very loose with my language throughout this document because of the target audience.
     If you need to know something specific please [find a more complete reference][searchvhdl].
 
 [ece200]: http://catalog.drexel.edu/coursedescriptions/quarter/undergrad/ece/
@@ -86,7 +86,7 @@ VHDL describes a circuit just like any other programming language describes a se
 Instead of describing a series of steps for the computer to execute,
 you use VHDL to describe how a circuit is connected and how bits are transformed.
 
-
+{% callout info %}
 #### Time in VHDL
 Before we move on, we have to distinguish one more difference between between traditional programming and Hardware Description Languages.
 Traditional programming languages are based on some abstract machine.
@@ -101,7 +101,6 @@ a  # a == 6
 ```
 
 In VHDL, we model a real schematic, so data is set as soon as physically possible.
-
 
 ``` vhdl
 ENTITY pass_through IS
@@ -126,8 +125,12 @@ When we go to run the circuit, we'll see `b` and `c` will have the same value at
 This is because we're just connecting *signals* together, and when we simulate this circuit all of our
 1's and 0's flow through the circuit in a real-time(ish) way.
 In later labs you'll learn how we sequential statements are implemented in VHDL.
+{% endcallout %}
 
-#### Back to our Thing
+
+
+
+#### Back to our `Thing`
 
 Remember the **thing** I drew before?
 Let's describe it with VHDL.
