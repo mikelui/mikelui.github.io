@@ -630,3 +630,22 @@ p.post-meta {
 
 .bs-callout-info h4 {
   color: #5bc0de; }
+
+.accordion {
+  margin: 0 0 1rem; }
+  .accordion .card {
+    border: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125); }
+    .accordion .card .card-header {
+      background: 0 0;
+      border-bottom: 0;
+      padding-left: 0; }
+      .accordion .card .card-header button {
+        padding-left: 0;
+        text-transform: none;
+        font-size: inherit;
+        font-weight: inherit; }
+    .accordion .card .card-body {
+      padding: 0; }
+      .accordion .card .card-body > p {
+        margin-top: 0; }

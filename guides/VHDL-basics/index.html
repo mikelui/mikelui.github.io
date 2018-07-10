@@ -242,29 +242,18 @@ Let’s describe it with VHDL.</p>
     <span class="n">d</span> <span class="o">&lt;=</span> <span class="n">s2</span><span class="p">;</span> <span class="c1">-- Assign/Map output d to s2</span>
 <span class="k">END</span> <span class="n">df</span><span class="p">;</span></pre></td></tr></tbody></table></code></pre></figure>
 
-<p>Let’s unpack this code.</p>
+<div class="accordion" id="accordion-a-thing">
 
-<h4 id="program-structure">Program Structure</h4>
-
-<p>We have what’s called a VHDL <strong><em>module</em></strong>.
-A module is a full description of a thing. 
-It describes:</p>
-<ul>
-  <li>The <code class="highlighter-rouge">ENTITY</code> – the inputs and outputs; our interface to <em>a_thing</em></li>
-  <li>The <code class="highlighter-rouge">ARCHITECTURE</code> – how the inputs get transformed into the output</li>
-</ul>
-
-<p>A module <strong>is not</strong> a VHDL file.
-A module could be spread across one or more files.
-Conversely, a single file might have multiple modules.</p>
-
-<p><strong>Entities</strong> declare the inputs and outputs with the <code class="highlighter-rouge">PORT</code> structure.</p>
-
-<p>Lastly, take note of where semicolons are required. Usually they are at the <strong><em>end</em></strong> of <em>declarations</em>,
-like at the ends of: the entity, the ports, the architecture, and then also the end of the assignment statements.</p>
-
-<h4 id="keywords-and-identifiers">Keywords and Identifiers</h4>
-
+<div class="card">
+  <div class="card-header" id="heading-1">
+    <h4 class="mb-0">
+      <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-1" aria-expanded="false" aria-controls="collapse-1">
+        Keywords and Identifiers<i class="text-right fa fa-angle-down rotate-icon"></i>
+      </button>
+    </h4>
+  </div>
+  <div id="collapse-1" class="collapse" aria-labelledby="heading-1" data-parent="#accordion-a-thing">
+    <div class="card-body">
 <p>Different parts of the code should be colored differently in the above examples.
 This is to differentiate between:</p>
 <ul>
@@ -282,16 +271,80 @@ In your code, you can choose whichever you’re comfortable with.
 Just remember to stay consistent.
 </div>
 
-<h4 id="inputs-and-outputs">Inputs and Outputs</h4>
+</div>
+  </div>
+</div>
 
+<div class="card">
+  <div class="card-header" id="heading-2">
+    <h4 class="mb-0">
+      <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
+        Program Structure<i class="text-right fa fa-angle-down rotate-icon"></i>
+      </button>
+    </h4>
+  </div>
+  <div id="collapse-2" class="collapse" aria-labelledby="heading-2" data-parent="#accordion-a-thing">
+    <div class="card-body">
+<p>We have what’s called a VHDL <strong><em>module</em></strong>.
+A module is a full description of a thing. 
+It describes:</p>
+<ul>
+  <li>The <code class="highlighter-rouge">ENTITY</code> – the inputs and outputs; our interface to <em>a_thing</em></li>
+  <li>The <code class="highlighter-rouge">ARCHITECTURE</code> – how the inputs get transformed into the output</li>
+</ul>
+
+<p>A module <strong>is not</strong> a VHDL file.
+A module could be spread across one or more files.
+Conversely, a single file might have multiple modules.</p>
+
+<p><strong>Entities</strong> declare the inputs and outputs with the <code class="highlighter-rouge">PORT</code> structure.</p>
+
+<div class="alert alert-info" role="alert">
+    <i class="fa fa-info-circle"></i> <b>Note:</b>
+    Semicolons are usually at the <em>end</em> of declarations.
+For example, at the ends of: the entity, the ports, the architecture, and then also the end of the assignment statements.
+</div>
+
+</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header" id="heading-3">
+    <h4 class="mb-0">
+      <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+        Inputs and Outputs<i class="text-right fa fa-angle-down rotate-icon"></i>
+      </button>
+    </h4>
+  </div>
+  <div id="collapse-3" class="collapse" aria-labelledby="heading-3" data-parent="#accordion-a-thing">
+    <div class="card-body">
 <p>The <em>interface</em> to our thing, the <em>inputs and outputs</em>, the wires we can <em>set</em> and <em>read</em> from, is described in the <code class="highlighter-rouge">ENTITY</code>.
 In the electrical engineering domain, these are referred to as <em>ports</em>Because the terminology is to refer to inputs.
 Inputs can only be read and cannot be assigned. Outputs can only be assigned and cannot be read.</p>
 
 <p>You can see that we each port is assigned: 1) a name, 2) a direction, and 3) a <em>type</em>.
 For example: <code class="highlighter-rouge">a : IN BIT;</code> is named <em>a</em>, is an <em>input</em>, and is a single <em>bit</em>.</p>
+</div>
+  </div>
+</div>
 
-<h4 id="operators">Operators</h4>
+<div class="card">
+  <div class="card-header" id="heading-4">
+    <h4 class="mb-0">
+      <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
+        Operators<i class="text-right fa fa-angle-down rotate-icon"></i>
+      </button>
+    </h4>
+  </div>
+  <div id="collapse-4" class="collapse" aria-labelledby="heading-4" data-parent="#accordion-a-thing">
+    <div class="card-body">
+<p>something</p>
+</div>
+  </div>
+</div>
+
+</div>
 
 <h4 id="more-things">More things</h4>
 
