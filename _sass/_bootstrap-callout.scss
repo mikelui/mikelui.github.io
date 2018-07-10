@@ -26,32 +26,32 @@
     color: #777;
 }
 .bs-callout-primary {
-    border-left-color: #428bca;
+    border-left-color: $primary;
 }
 .bs-callout-primary h4 {
-    color: #428bca;
+    color: $primary;
 }
 .bs-callout-success {
-    border-left-color: #5cb85c;
+    border-left-color: $success;
 }
 .bs-callout-success h4 {
-    color: #5cb85c;
+    color: $success;
 }
 .bs-callout-danger {
-    border-left-color: #d9534f;
+    border-left-color: $danger;
 }
 .bs-callout-danger h4 {
-    color: #d9534f;
+    color: $danger;
 }
 .bs-callout-warning {
-    border-left-color: #f0ad4e;
+    border-left-color: $warning;
 }
 .bs-callout-warning h4 {
-    color: #f0ad4e;
+    color: $warning;
 }
 .bs-callout-info {
-    border-left-color: #5bc0de;
+    border-left-color: $info;
 }
 .bs-callout-info h4 {
-    color: #5bc0de;
+    color: $info;
 }

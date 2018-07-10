@@ -16,6 +16,8 @@ future:            true
 plugins:
   - jekyll-feed
   - jekyll-paginate-v2
+sass:
+  style: compressed
 
 # Conversion
 markdown:    kramdown
