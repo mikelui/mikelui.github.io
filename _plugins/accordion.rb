@@ -59,8 +59,8 @@ module Jekyll
 "<div class=\"card\">
   <div class=\"card-header\" id=\"#{headingID}\">
     <h4 class=\"mb-0\">
-      <button class=\"btn btn-link\" data-toggle=\"collapse\" data-target=\"##{collapsedID}\" aria-expanded=\"false\" aria-controls=\"#{collapsedID}\">
-        #{@title}<i class=\"fa fa-angle-down rotate-icon\"></i>
+      <button class=\"btn btn-link collapsed\" data-toggle=\"collapse\" data-target=\"##{collapsedID}\" aria-expanded=\"false\" aria-controls=\"#{collapsedID}\">
+        <span class=\"plus-minus-wrapper\"><div class=\"plus-minus\"></div></span>#{@title}
       </button>
     </h4>
   </div>
