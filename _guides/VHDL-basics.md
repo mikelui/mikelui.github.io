@@ -8,6 +8,8 @@ date: 2018-07-07T00:00:00.000Z
 author: Mike Lui
 ---
 
+{% include danger.html content="Incomplete: testing GitHub webserver" %}
+
 # What is VHDL?
 
 You're taking the **Digital Logic** class[^1] and figure you'll be doing some `beep boop bop` 🤖 binary things.
@@ -56,7 +58,6 @@ $$
     others can be turned off by them.
     Even then, students tend to miss some fundamental concepts when going through the
     motions of the labs.
-
     As such, I've decided to provide a quickstart guide with a slightly different flavor.
     This is **not** meant to be a full reference. I'm also very loose with my language throughout this document because of the target audience.
     If you need to know something specific please [find a more complete reference][searchvhdl].
@@ -76,21 +77,48 @@ Let's use the following circuit diagram for the rest of this post:
 
 ![a_thing](/img/posts/a_thing.png){:width="100%"}
 
-It's much easier to pass around a standardized formal description of this ***thing*** than just its schematic:
+It's much easier to pass around a standardized formal description of this ***thing*** than just its figure (its *schematic*).
 
 -----------
 
 # How is VHDL?
 
-VHDL describes a circuit just like any other programming language describes a set of computations.
-Instead of describing a series of steps for the computer to execute,
-you use VHDL to describe how a circuit is connected and how bits are transformed.
+Many of you will have been exposed to a programming language at this point.
+VHDL and other HDLs can be thought of as a programming language for digital circuits:
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">HDLs</th>
+      <th scope="col">Traditional Programming Languages</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>VHDL, Verilog, SystemC, Bluespec</td>
+      <td>Python, Matlab, C, Javascript, R, Racket</td>
+    </tr>
+    <tr>
+      <td>describes digital circuits</td>
+      <td>describes a set of steps for the computer to execute</td>
+    </tr>
+    <tr>
+      <td>build up complex circuit behavior from smaller simple circuits</td>
+      <td>build up complex program behavior from smaller simpler subroutines</td>
+    </tr>
+    <tr>
+      <td>building blocks from boolean algebra</td>
+      <td>building blocks from arithmetic</td>
+    </tr>
+  </tbody>
+</table>
 
 {% callout info %}
 #### Time in VHDL
-Before we move on, we have to distinguish one more difference between between traditional programming and Hardware Description Languages.
-Traditional programming languages are based on some abstract machine.
-For example, imperative languages guarantee that each statement happen sequentially,
+Before we move on, we have to distinguish one more difference between between traditional programming and HDLs.
+Traditional programming languages are based on the idea of *computation sequences*;
+in other words, steps are executed one after the other in the order they appear.
+For example, imperative languages guarantee that each statement happens sequentially,
 so we can set data in one step and read it back afterwards.
 
 ``` python
@@ -100,7 +128,7 @@ a.increment()
 a  # a == 6
 ```
 
-In VHDL, we model a real schematic, so data is set as soon as physically possible.
+In VHDL, we model a circuit, so data just propagates through wires.
 
 ``` vhdl
 ENTITY pass_through IS
@@ -119,15 +147,16 @@ BEGIN
 END df;
 ```
 
-In the above VHDL example, it looks like `between` is being assigned to `b`.
-However, we don't set `between` until the next line.
-When we go to run the circuit, we'll see `b` and `c` will have the same value at the same time.
+{% include danger.html content="TODO schematic of pass_through example" %}
+
+If we read the above example like a sequential program,
+it looks like `between` is being assigned to `b` before `between` has any value!
+We don't set `between` until the next line.
+However, when we go to run the circuit, we'll see `b` and `c` will have the same value at the same time.
 This is because we're just connecting *signals* together, and when we simulate this circuit all of our
 1's and 0's flow through the circuit in a real-time(ish) way.
-In later labs you'll learn how we sequential statements are implemented in VHDL.
+In later labs, you'll learn how sequential statements are implemented in VHDL.
 {% endcallout %}
-
-
 
 
 #### Back to our `Thing`
@@ -163,11 +192,12 @@ BEGIN
 END df;
 {% endhighlight %}
 
+Let's unpack this one piece at a time.
+
 {% accordion a-thing %}
 
 {% collapse Keywords and Identifiers %}
-Different parts of the code should be colored differently in the above examples.
-This is to differentiate between:
+In the above example, the highlighted code differentiates between:
  - *keywords* like `ENTITY`, `ARCHITECTURE`, and `BEGIN` which denote the structure of our code.
  - *identifiers* like `s1`, `a`, `a_thing`, and `df`, which are just names we've chosen for different values.
  - *operators* like `<=`, `AND`, et al, which can modify values held by identifiers.
@@ -223,9 +253,12 @@ You'll learn how to compose simple circuits to build more complex circuits that 
 
 # Where is VHDL?
 
-VHDL is just the language we use to describe the circuit.
-We need another piece of software to simulate that circuit.
-In this class we'll use *Modelsim* both for coding our circuits and simulating them.
+VHDL is the language we use to describe the circuit.
+We need another piece of software to actually simulate that circuit and observe its functionality.
+In this class, we'll use ModelSim both for coding and simulating.
+If you want to use ModelSim at home, you can download a version from the [ModelSim website][modelsim].
+
+[modelsim]: https://www.mentor.com/company/higher_ed/modelsim-student-edition
 
 -----------
 
