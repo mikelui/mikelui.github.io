@@ -1,0 +1,32 @@
+
+.accordion {
+  margin: 0 0 1rem;
+
+  .card {
+    border: 0;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+
+    .card-header {
+      background: 0 0;
+      border-bottom: 0;
+      padding-left: 0;
+
+      button {
+        padding-left: 0;
+        text-transform: none;
+        font-size: inherit;
+        font-weight: inherit;
+
+        .rotate-icon {
+        }
+      }
+    }
+
+    .card-body {
+      padding: 0;
+      > p {
+        margin-top: 0; // TODO could also try margin-collapsing
+      }
+    }
+  }
+}

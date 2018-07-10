@@ -163,27 +163,9 @@ BEGIN
 END df;
 {% endhighlight %}
 
-Let's unpack this code.
+{% accordion a-thing %}
 
-#### Program Structure
-
-We have what's called a VHDL ***module***.
-A module is a full description of a thing. 
-It describes:
- - The `ENTITY` -- the inputs and outputs; our interface to *a_thing*
- - The `ARCHITECTURE` -- how the inputs get transformed into the output
-
-A module **is not** a VHDL file.
-A module could be spread across one or more files.
-Conversely, a single file might have multiple modules.
-
-**Entities** declare the inputs and outputs with the `PORT` structure.
-
-Lastly, take note of where semicolons are required. Usually they are at the ***end*** of *declarations*,
-like at the ends of: the entity, the ports, the architecture, and then also the end of the assignment statements.
-
-#### Keywords and Identifiers
-
+{% collapse Keywords and Identifiers %}
 Different parts of the code should be colored differently in the above examples.
 This is to differentiate between:
  - *keywords* like `ENTITY`, `ARCHITECTURE`, and `BEGIN` which denote the structure of our code.
@@ -196,19 +178,40 @@ In the examples shown, I made keywords ALL-CAPS and identifiers lower-case, to d
 In your code, you can choose whichever you're comfortable with.
 Just remember to stay consistent."
 %}
+{% endcollapse %}
 
+{% collapse Program Structure %}
+We have what's called a VHDL ***module***.
+A module is a full description of a thing. 
+It describes:
+ - The `ENTITY` -- the inputs and outputs; our interface to *a_thing*
+ - The `ARCHITECTURE` -- how the inputs get transformed into the output
 
-#### Inputs and Outputs
+A module **is not** a VHDL file.
+A module could be spread across one or more files.
+Conversely, a single file might have multiple modules.
 
+**Entities** declare the inputs and outputs with the `PORT` structure.
+
+{% include note.html content="Semicolons are usually at the *end* of declarations.
+For example, at the ends of: the entity, the ports, the architecture, and then also the end of the assignment statements."
+%}
+{% endcollapse %}
+
+{% collapse Inputs and Outputs %}
 The *interface* to our thing, the *inputs and outputs*, the wires we can *set* and *read* from, is described in the `ENTITY`.
 In the electrical engineering domain, these are referred to as *ports*Because the terminology is to refer to inputs.
 Inputs can only be read and cannot be assigned. Outputs can only be assigned and cannot be read.
 
 You can see that we each port is assigned: 1) a name, 2) a direction, and 3) a *type*.
 For example: `a : IN BIT;` is named *a*, is an *input*, and is a single *bit*.
+{% endcollapse %}
 
-#### Operators
+{% collapse Operators %}
+something
+{% endcollapse %}
 
+{% endaccordion %}
 
 
 #### More things
