@@ -198,9 +198,9 @@ Let's unpack this one piece at a time.
 
 {% collapse Keywords and Identifiers %}
 In the above example, the highlighted code differentiates between:
- - *keywords* like `ENTITY`, `ARCHITECTURE`, and `BEGIN` which denote the structure of our code.
- - *identifiers* like `s1`, `a`, `a_thing`, and `df`, which are just names we've chosen for different values.
- - *operators* like `<=`, `AND`, et al, which can modify values held by identifiers.
+ - *keywords* like `ENTITY`, `ARCHITECTURE`, and `BEGIN` which denote the **structure** of our code.
+ - *identifiers* like `s1`, `a`, `a_thing`, and `df`, which are just **names** we've chosen for different values.
+ - *operators* like `<=`, `AND`, et al, which can **create and set values** referenced by identifiers.
 
 {% include note.html content="VHDL is case-insensitive.
 That means it doesn't matter if you capitalize letters or not: `a_thing`, `A_THING`, `a_ThINg`, etc all refer to the same identifier.

@@ -12,6 +12,8 @@
       padding-left: 0;
 
       button {
+        display: flex;
+        align-items: center;
         color: $info;
         text-align: left;
         width: 100%;
@@ -22,8 +24,14 @@
         font-weight: inherit;
       }
 
-      button .plus-minus-wrapper {
+      button .collapse-title {
         display: inline-block;
+      }
+
+      button .plus-minus-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
         padding-right: 1.5rem;
       }
 
