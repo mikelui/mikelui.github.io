@@ -12,7 +12,7 @@
     
   </title>
 
-  <meta name="description" content="What is VHDL?">
+  <meta name="description" content="Danger: Incomplete: testing GitHub webserver">
 
   <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
@@ -84,7 +84,12 @@
   <div class="row">
     <div class="col-lg-8 col-md-10 mx-auto">
 
-      <h1 id="what-is-vhdl">What is VHDL?</h1>
+      <div class="alert alert-danger" role="alert">
+    <i class="fa fa-exclamation-triangle"></i> <b>Danger:</b>
+    Incomplete: testing GitHub webserver
+</div>
+
+<h1 id="what-is-vhdl">What is VHDL?</h1>
 
 <p>You’re taking the <strong>Digital Logic</strong> class<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup> and figure you’ll be doing some <code class="highlighter-rouge">beep boop bop</code> 🤖 binary things.
 You’d be right.
@@ -137,21 +142,48 @@ VHDL also provides a common format starting from initial prototyping and eventua
 
 <p><img src="/img/posts/a_thing.png" alt="a_thing" width="100%" /></p>
 
-<p>It’s much easier to pass around a standardized formal description of this <strong><em>thing</em></strong> than just its schematic:</p>
+<p>It’s much easier to pass around a standardized formal description of this <strong><em>thing</em></strong> than just its figure (its <em>schematic</em>).</p>
 
 <hr />
 
 <h1 id="how-is-vhdl">How is VHDL?</h1>
 
-<p>VHDL describes a circuit just like any other programming language describes a set of computations.
-Instead of describing a series of steps for the computer to execute,
-you use VHDL to describe how a circuit is connected and how bits are transformed.</p>
+<p>Many of you will have been exposed to a programming language at this point.
+VHDL and other HDLs can be thought of as a programming language for digital circuits:</p>
+
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">HDLs</th>
+      <th scope="col">Traditional Programming Languages</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>VHDL, Verilog, SystemC, Bluespec</td>
+      <td>Python, Matlab, C, Javascript, R, Racket</td>
+    </tr>
+    <tr>
+      <td>describes digital circuits</td>
+      <td>describes a set of steps for the computer to execute</td>
+    </tr>
+    <tr>
+      <td>build up complex circuit behavior from smaller simple circuits</td>
+      <td>build up complex program behavior from smaller simpler subroutines</td>
+    </tr>
+    <tr>
+      <td>building blocks from boolean algebra</td>
+      <td>building blocks from arithmetic</td>
+    </tr>
+  </tbody>
+</table>
 
 <div class="bs-callout bs-callout-info">
 <h4 id="time-in-vhdl">Time in VHDL</h4>
-<p>Before we move on, we have to distinguish one more difference between between traditional programming and Hardware Description Languages.
-Traditional programming languages are based on some abstract machine.
-For example, imperative languages guarantee that each statement happen sequentially,
+<p>Before we move on, we have to distinguish one more difference between between traditional programming and HDLs.
+Traditional programming languages are based on the idea of <em>computation sequences</em>;
+in other words, steps are executed one after the other in the order they appear.
+For example, imperative languages guarantee that each statement happens sequentially,
 so we can set data in one step and read it back afterwards.</p>
 
 <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># pseudo-code</span>
@@ -160,7 +192,7 @@ so we can set data in one step and read it back afterwards.</p>
 <span class="n">a</span>  <span class="c"># a == 6</span>
 </code></pre></div></div>
 
-<p>In VHDL, we model a real schematic, so data is set as soon as physically possible.</p>
+<p>In VHDL, we model a circuit, so data just propagates through wires.</p>
 
 <div class="language-vhdl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">ENTITY</span> <span class="n">pass_through</span> <span class="k">IS</span>
     <span class="k">PORT</span> <span class="p">(</span> <span class="n">a</span>    <span class="p">:</span> <span class="k">IN</span> <span class="kt">BIT</span><span class="p">;</span> 
@@ -178,12 +210,18 @@ so we can set data in one step and read it back afterwards.</p>
 <span class="k">END</span> <span class="n">df</span><span class="p">;</span>
 </code></pre></div></div>
 
-<p>In the above VHDL example, it looks like <code class="highlighter-rouge">between</code> is being assigned to <code class="highlighter-rouge">b</code>.
-However, we don’t set <code class="highlighter-rouge">between</code> until the next line.
-When we go to run the circuit, we’ll see <code class="highlighter-rouge">b</code> and <code class="highlighter-rouge">c</code> will have the same value at the same time.
+<div class="alert alert-danger" role="alert">
+    <i class="fa fa-exclamation-triangle"></i> <b>Danger:</b>
+    TODO schematic of pass_through example
+</div>
+
+<p>If we read the above example like a sequential program,
+it looks like <code class="highlighter-rouge">between</code> is being assigned to <code class="highlighter-rouge">b</code> before <code class="highlighter-rouge">between</code> has any value!
+We don’t set <code class="highlighter-rouge">between</code> until the next line.
+However, when we go to run the circuit, we’ll see <code class="highlighter-rouge">b</code> and <code class="highlighter-rouge">c</code> will have the same value at the same time.
 This is because we’re just connecting <em>signals</em> together, and when we simulate this circuit all of our
 1’s and 0’s flow through the circuit in a real-time(ish) way.
-In later labs you’ll learn how we sequential statements are implemented in VHDL.</p>
+In later labs, you’ll learn how sequential statements are implemented in VHDL.</p>
 </div>
 
 <h4 id="back-to-our-thing">Back to our <code class="highlighter-rouge">Thing</code></h4>
@@ -242,20 +280,21 @@ Let’s describe it with VHDL.</p>
     <span class="n">d</span> <span class="o">&lt;=</span> <span class="n">s2</span><span class="p">;</span> <span class="c1">-- Assign/Map output d to s2</span>
 <span class="k">END</span> <span class="n">df</span><span class="p">;</span></pre></td></tr></tbody></table></code></pre></figure>
 
+<p>Let’s unpack this one piece at a time.</p>
+
 <div class="accordion" id="accordion-a-thing">
 
 <div class="card">
   <div class="card-header" id="heading-1">
     <h4 class="mb-0">
-      <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-1" aria-expanded="false" aria-controls="collapse-1">
-        Keywords and Identifiers<i class="text-right fa fa-angle-down rotate-icon"></i>
+      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse-1" aria-expanded="false" aria-controls="collapse-1">
+        <span class="plus-minus-wrapper"><div class="plus-minus"></div></span>Keywords and Identifiers
       </button>
     </h4>
   </div>
   <div id="collapse-1" class="collapse" aria-labelledby="heading-1" data-parent="#accordion-a-thing">
     <div class="card-body">
-<p>Different parts of the code should be colored differently in the above examples.
-This is to differentiate between:</p>
+<p>In the above example, the highlighted code differentiates between:</p>
 <ul>
   <li><em>keywords</em> like <code class="highlighter-rouge">ENTITY</code>, <code class="highlighter-rouge">ARCHITECTURE</code>, and <code class="highlighter-rouge">BEGIN</code> which denote the structure of our code.</li>
   <li><em>identifiers</em> like <code class="highlighter-rouge">s1</code>, <code class="highlighter-rouge">a</code>, <code class="highlighter-rouge">a_thing</code>, and <code class="highlighter-rouge">df</code>, which are just names we’ve chosen for different values.</li>
@@ -278,8 +317,8 @@ Just remember to stay consistent.
 <div class="card">
   <div class="card-header" id="heading-2">
     <h4 class="mb-0">
-      <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
-        Program Structure<i class="text-right fa fa-angle-down rotate-icon"></i>
+      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
+        <span class="plus-minus-wrapper"><div class="plus-minus"></div></span>Program Structure
       </button>
     </h4>
   </div>
@@ -312,8 +351,8 @@ For example, at the ends of: the entity, the ports, the architecture, and then a
 <div class="card">
   <div class="card-header" id="heading-3">
     <h4 class="mb-0">
-      <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
-        Inputs and Outputs<i class="text-right fa fa-angle-down rotate-icon"></i>
+      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+        <span class="plus-minus-wrapper"><div class="plus-minus"></div></span>Inputs and Outputs
       </button>
     </h4>
   </div>
@@ -332,8 +371,8 @@ For example: <code class="highlighter-rouge">a : IN BIT;</code> is named <em>a</
 <div class="card">
   <div class="card-header" id="heading-4">
     <h4 class="mb-0">
-      <button class="btn btn-link" data-toggle="collapse" data-target="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
-        Operators<i class="text-right fa fa-angle-down rotate-icon"></i>
+      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
+        <span class="plus-minus-wrapper"><div class="plus-minus"></div></span>Operators
       </button>
     </h4>
   </div>
@@ -355,9 +394,10 @@ You’ll learn how to compose simple circuits to build more complex circuits tha
 
 <h1 id="where-is-vhdl">Where is VHDL?</h1>
 
-<p>VHDL is just the language we use to describe the circuit.
-We need another piece of software to simulate that circuit.
-In this class we’ll use <em>Modelsim</em> both for coding our circuits and simulating them.</p>
+<p>VHDL is the language we use to describe the circuit.
+We need another piece of software to actually simulate that circuit and observe its functionality.
+In this class, we’ll use ModelSim both for coding and simulating.
+If you want to use ModelSim at home, you can download a version from the <a href="https://www.mentor.com/company/higher_ed/modelsim-student-edition">ModelSim website</a>.</p>
 
 <hr />
 
@@ -370,9 +410,8 @@ with a wide variety of backgrounds.
 While some students learn just fine with the provided tutorials and labs,
 others can be turned off by them.
 Even then, students tend to miss some fundamental concepts when going through the
-motions of the labs.</p>
-
-      <p>As such, I’ve decided to provide a quickstart guide with a slightly different flavor.
+motions of the labs.
+As such, I’ve decided to provide a quickstart guide with a slightly different flavor.
 This is <strong>not</strong> meant to be a full reference. I’m also very loose with my language throughout this document because of the target audience.
 If you need to know something specific please <a href="https://duckduckgo.com/?q=vhdl+reference">find a more complete reference</a>. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
     </li>
