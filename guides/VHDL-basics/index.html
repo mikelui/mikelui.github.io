@@ -82,7 +82,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-lg-8 col-md-10 mx-auto">
+    <div class="col-lg-10 col-md-10 mx-auto">
 
       <div class="alert alert-danger" role="alert">
     <i class="fa fa-exclamation-triangle"></i> <b>Danger:</b>
@@ -136,13 +136,8 @@ inverter(in_1) = {in_1}'
 
 <p>Why would we want to model digital circuits?
 It’s easier to understand, modify, simulate, and test our designs by modeling our circuits in VHDL.
-VHDL also provides a common format starting from initial prototyping and eventually ending at design for manufacturing.</p>
-
-<p>Let’s use the following circuit diagram for the rest of this post:</p>
-
-<p><img src="/img/posts/a_thing.png" alt="a_thing" width="100%" /></p>
-
-<p>It’s much easier to pass around a standardized formal description of this <strong><em>thing</em></strong> than just its figure (its <em>schematic</em>).</p>
+VHDL also provides a common format starting from initial prototyping and eventually ending at design for manufacturing.
+Most importantly, it allows us to treat a design as a black box, so we can build up more complex and powerful circuit designs.</p>
 
 <hr />
 
@@ -154,33 +149,39 @@ VHDL and other HDLs can be thought of as a programming language for digital circ
 <table class="table table-hover">
   <thead>
     <tr>
-      <th scope="col">HDLs</th>
-      <th scope="col">Traditional Programming Languages</th>
+      <th style="text-align: left">HDLs</th>
+      <th style="text-align: left">Traditional Programming Languages</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td>VHDL, Verilog, SystemC, Bluespec</td>
-      <td>Python, Matlab, C, Javascript, R, Racket</td>
+      <td style="text-align: left">VHDL, Verilog, SystemC, Bluespec</td>
+      <td style="text-align: left">Python, Matlab, C, Javascript, R, Racket</td>
     </tr>
+  </tbody>
+  <tbody>
     <tr>
-      <td>describes digital circuits</td>
-      <td>describes a set of steps for the computer to execute</td>
+      <td style="text-align: left">describes digital circuits</td>
+      <td style="text-align: left">describes a set of steps for the computer to execute</td>
     </tr>
+  </tbody>
+  <tbody>
     <tr>
-      <td>build up complex circuit behavior from smaller simple circuits</td>
-      <td>build up complex program behavior from smaller simpler subroutines</td>
+      <td style="text-align: left">build up complex circuit behavior from smaller simple circuits</td>
+      <td style="text-align: left">build up complex program behavior from smaller simpler subroutines</td>
     </tr>
+  </tbody>
+  <tbody>
     <tr>
-      <td>building blocks from boolean algebra</td>
-      <td>building blocks from arithmetic</td>
+      <td style="text-align: left">building blocks from boolean algebra</td>
+      <td style="text-align: left">building blocks from arithmetic</td>
     </tr>
   </tbody>
 </table>
 
 <div class="bs-callout bs-callout-info">
-<h4 id="time-in-vhdl">Time in VHDL</h4>
-<p>Before we move on, we have to distinguish one more difference between between traditional programming and HDLs.
+<h4 id="ordering-in-vhdl">Ordering in VHDL</h4>
+<p>Before we move on, let’s distinguish one more difference between between traditional programming and HDLs.
 Traditional programming languages are based on the idea of <em>computation sequences</em>;
 in other words, steps are executed one after the other in the order they appear.
 For example, imperative languages guarantee that each statement happens sequentially,
@@ -224,10 +225,26 @@ This is because we’re just connecting <em>signals</em> together, and when we s
 In later labs, you’ll learn how sequential statements are implemented in VHDL.</p>
 </div>
 
-<h4 id="back-to-our-thing">Back to our <code class="highlighter-rouge">Thing</code></h4>
+<h4 id="designing-a-thing">Designing a Thing</h4>
 
-<p>Remember the <strong>thing</strong> I drew before?
-Let’s describe it with VHDL.</p>
+<p>Here we’ll learn basic VHDL by example.</p>
+
+<p>You want to implement some logic to do <em>a thing</em> because you’ve determined it will be more reliable, more performant, and more energy efficient
+than what’s available.
+The <em>thing</em> takes two inputs, performs some functions on them, and then outputs the results.</p>
+
+<ol>
+  <li>
+    <p>The first step is to sketch out a schematic of a thing:</p>
+
+    <p><img src="/img/posts/a_thing.png" alt="a_thing" width="100%" /></p>
+
+    <p>Our thing is only using basic boolean gates,</p>
+  </li>
+  <li>
+    <p>Next we’ll give names to all the wires so we can reference them later.</p>
+  </li>
+</ol>
 
 <div class="code-title">a_thing.vhd</div>
 
@@ -255,6 +272,8 @@ Let’s describe it with VHDL.</p>
 22
 23
 24
+25
+26
 </pre></td><td class="code"><pre><span class="c1">-- Comments start with '--'</span>
 <span class="c1">-- Inputs and Outputs of a thing!</span>
 <span class="k">ENTITY</span> <span class="n">a_thing</span> <span class="k">IS</span>
@@ -268,16 +287,18 @@ Let’s describe it with VHDL.</p>
 
 <span class="c1">-- The inside guts of a thing!</span>
 <span class="k">ARCHITECTURE</span> <span class="n">df</span> <span class="k">OF</span> <span class="n">a_thing</span> <span class="k">IS</span>
-    <span class="k">SIGNAL</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span> <span class="p">:</span> <span class="kt">BIT</span><span class="p">;</span>
+    <span class="k">SIGNAL</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">s3</span><span class="p">,</span> <span class="n">s4</span> <span class="p">:</span> <span class="kt">BIT</span><span class="p">;</span>
 <span class="k">BEGIN</span>
-    <span class="n">s1</span> <span class="o">&lt;=</span> <span class="n">a</span> <span class="ow">AND</span> <span class="n">b</span><span class="p">;</span> <span class="c1">-- Assign/Map c to the result of</span>
-                   <span class="c1">-- the built-in 'AND' operation</span>
+    <span class="n">s1</span> <span class="o">&lt;=</span> <span class="n">a</span><span class="p">;</span>
+    <span class="n">s2</span> <span class="o">&lt;=</span> <span class="n">b</span><span class="p">;</span>
+    <span class="n">s3</span> <span class="o">&lt;=</span> <span class="n">s1</span> <span class="ow">AND</span> <span class="n">s2</span><span class="p">;</span> <span class="c1">-- Assign/Map c to the result of</span>
+                     <span class="c1">-- the built-in 'AND' operation</span>
 
-    <span class="n">s2</span> <span class="o">&lt;=</span> <span class="n">a</span> <span class="ow">XOR</span> <span class="n">b</span><span class="p">;</span> <span class="c1">-- Assign/Map d to the result of</span>
-                   <span class="c1">-- the built-in 'XOR' operation</span>
+    <span class="n">s4</span> <span class="o">&lt;=</span> <span class="n">s1</span> <span class="ow">XOR</span> <span class="n">s2</span><span class="p">;</span> <span class="c1">-- Assign/Map d to the result of</span>
+                     <span class="c1">-- the built-in 'XOR' operation</span>
 
-    <span class="n">c</span> <span class="o">&lt;=</span> <span class="n">s1</span><span class="p">;</span> <span class="c1">-- Assign/Map output c to s1</span>
-    <span class="n">d</span> <span class="o">&lt;=</span> <span class="n">s2</span><span class="p">;</span> <span class="c1">-- Assign/Map output d to s2</span>
+    <span class="n">c</span> <span class="o">&lt;=</span> <span class="n">s3</span><span class="p">;</span> <span class="c1">-- Assign/Map output c to s1</span>
+    <span class="n">d</span> <span class="o">&lt;=</span> <span class="n">s4</span><span class="p">;</span> <span class="c1">-- Assign/Map output d to s2</span>
 <span class="k">END</span> <span class="n">df</span><span class="p">;</span></pre></td></tr></tbody></table></code></pre></figure>
 
 <p>Let’s unpack this one piece at a time.</p>
@@ -288,7 +309,7 @@ Let’s describe it with VHDL.</p>
   <div class="card-header" id="heading-1">
     <h4 class="mb-0">
       <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse-1" aria-expanded="false" aria-controls="collapse-1">
-        <span class="plus-minus-wrapper"><div class="plus-minus"></div></span><span class="collapse-title">Keywords and Identifiers</span>
+        <span class="plus-minus-wrapper"><div class="plus-minus"></div></span><span class="collapse-title">Keywords, Identifiers, and Operators</span>
       </button>
     </h4>
   </div>
@@ -297,7 +318,7 @@ Let’s describe it with VHDL.</p>
 <p>In the above example, the highlighted code differentiates between:</p>
 <ul>
   <li><em>keywords</em> like <code class="highlighter-rouge">ENTITY</code>, <code class="highlighter-rouge">ARCHITECTURE</code>, and <code class="highlighter-rouge">BEGIN</code> which denote the <strong>structure</strong> of our code.</li>
-  <li><em>identifiers</em> like <code class="highlighter-rouge">s1</code>, <code class="highlighter-rouge">a</code>, <code class="highlighter-rouge">a_thing</code>, and <code class="highlighter-rouge">df</code>, which are just <strong>names</strong> we’ve chosen for different values.</li>
+  <li><em>identifiers</em> like <code class="highlighter-rouge">s1</code>, <code class="highlighter-rouge">a</code>, <code class="highlighter-rouge">a_thing</code>, and <code class="highlighter-rouge">df</code>, which are just <strong>names</strong> we’ve chosen for different parts of our design.</li>
   <li><em>operators</em> like <code class="highlighter-rouge">&lt;=</code>, <code class="highlighter-rouge">AND</code>, et al, which can <strong>create and set values</strong> referenced by identifiers.</li>
 </ul>
 
@@ -318,30 +339,35 @@ Just remember to stay consistent.
   <div class="card-header" id="heading-2">
     <h4 class="mb-0">
       <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
-        <span class="plus-minus-wrapper"><div class="plus-minus"></div></span><span class="collapse-title">Program Structure</span>
+        <span class="plus-minus-wrapper"><div class="plus-minus"></div></span><span class="collapse-title">Modules</span>
       </button>
     </h4>
   </div>
   <div id="collapse-2" class="collapse" aria-labelledby="heading-2" data-parent="#accordion-a-thing">
     <div class="card-body">
-<p>We have what’s called a VHDL <strong><em>module</em></strong>.
-A module is a full description of a thing. 
+<p>We’ve created a <em>design entity</em> (commonly referred to as a <em>module</em>).<br />
+<code class="highlighter-rouge">3.1</code> in the IEEE Standard VHDL Language Reference Manual:</p>
+<blockquote>
+  <p>The design entity is the primary hardware abstraction in VHDL.
+It represents a portion of a hardware design that has well-defined
+inputs and outputs and performs a well-defined function.
+A  design entity may represent an entire system, a subsystem, a board,
+a chip, a macro-cell, a logic gate, or any level of abstraction in-between.</p>
+</blockquote>
+
+<p>To reduce confusion with the <code class="highlighter-rouge">ENTITY</code> keyword, we’ll call this a <em>module</em> from now on.
+Basically, a module is a full description of a thing. 
 It describes:</p>
 <ul>
-  <li>The <code class="highlighter-rouge">ENTITY</code> – the inputs and outputs; our interface to <em>a_thing</em></li>
-  <li>The <code class="highlighter-rouge">ARCHITECTURE</code> – how the inputs get transformed into the output</li>
+  <li>The <code class="highlighter-rouge">ENTITY</code> – the inputs and outputs; our interface to <code class="highlighter-rouge">a_thing</code></li>
+  <li>The <code class="highlighter-rouge">ARCHITECTURE</code> – the insides of our circuit; what happens to the inputs to create the output</li>
 </ul>
-
-<p>A module <strong>is not</strong> a VHDL file.
-A module could be spread across one or more files.
-Conversely, a single file might have multiple modules.</p>
-
-<p><strong>Entities</strong> declare the inputs and outputs with the <code class="highlighter-rouge">PORT</code> structure.</p>
 
 <div class="alert alert-info" role="alert">
     <i class="fa fa-info-circle"></i> <b>Note:</b>
-    Semicolons are usually at the <em>end</em> of declarations.
-For example, at the ends of: the entity, the ports, the architecture, and then also the end of the assignment statements.
+    A module <strong>is not</strong> just a VHDL file.
+A module (the <code class="highlighter-rouge">ENTITY</code> and <code class="highlighter-rouge">ARCHITECTURE</code>) could be spread across one or more files.
+Conversely, a single file might have multiple modules.
 </div>
 
 </div>
@@ -352,18 +378,20 @@ For example, at the ends of: the entity, the ports, the architecture, and then a
   <div class="card-header" id="heading-3">
     <h4 class="mb-0">
       <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
-        <span class="plus-minus-wrapper"><div class="plus-minus"></div></span><span class="collapse-title">Inputs and Outputs</span>
+        <span class="plus-minus-wrapper"><div class="plus-minus"></div></span><span class="collapse-title">Signals</span>
       </button>
     </h4>
   </div>
   <div id="collapse-3" class="collapse" aria-labelledby="heading-3" data-parent="#accordion-a-thing">
     <div class="card-body">
-<p>The <em>interface</em> to our thing, the <em>inputs and outputs</em>, the wires we can <em>set</em> and <em>read</em> from, is described in the <code class="highlighter-rouge">ENTITY</code>.
-In the electrical engineering domain, these are referred to as <em>ports</em>Because the terminology is to refer to inputs.
-Inputs can only be read and cannot be assigned. Outputs can only be assigned and cannot be read.</p>
+<p>Signals are the basic <em>data values</em> in VHDL.
+The term <em>variable</em> is reserved for sequential processes which won’t be covered in this guide.
+Because we’re modeling digital circuits, signals can be thought of as the wires connecting
+components together. On <code class="highlighter-rouge">line 14</code> of our <code class="highlighter-rouge">a_thing</code>, we declare the existence of four signals.
+These are the internal wires in our schematic:</p>
 
-<p>You can see that we each port is assigned: 1) a name, 2) a direction, and 3) a <em>type</em>.
-For example: <code class="highlighter-rouge">a : IN BIT;</code> is named <em>a</em>, is an <em>input</em>, and is a single <em>bit</em>.</p>
+<p>We assign signals with the <code class="highlighter-rouge">&lt;=</code> operator. This also informs us of the <em>direction</em> of our data.
+For example, <code class="highlighter-rouge">s1 &lt;= s2</code> would move data as:</p>
 </div>
   </div>
 </div>
@@ -372,23 +400,79 @@ For example: <code class="highlighter-rouge">a : IN BIT;</code> is named <em>a</
   <div class="card-header" id="heading-4">
     <h4 class="mb-0">
       <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
-        <span class="plus-minus-wrapper"><div class="plus-minus"></div></span><span class="collapse-title">Operators</span>
+        <span class="plus-minus-wrapper"><div class="plus-minus"></div></span><span class="collapse-title">Inputs and Outputs</span>
       </button>
     </h4>
   </div>
   <div id="collapse-4" class="collapse" aria-labelledby="heading-4" data-parent="#accordion-a-thing">
     <div class="card-body">
-<p>something</p>
+<p>The <code class="highlighter-rouge">ENTITY</code> describes the interface to our <em>thing</em>.
+The <em>inputs and outputs</em>, the wires we can <em>set</em> and <em>read</em> from, is described in the <code class="highlighter-rouge">ENTITY</code>.</p>
+<ul>
+  <li>Inputs can only be read and cannot be assigned: <code class="highlighter-rouge">input &lt;= a_signal</code> will cause an error.</li>
+  <li>Outputs can only be assigned and cannot be read: <code class="highlighter-rouge">a_signal &lt;= output</code> will also cause an error.</li>
+</ul>
+
+<p>These are referred to as <em>ports</em>.
+If we’re designing something takes inputs from the outside world, does something with them,
+and then delivers the outputs back to the outside world, then we need to declare ports in our <code class="highlighter-rouge">ENTITY</code>:</p>
+
+<div class="language-vhdl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">ENTITY</span> <span class="n">another_thing</span> <span class="k">IS</span>
+   <span class="k">PORT</span> <span class="p">(</span> <span class="n">from_the_outside_world</span>    <span class="p">:</span> <span class="k">IN</span> <span class="kt">BIT</span><span class="p">;</span>
+          <span class="n">back_to_the_outside_world</span> <span class="p">:</span> <span class="k">OUT</span> <span class="kt">BIT</span> <span class="p">);</span>
+<span class="k">END</span> <span class="n">another_thing</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>You can see that each port is given 1) a name, 2) a direction, and 3) a type.
+For example: <code class="highlighter-rouge">a : IN BIT;</code> is named <em>a</em>, is an <em>input</em> from the outside world, and is a single <em>bit</em>.</p>
+
+<div class="alert alert-info" role="alert">
+    <i class="fa fa-info-circle"></i> <b>Note:</b>
+    Ports are signals, too
+</div>
+
+</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header" id="heading-5">
+    <h4 class="mb-0">
+      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse-5" aria-expanded="false" aria-controls="collapse-5">
+        <span class="plus-minus-wrapper"><div class="plus-minus"></div></span><span class="collapse-title">Architecture</span>
+      </button>
+    </h4>
+  </div>
+  <div id="collapse-5" class="collapse" aria-labelledby="heading-5" data-parent="#accordion-a-thing">
+    <div class="card-body">
+<p>The <code class="highlighter-rouge">ARCHITECTURE</code> structure describes what goes on inside our schematic.
+On <code class="highlighter-rouge">line 13</code> we start by giving our <code class="highlighter-rouge">ARCHITECTURE</code> a name: <code class="highlighter-rouge">df</code>, and declaring that this is the architecture <code class="highlighter-rouge">OF a_thing</code>.</p>
+
+<h4 id="naming">Naming</h4>
+<p>The name <code class="highlighter-rouge">df</code> is shorthand for <em>dataflow</em>.
+Dataflow is the name of the <em>style</em> used.
+In the coming weeks, we’ll also discuss <em>behavioral (behav)</em> and <em>structural (struct)</em> architectural styles.
+We could have named our architecture <code class="highlighter-rouge">GooGooGaGa</code> if we wanted to, but it’s clearer choose names based on the architecture style.
+Note that there can be overlap between styles and there is not always a clean distinction.</p>
+
+<p>In dataflow styles, the architecture is just a set of signal assignments and equations.
+We are just describing how data <em>flows</em>.
+Once you see examples of behavioral and structural styles, the distinction will be more clear.</p>
+
+<h4 id="declarations">Declarations</h4>
+<p><code class="highlighter-rouge">Line 14</code> declares any extra signals or <em>components</em>.</p>
+
+<h4 id="statements">Statements</h4>
+<p>The real work happens between lines <code class="highlighter-rouge">16</code> and <code class="highlighter-rouge">25</code>.</p>
+
 </div>
   </div>
 </div>
 
 </div>
 
-<h4 id="more-things">More things</h4>
-
 <p>This is not an exhaustive explanation of building circuits in VHDL.
-You’ll learn how to compose simple circuits to build more complex circuits that can do math like <script type="math/tex">(4+5)</script> in the coming weeks.</p>
+In the coming week,s you will learn how to compose simple circuits to build more complex circuits that can do math like <script type="math/tex">(4+5)</script>.</p>
 
 <hr />
 
@@ -413,7 +497,7 @@ Even then, students tend to miss some fundamental concepts when going through th
 motions of the labs.
 As such, I’ve decided to provide a quickstart guide with a slightly different flavor.
 This is <strong>not</strong> meant to be a full reference. I’m also very loose with my language throughout this document because of the target audience.
-If you need to know something specific please <a href="https://duckduckgo.com/?q=vhdl+reference">find a more complete reference</a>. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+If you need to know something specific please <a href="https://duckduckgo.com/?q=vhdl+reference">find</a> a more <a href="https://ieeexplore.ieee.org/document/4772740/">complete reference</a>. <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
     </li>
   </ol>
 </div>
