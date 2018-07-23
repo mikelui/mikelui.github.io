@@ -1,12 +1,14 @@
 @font-face {
   font-family: 'Mononoki';
-  src: url('/assets/fonts/mononoki/mononoki-Regular.woff') format('woff');
+  src: url('/assets/fonts/mononoki/mononoki-Regular.woff2') format('woff2'),
+       url('/assets/fonts/mononoki/mononoki-Regular.woff') format('woff');
   font-weight: normal;
 }
 
 @font-face {
   font-family: 'Mononoki';
-  src: url('/assets/fonts/mononoki/mononoki-Bold.woff') format('woff');
+  src: url('/assets/fonts/mononoki/mononoki-Bold.woff2') format('woff2'),
+       url('/assets/fonts/mononoki/mononoki-Bold.woff') format('woff');
   font-weight: bold;
 }
 
