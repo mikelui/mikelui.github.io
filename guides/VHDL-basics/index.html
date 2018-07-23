@@ -14,15 +14,13 @@
 
   <meta name="description" content="Danger: Incomplete: testing GitHub webserver">
 
-  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,400i,700|Open+Sans:300,700,800" rel="stylesheet"> 
 
   <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
-
   <link rel="stylesheet" href="/assets/vendor/font-awesome/css/font-awesome.min.css">
-
   <link rel="stylesheet" href="/assets/main.css">
-  <link rel="canonical" href="http://localhost:4000/guides/VHDL-basics/">
+
+  <link rel="canonical" href="http://0.0.0.0:4000/guides/VHDL-basics/">
   <link rel="alternate" type="application/rss+xml" title="No TV and No Beer" href="/feed.xml">
 
 </head>
@@ -30,8 +28,9 @@
 
   <body>
 
+  
     <!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top text-light" id="mainNav">
   <div class="container">
     <a class="navbar-brand" href="/">No TV and No Beer</a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,12 +56,13 @@
   </div>
 </nav>
 
+  
 
     <!-- Page Header -->
 
 <header class="masthead" style="background-image: url('/img/The-Simpsons-Season-23-Episode-11-25-6c0b.jpg')">
-
   <div class="overlay"></div>
+
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
@@ -70,6 +70,7 @@
           <h1>VHDL Student Primer</h1>
           
           <h2 class="subheading">Important Concepts</h2>
+          
           
           <span class="meta">Posted by
               <a href="#">Mike Lui</a>
@@ -80,9 +81,9 @@
   </div>
 </header>
 
-<div class="container">
+<div class="container post">
   <div class="row">
-    <div class="col-lg-10 col-md-10 mx-auto">
+    <div class="col-lg-8 col-md-10 mx-auto">
 
       <div class="alert alert-danger" role="alert">
     <i class="fa fa-exclamation-triangle"></i> <b>Danger:</b>
@@ -306,14 +307,14 @@ The <em>thing</em> takes two inputs, performs some functions on them, and then o
 <div class="accordion" id="accordion-a-thing">
 
 <div class="card">
-  <div class="card-header" id="heading-1">
+  <div class="card-header" id="accordion-a-thing-heading-1">
     <h4 class="mb-0">
-      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse-1" aria-expanded="false" aria-controls="collapse-1">
+      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#accordion-a-thing-collapse-1" aria-expanded="false" aria-controls="accordion-a-thing-collapse-1">
         <span class="plus-minus-wrapper"><div class="plus-minus"></div></span><span class="collapse-title">Keywords, Identifiers, and Operators</span>
       </button>
     </h4>
   </div>
-  <div id="collapse-1" class="collapse" aria-labelledby="heading-1" data-parent="#accordion-a-thing">
+  <div id="accordion-a-thing-collapse-1" class="collapse" aria-labelledby="accordion-a-thing-heading-1" data-parent="#accordion-a-thing">
     <div class="card-body">
 <p>In the above example, the highlighted code differentiates between:</p>
 <ul>
@@ -336,14 +337,14 @@ Just remember to stay consistent.
 </div>
 
 <div class="card">
-  <div class="card-header" id="heading-2">
+  <div class="card-header" id="accordion-a-thing-heading-2">
     <h4 class="mb-0">
-      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse-2" aria-expanded="false" aria-controls="collapse-2">
+      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#accordion-a-thing-collapse-2" aria-expanded="false" aria-controls="accordion-a-thing-collapse-2">
         <span class="plus-minus-wrapper"><div class="plus-minus"></div></span><span class="collapse-title">Modules</span>
       </button>
     </h4>
   </div>
-  <div id="collapse-2" class="collapse" aria-labelledby="heading-2" data-parent="#accordion-a-thing">
+  <div id="accordion-a-thing-collapse-2" class="collapse" aria-labelledby="accordion-a-thing-heading-2" data-parent="#accordion-a-thing">
     <div class="card-body">
 <p>We’ve created a <em>design entity</em> (commonly referred to as a <em>module</em>).<br />
 <code class="highlighter-rouge">3.1</code> in the IEEE Standard VHDL Language Reference Manual:</p>
@@ -375,18 +376,19 @@ Conversely, a single file might have multiple modules.
 </div>
 
 <div class="card">
-  <div class="card-header" id="heading-3">
+  <div class="card-header" id="accordion-a-thing-heading-3">
     <h4 class="mb-0">
-      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse-3" aria-expanded="false" aria-controls="collapse-3">
+      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#accordion-a-thing-collapse-3" aria-expanded="false" aria-controls="accordion-a-thing-collapse-3">
         <span class="plus-minus-wrapper"><div class="plus-minus"></div></span><span class="collapse-title">Signals</span>
       </button>
     </h4>
   </div>
-  <div id="collapse-3" class="collapse" aria-labelledby="heading-3" data-parent="#accordion-a-thing">
+  <div id="accordion-a-thing-collapse-3" class="collapse" aria-labelledby="accordion-a-thing-heading-3" data-parent="#accordion-a-thing">
     <div class="card-body">
 <p>Signals are the basic <em>data values</em> in VHDL.
-The term <em>variable</em> is reserved for sequential processes which won’t be covered in this guide.
-Because we’re modeling digital circuits, signals can be thought of as the wires connecting
+We <strong>don’t</strong> use the term <em>variable</em> because it is reserved for sequential processes which won’t be covered in this guide.</p>
+
+<p>Because we’re modeling digital circuits, signals can be thought of as the wires connecting
 components together. On <code class="highlighter-rouge">line 14</code> of our <code class="highlighter-rouge">a_thing</code>, we declare the existence of four signals.
 These are the internal wires in our schematic:</p>
 
@@ -397,14 +399,14 @@ For example, <code class="highlighter-rouge">s1 &lt;= s2</code> would move data 
 </div>
 
 <div class="card">
-  <div class="card-header" id="heading-4">
+  <div class="card-header" id="accordion-a-thing-heading-4">
     <h4 class="mb-0">
-      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse-4" aria-expanded="false" aria-controls="collapse-4">
+      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#accordion-a-thing-collapse-4" aria-expanded="false" aria-controls="accordion-a-thing-collapse-4">
         <span class="plus-minus-wrapper"><div class="plus-minus"></div></span><span class="collapse-title">Inputs and Outputs</span>
       </button>
     </h4>
   </div>
-  <div id="collapse-4" class="collapse" aria-labelledby="heading-4" data-parent="#accordion-a-thing">
+  <div id="accordion-a-thing-collapse-4" class="collapse" aria-labelledby="accordion-a-thing-heading-4" data-parent="#accordion-a-thing">
     <div class="card-body">
 <p>The <code class="highlighter-rouge">ENTITY</code> describes the interface to our <em>thing</em>.
 The <em>inputs and outputs</em>, the wires we can <em>set</em> and <em>read</em> from, is described in the <code class="highlighter-rouge">ENTITY</code>.</p>
@@ -414,7 +416,7 @@ The <em>inputs and outputs</em>, the wires we can <em>set</em> and <em>read</em>
 </ul>
 
 <p>These are referred to as <em>ports</em>.
-If we’re designing something takes inputs from the outside world, does something with them,
+If we’re designing something that takes inputs from the outside world, does something with them,
 and then delivers the outputs back to the outside world, then we need to declare ports in our <code class="highlighter-rouge">ENTITY</code>:</p>
 
 <div class="language-vhdl highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">ENTITY</span> <span class="n">another_thing</span> <span class="k">IS</span>
@@ -436,14 +438,14 @@ For example: <code class="highlighter-rouge">a : IN BIT;</code> is named <em>a</
 </div>
 
 <div class="card">
-  <div class="card-header" id="heading-5">
+  <div class="card-header" id="accordion-a-thing-heading-5">
     <h4 class="mb-0">
-      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse-5" aria-expanded="false" aria-controls="collapse-5">
+      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#accordion-a-thing-collapse-5" aria-expanded="false" aria-controls="accordion-a-thing-collapse-5">
         <span class="plus-minus-wrapper"><div class="plus-minus"></div></span><span class="collapse-title">Architecture</span>
       </button>
     </h4>
   </div>
-  <div id="collapse-5" class="collapse" aria-labelledby="heading-5" data-parent="#accordion-a-thing">
+  <div id="accordion-a-thing-collapse-5" class="collapse" aria-labelledby="accordion-a-thing-heading-5" data-parent="#accordion-a-thing">
     <div class="card-body">
 <p>The <code class="highlighter-rouge">ARCHITECTURE</code> structure describes what goes on inside our schematic.
 On <code class="highlighter-rouge">line 13</code> we start by giving our <code class="highlighter-rouge">ARCHITECTURE</code> a name: <code class="highlighter-rouge">df</code>, and declaring that this is the architecture <code class="highlighter-rouge">OF a_thing</code>.</p>
@@ -451,8 +453,8 @@ On <code class="highlighter-rouge">line 13</code> we start by giving our <code c
 <h4 id="naming">Naming</h4>
 <p>The name <code class="highlighter-rouge">df</code> is shorthand for <em>dataflow</em>.
 Dataflow is the name of the <em>style</em> used.
-In the coming weeks, we’ll also discuss <em>behavioral (behav)</em> and <em>structural (struct)</em> architectural styles.
-We could have named our architecture <code class="highlighter-rouge">GooGooGaGa</code> if we wanted to, but it’s clearer choose names based on the architecture style.
+In the coming weeks, we’ll also discuss <em>behavioral (behav)</em> and <em>structural (struct)</em> styles.
+We could have named our architecture <code class="highlighter-rouge">GooGooGaGa</code> if we wanted to, but it’s clearer to choose names based on the architecture style.
 Note that there can be overlap between styles and there is not always a clean distinction.</p>
 
 <p>In dataflow styles, the architecture is just a set of signal assignments and equations.
