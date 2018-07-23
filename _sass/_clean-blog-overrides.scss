@@ -1,6 +1,13 @@
 @font-face {
   font-family: 'Mononoki';
   src: url('/assets/fonts/mononoki/mononoki-Regular.woff') format('woff');
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: 'Mononoki';
+  src: url('/assets/fonts/mononoki/mononoki-Bold.woff') format('woff');
+  font-weight: bold;
 }
 
 code, kbd, pre, samp {
@@ -14,6 +21,43 @@ body {
   font-weight: 400;
   line-height: 1.5;
   color: #212529;
+}
+
+#mainNav.text-dark {
+  .navbar-brand { color: $gray-900; }
+  .navbar-brand:hover { color: $primary; }
+
+  .navbar-nav > li.nav-item {
+    > a { color: $gray-900; }
+    > a:hover { color: $primary; }
+
+  }
+}
+
+header.masthead.no-bg {
+  background-color: unset;
+
+  margin-bottom: 5rem;
+  @media only screen and (max-width: 768px) {
+    margin-bottom: 3.5rem;
+  }
+
+  .post-heading {
+    padding-top: 8rem;
+    padding-bottom: 1rem;
+
+    color: black;
+    text-align: center;
+
+    .meta a {
+      color: black;
+    }
+
+  }
+}
+
+.container .lead:first-child {
+  margin-top: 0;
 }
 
 .lead {

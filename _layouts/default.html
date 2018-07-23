@@ -6,7 +6,11 @@
 
   <body>
 
-    {% include navbar.html %}
+  {% if page.background %}
+    {% include navbar.html color="light" %}
+  {% else %}
+    {% include navbar.html color="dark" %}
+  {% endif %}
 
     {{ content }}
 
