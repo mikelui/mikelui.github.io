@@ -29,7 +29,7 @@
     border-left-color: $primary;
 }
 .bs-callout-primary h4 {
-    color: $primary;
+    color: inherit;
 }
 .bs-callout-success {
     border-left-color: $success;
@@ -53,5 +53,5 @@
     border-left-color: $info;
 }
 .bs-callout-info h4 {
-    color: $info;
+    color: inherit;
 }
