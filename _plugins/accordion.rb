@@ -30,8 +30,8 @@ module Jekyll
 
       def render(context)
         context.stack do
-          context[:accordionID] = @accordionID
-          context[:collapsed_idx] = 1 # increment on each 'collapse' block
+          context["accordionID"] = @accordionID
+          context["collapsed_idx"] = 1 # increment on each 'collapse' block
           content = super(context)
           "<div class=\"accordion\" id=\"#{@accordionID}\">#{content}</div>"
         end
@@ -46,11 +46,11 @@ module Jekyll
       end
 
       def render(context)
-        accordionID = context.find_variable(:accordionID)
-        idx = context.find_variable(:collapsed_idx)
-        collapsedID = "collapse-#{idx}"
-        headingID = "heading-#{idx}"
-        context[:collapsed_idx] = idx + 1
+        accordionID = context["accordionID"]
+        idx = context["collapsed_idx"]
+        collapsedID = "#{accordionID}-collapse-#{idx}"
+        headingID = "#{accordionID}-heading-#{idx}"
+        context["collapsed_idx"] = idx + 1
 
         site = context.registers[:site]
         converter = site.find_converter_instance(::Jekyll::Converters::Markdown)
