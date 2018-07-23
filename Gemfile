@@ -9,6 +9,7 @@ group :jekyll_plugins do
   gem "jekyll-feed", "~> 0.6"
   gem "jekyll-paginate", "~> 1.1.0"
   gem "jekyll-paginate-v2", "~> 1.9.4"
+  gem "jekyll-seo-tag"
 end
 
 require 'rbconfig'

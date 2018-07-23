@@ -8,14 +8,21 @@ copyright_name:    Mike Lui
 github_username:   mikelui
 email_username:    mikelui@drexel.edu
 linkedin_username: mikelui
-# twitter_username: SBootstrap
-# facebook_username:  StartBootstrap
+
+social:
+  name: Mike Lui
+  links:
+    - https://github.com/mikelui
+    - https://lobste.rs/u/mikelui
+    - https://stackoverflow.com/users/1371191/mike-lui
+    - http://vlsi.ece.drexel.edu/index.php?title=Michael_Lui
 
 # Build settings
 future:            true
 plugins:
   - jekyll-feed
   - jekyll-paginate-v2
+  - jekyll-seo-tag
 sass:
   style: compressed
 
