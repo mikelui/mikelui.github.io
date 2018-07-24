@@ -8,8 +8,6 @@ date: 2018-07-07T00:00:00.000Z
 author: Mike Lui
 ---
 
-{% include danger.html content="Incomplete: testing GitHub webserver" %}
-
 # What is VHDL?
 
 You're taking the **Digital Logic** class[^1] and figure you'll be doing some `beep boop bop` 🤖 binary things.
@@ -18,10 +16,11 @@ In class, you'll learn boolean logic theory.
 With the VHDL labs, you'll see how that theory can be used to make something more concrete.
 
 VHDL is a programming language to describe circuits.
-It literally stands for: **V**HSIC (another acronym 🙄) **Hardware Description Language**.
+It literally stands for: **V**HSIC (yes another acronym--don't sweat it) **Hardware Description Language**.
 VHDL targets digital circuits in contrast to analog circuits.
-While *analog* circuits consider electrical properties like impedance, capacitance, et al,
-*digital* circuits consider logical properties; 1's and 0's; Yes's and No's.
+*Digital* circuits consider logical properties like 1's and 0's, Yes's and No's, while
+*analog* circuits consider electrical properties like impedance, capacitance, et al.
+This is a generalization but will hold true as far as an introductory course is concerned.
 
 Here's a taste:
 
@@ -36,7 +35,9 @@ BEGIN
 END df;
 ```
 
-{% include note.html content="`<=` is an assignment operator in VHDL; it isn't *less than or equal to*." %}
+{% alert info %}
+`<=` is an assignment operator in VHDL. It is *not* `less than or equal to` like in some other languages.
+{% endalert %}
 
 Although the syntax is a bit clunky, you can see how we're just defining an inverter; a `NOT` gate.
 First, we declare the inputs and outputs of our circuit block.
@@ -45,7 +46,7 @@ We're describing the following equation:
 
 $$
 \begin{align*}
-inverter(in_1) = {in_1}'
+out_1 = inverter(in_1) = {in_1}\prime
 \end{align*}
 $$
 
@@ -93,7 +94,7 @@ VHDL and other HDLs can be thought of as a programming language for digital circ
 | building blocks from boolean algebra | building blocks from arithmetic |
 {: .table .table-hover}
 
-{% callout info %}
+{% callout primary %}
 #### Ordering in VHDL
 Before we move on, let's distinguish one more difference between between traditional programming and HDLs.
 Traditional programming languages are based on the idea of *computation sequences*;
@@ -127,15 +128,17 @@ BEGIN
 END df;
 ```
 
-{% include danger.html content="TODO schematic of pass_through example" %}
-
 If we read the above example like a sequential program,
 it looks like `between` is being assigned to `b` before `between` has any value!
 We don't set `between` until the next line.
 However, when we go to run the circuit, we'll see `b` and `c` will have the same value at the same time.
-This is because we're just connecting *signals* together, and when we simulate this circuit all of our
-1's and 0's flow through the circuit in a real-time(ish) way.
-In later labs, you'll learn how sequential statements are implemented in VHDL.
+This is because we're just connecting *signals* together.
+
+![fanout](/img/posts/fanout2.png){: width="100%"}
+
+When we simulate this circuit all of our 1's and 0's flow through the circuit in a real-time(ish) way.
+Eventually you'll see how to modeling sequential statements in VHDL.
+
 {% endcallout %}
 
 
@@ -143,13 +146,44 @@ In later labs, you'll learn how sequential statements are implemented in VHDL.
 
 Here we'll learn basic VHDL by example.
 
-You want to implement some logic to do *a thing* because you've determined it will be more reliable, more performant, and more energy efficient
-than what's available.
-The *thing* takes two inputs, performs some functions on them, and then outputs the results.
+Let's try to make a basic switch that selects between **two** signals.
+We can do this because a single switch has **two** states: *on* and *off*.
+Easy-peasy. 
+
+If the switch is *off*, then the first signal is selected.  
+If the switch is *on*, then the second signal is selected.
+
+
+| s0 | s1 | select | output |
+|-|-|-|
+| 0 | 0 | 0 | 0 |
+|---
+| 0 | 0 | 1 | 0 |
+|---
+| 0 | 1 | 0 | 0 |
+|---
+| 0 | 1 | 1 | 1 |
+|---
+| 1 | 0 | 0 | 1 |
+|---
+| 1 | 0 | 1 | 0 |
+|---
+| 1 | 1 | 0 | 1 |
+|---
+| 1 | 1 | 1 | 1 |
+{: .table .table-sm .table-bordered .w-50 .mx-auto .text-center}
+
+$$
+\begin{align*}
+output = (select * s1) + (select\prime * s0)
+\end{align*}
+$$
+
+
+![mux](/img/posts/mux2.png){:width="100%"}
 
 1. The first step is to sketch out a schematic of a thing:
 
-   ![a_thing](/img/posts/a_thing.png){:width="100%"}
 
    Our thing is only using basic boolean gates, 
 
@@ -159,29 +193,23 @@ The *thing* takes two inputs, performs some functions on them, and then outputs 
 {% highlight vhdl linenos %}
 -- Comments start with '--'
 -- Inputs and Outputs of a thing!
-ENTITY a_thing IS
-    PORT ( a : IN BIT;
-           b : IN BIT;
-           c : OUT BIT;
-           d : OUT BIT
+ENTITY mux_2x1 IS
+    PORT ( s0  : IN BIT;
+           s1  : IN BIT;
+           sel : IN BIT;
+           output : OUT BIT
          );
-END a_thing;
+END mux_2x1;
 
 
 -- The inside guts of a thing!
-ARCHITECTURE df OF a_thing IS
-    SIGNAL s1, s2, s3, s4 : BIT;
+ARCHITECTURE df OF mux_2x1 IS
+    SIGNAL sel_not;
 BEGIN
-    s1 <= a;
-    s2 <= b;
-    s3 <= s1 AND s2; -- Assign/Map c to the result of
-                     -- the built-in 'AND' operation
-
-    s4 <= s1 XOR s2; -- Assign/Map d to the result of
-                     -- the built-in 'XOR' operation
-
-    c <= s3; -- Assign/Map output c to s1
-    d <= s4; -- Assign/Map output d to s2
+    s0_not <= NOT s0;
+    s2 <= sel_not AND s0;
+    s3 <= sel AND s1;
+    output <= s2 OR s3;
 END df;
 {% endhighlight %}
 
@@ -231,7 +259,8 @@ For example, at the ends of: the entity, the ports, the architecture, and then a
 
 {% collapse Signals %}
 Signals are the basic *data values* in VHDL.
-The term *variable* is reserved for sequential processes which won't be covered in this guide.
+We **don't** use the term *variable* because it is reserved for sequential processes which won't be covered in this guide.
+
 Because we're modeling digital circuits, signals can be thought of as the wires connecting
 components together. On `line 14` of our `a_thing`, we declare the existence of four signals.
 These are the internal wires in our schematic:
@@ -247,7 +276,7 @@ The *inputs and outputs*, the wires we can *set* and *read* from, is described i
 - Outputs can only be assigned and cannot be read: `a_signal <= output` will also cause an error.
 
 These are referred to as *ports*.
-If we're designing something takes inputs from the outside world, does something with them,
+If we're designing something that takes inputs from the outside world, does something with them,
 and then delivers the outputs back to the outside world, then we need to declare ports in our `ENTITY`:
 
 ``` vhdl
@@ -270,8 +299,8 @@ On `line 13` we start by giving our `ARCHITECTURE` a name: `df`, and declaring t
 #### Naming
 The name `df` is shorthand for *dataflow*.
 Dataflow is the name of the *style* used.
-In the coming weeks, we'll also discuss *behavioral (behav)* and *structural (struct)* architectural styles.
-We could have named our architecture `GooGooGaGa` if we wanted to, but it's clearer choose names based on the architecture style.
+In the coming weeks, we'll also discuss *behavioral (behav)* and *structural (struct)* styles.
+We could have named our architecture `GooGooGaGa` if we wanted to, but it's clearer to choose names based on the architecture style.
 Note that there can be overlap between styles and there is not always a clean distinction.
 
 In dataflow styles, the architecture is just a set of signal assignments and equations.
