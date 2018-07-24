@@ -94,10 +94,11 @@ pre code pre { font-size: inherit; }
   padding: .25rem;
   background: #5e5e5e;
   color: #f8f8f2;
-}
-// and then modify the following code block
-.code-title + .highlight {
-  border-radius: 0 0 3px 3px;
+
+  // and then modify the following code block
+  + .highlight, + div.highlighter-rouge div.highlight {
+    border-radius: 0 0 3px 3px;
+  }
 }
 
 // in-line

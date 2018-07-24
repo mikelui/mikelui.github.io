@@ -4,7 +4,7 @@
 # Example:
 #
 # {% accordion my-html-accordion-id %}
-# 
+#
 # {% collapse Title of Collapsed Card 1 %}
 # Collapsed content
 # {% endcollapse %}
@@ -32,9 +32,11 @@ module Jekyll
         context.stack do
           context["accordionID"] = @accordionID
           context["collapsed_idx"] = 1 # increment on each 'collapse' block
-          content = super(context)
-          "<div class=\"accordion\" id=\"#{@accordionID}\">#{content}</div>"
+          @content = super
         end
+        output = %(<div class="accordion" id="#{@accordionID}">#{@content}</div>)
+
+        output
       end
     end
 
@@ -54,7 +56,7 @@ module Jekyll
 
         site = context.registers[:site]
         converter = site.find_converter_instance(::Jekyll::Converters::Markdown)
-        content = converter.convert(super(context))
+        content = converter.convert(super)
 
 "<div class=\"card\">
   <div class=\"card-header\" id=\"#{headingID}\">

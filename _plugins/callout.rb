@@ -8,19 +8,22 @@ module Jekyll
       def initialize(tag_name, type, tokens)
         super
         type.strip!
-        if %w(info danger warning).include?(type)
+        if %w(primary success info danger warning).include?(type)
           @type = type
         else
-          puts "#{type} callout not supported. Defaulting to info"
-          @type = "info"
+          puts "#{type} callout not supported. Defaulting to default"
+          @type = "default"
         end
       end
 
       def render(context)
-        site = context.registers[:site]
-        converter = site.find_converter_instance(::Jekyll::Converters::Markdown)
-        output = converter.convert(super(context))
-        "<div class=\"bs-callout bs-callout-#{@type}\">#{output}</div>"
+        output = <<~EOS
+                   <div markdown="block" class="bs-callout bs-callout-#{@type}">
+                     #{super}
+                   </div>
+                 EOS
+
+        output
       end
     end
   end

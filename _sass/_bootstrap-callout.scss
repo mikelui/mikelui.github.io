@@ -20,16 +20,16 @@
     margin-top: -5px;
 }
 .bs-callout-default {
-    border-left-color: #777;
+    border-left-color: $gray-800;
 }
 .bs-callout-default h4 {
-    color: #777;
+    color: $gray-800;
 }
 .bs-callout-primary {
     border-left-color: $primary;
 }
 .bs-callout-primary h4 {
-    color: inherit;
+    color: $primary;
 }
 .bs-callout-success {
     border-left-color: $success;
@@ -53,5 +53,5 @@
     border-left-color: $info;
 }
 .bs-callout-info h4 {
-    color: inherit;
+    color: $info;
 }
