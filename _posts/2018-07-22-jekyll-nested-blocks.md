@@ -23,7 +23,7 @@ A Jekyll plugin will fall into 1 of 5 categories:
   2. Supporting new markdown formats
   3. New commands (which can overlap other categories)
   4. Extending *[Liquid][liquid]* with custom templates, and
-  5. Adding build hooks, e.g. generating a new page only after a new collection is rendered to HTML.
+  5. Adding build hooks like post-processing the final rendered HTML.
 
 This post is about #**4**.
 If you find yourself feeling icky putting HTML in your markdown more than a few times, then read on.
