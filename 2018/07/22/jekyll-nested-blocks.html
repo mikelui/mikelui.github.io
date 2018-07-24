@@ -37,7 +37,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2018-07-21T20:00:00-04:00" />
 <script type="application/ld+json">
-{"description":"Let’s start this blog off with some straight-forward informative posts. As I’m still updating the look of this site, which uses the popular Jekyll static site generation framework, I thought it would be nice to share some useful tidbits I’ve learned. This is the first real post so I apologize in advance for any dissociative identity disorder exhibited in the tone and writing.","@type":"BlogPosting","headline":"Creating an Accordion Plugin for Jekyll","dateModified":"2018-07-21T20:00:00-04:00","datePublished":"2018-07-21T20:00:00-04:00","url":"http://mikelui.io/2018/07/22/jekyll-nested-blocks.html","mainEntityOfPage":{"@type":"WebPage","@id":"http://mikelui.io/2018/07/22/jekyll-nested-blocks.html"},"author":{"@type":"Person","name":"Mike Lui"},"@context":"http://schema.org"}</script>
+{"description":"Let’s start this blog off with some straight-forward informative posts. As I’m still updating the look of this site, which uses the popular Jekyll static site generation framework, I thought it would be nice to share some useful tidbits I’ve learned. This is the first real post so I apologize in advance for any dissociative identity disorder exhibited in the tone and writing.","@type":"BlogPosting","url":"http://mikelui.io/2018/07/22/jekyll-nested-blocks.html","headline":"Creating an Accordion Plugin for Jekyll","datePublished":"2018-07-21T20:00:00-04:00","dateModified":"2018-07-21T20:00:00-04:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://mikelui.io/2018/07/22/jekyll-nested-blocks.html"},"author":{"@type":"Person","name":"Mike Lui"},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 </head>
@@ -118,7 +118,7 @@ A Jekyll plugin will fall into 1 of 5 categories:</p>
 <ol>
   <li>Adding rules for custom generation of static files</li>
   <li>Supporting new markdown formats</li>
-  <li>New commands (which could overlap other categories)</li>
+  <li>New commands (which can overlap other categories)</li>
   <li>Extending <em><a href="https://help.shopify.com/en/themes/liquid">Liquid</a></em> with custom templates, and</li>
   <li>Adding build hooks, e.g. generating a new page only after a new collection is rendered to HTML.</li>
 </ol>
@@ -140,7 +140,7 @@ I liked the ability to open and close different explanatory sections, to keep te
 Apparently, accordion blocks are not common enough in markdown (at least in <em>kramdown</em>) to warrant
 specific markdown syntax. Who’da thunk?</p>
 
-<p>If we wanted to add this brute force, we’d have the following plastered in each post using an accordion (per the Bootstrap example):</p>
+<p>If we add this brute force, we’ll have the following plastered in each post using an accordion (per the Bootstrap example):</p>
 
 <div class="language-html highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"accordion"</span> <span class="na">id=</span><span class="s">"myaccordion"</span><span class="nt">&gt;</span>
 
@@ -183,7 +183,7 @@ specific markdown syntax. Who’da thunk?</p>
 
 <h4 id="yuck">Yuck.</h4>
 
-<p>Not only is this a lot of boilerplate, but we’d also have to make sure that our classes and structure match between
+<p>Not only is this a lot of boilerplate, but we’ll also have to make sure that our classes and structure match between
 all of our posts. A small change to our site’s stylesheets could silently break some of our old posts!</p>
 
 <p>There are two ways to address this: 1) we can create our own markdown syntax for this and extend an existing markdown converter,
@@ -193,11 +193,12 @@ This was partly because I don’t want to expend the mental effort to plan and i
 and partly because my future self would end up getting into an <a href="https://wiki.haskell.org/Wadler%27s_Law">argument</a> with my former self about his design choices.
 Templates are also more immediately clear about their intent.</p>
 
-<div class="bs-callout bs-callout-info">
-<h4 id="liquid-templates-overview">Liquid Templates Overview</h4>
-<p>Liquid templates look something like this:</p>
+<div class="bs-callout bs-callout-primary">
 
-<div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{%</span><span class="w"> </span><span class="nt">capture</span><span class="w"> </span><span class="na">lowercase</span><span class="w"> </span><span class="p">%}</span>
+  <h4 id="liquid-templates-overview">Liquid Templates Overview</h4>
+  <p>Liquid templates look something like this:</p>
+
+  <div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{%</span><span class="w"> </span><span class="nt">capture</span><span class="w"> </span><span class="na">lowercase</span><span class="w"> </span><span class="p">%}</span>
   <span class="p">{{</span><span class="w"> </span><span class="s2">"UPPERCASE?"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">downcase</span><span class="w"> </span><span class="p">}}</span>
 <span class="p">{%</span><span class="w"> </span><span class="nt">endcapture</span><span class="w"> </span><span class="p">%}</span>
 
@@ -209,24 +210,24 @@ A normal paragraph.
 This is actually lowercase: <span class="p">{{</span><span class="w"> </span><span class="nv">lowercase</span><span class="w"> </span><span class="p">}}</span>
 
 Another normal paragraph about my friends: <span class="p">{{</span><span class="w"> </span><span class="nv">my_enemies_list</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">join</span><span class="p">:</span><span class="w"> </span><span class="s2">", "</span><span class="w"> </span><span class="p">}}</span>.
-</code></pre></div></div>
+</code></pre></div>  </div>
 
-<p>This snippet would produce the following:</p>
+  <p>This snippet will produce the following:</p>
 
-<hr />
-<h3 id="a-markdown-header">A markdown header</h3>
+  <hr />
+  <h3 id="a-markdown-header">A markdown header</h3>
 
-<p>A normal paragraph.
+  <p>A normal paragraph.
 This is actually lowercase: 
   uppercase?</p>
 
-<p>Another normal paragraph about my friends: 😈, 👺, 👻, 👼.</p>
+  <p>Another normal paragraph about my friends: 😈, 👺, 👻, 👼.</p>
 
-<hr />
+  <hr />
 
-<p>If we wanted, we could write the entire post with just custom templates, but this quickly becomes unwieldy and unnatural:</p>
+  <p>We could actually write an entire post with just custom templates, but that would quickly becomes unwieldy and unnatural.</p>
 
-<div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{{</span><span class="w"> </span><span class="s2">"A markdown header"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">headerize</span><span class="w"> </span><span class="p">}}</span>
+  <div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{{</span><span class="w"> </span><span class="s2">"A markdown header"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">headerize</span><span class="w"> </span><span class="p">}}</span>
 
 <span class="p">{%</span><span class="w"> </span><span class="nt">paragraph</span><span class="w"> </span><span class="p">%}</span>
   A normal paragraph.
@@ -240,15 +241,24 @@ This is actually lowercase:
 <span class="p">{%</span><span class="w"> </span><span class="nt">paragraph</span><span class="w"> </span><span class="p">%}</span>
   Another normal paragraph about my friends: <span class="p">{{</span><span class="w"> </span><span class="nv">my_enemies_list</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">join</span><span class="p">:</span><span class="w"> </span><span class="s2">", "</span><span class="w"> </span><span class="p">}}</span>.
 <span class="p">{%</span><span class="w"> </span><span class="nt">endparagraph</span><span class="w"> </span><span class="p">%}</span>
-</code></pre></div></div>
 
-<p>There’s three types of templates: filters, tags, and blocks.</p>
-<ul>
-  <li>A <em>filter</em> <code class="highlighter-rouge">{{ "tranforms text" | upcase }}</code> or is replaced with the value of a <code class="highlighter-rouge">{{ variable }}</code>.</li>
-  <li>A <em>tag</em> <code class="highlighter-rouge">{% typically does something %}</code> more complex like create variables for later use.</li>
-  <li>A <em>block</em> <code class="highlighter-rouge">{% is %} useful for capturing {% endis %}</code> blocks of text and transforming them.</li>
-  <li>You could even have <code class="highlighter-rouge">{% nested %}{% blocks %} that both process {% endblocks %}{% endnested %}</code> the text.</li>
-</ul>
+<span class="p">{%</span><span class="w"> </span><span class="nt">list</span><span class="w"> </span><span class="p">%}</span>
+  <span class="p">{%</span><span class="w"> </span><span class="nt">list-item</span><span class="w"> </span><span class="p">%}</span>
+    not the worst but...
+  <span class="p">{%</span><span class="w"> </span><span class="nt">endlist-item</span><span class="w"> </span><span class="p">%}</span>
+  <span class="p">{%</span><span class="w"> </span><span class="nt">list-item</span><span class="w"> </span><span class="p">%}</span>
+    ...okay now this is getting annoying
+  <span class="p">{%</span><span class="w"> </span><span class="nt">endlist-item</span><span class="w"> </span><span class="p">%}</span>
+<span class="p">{%</span><span class="w"> </span><span class="nt">endlist</span><span class="w"> </span><span class="p">%}</span>
+</code></pre></div>  </div>
+
+  <p>There’s three types of templates: filters, tags, and blocks.</p>
+  <ul>
+    <li>A <em>filter</em> transforms text or is replaced with the value of a <code class="highlighter-rouge">{{ variable | filter }}</code>.</li>
+    <li>A <em>tag</em> typically does something more complex like <code class="highlighter-rouge">{% create variables %}</code> for later use.</li>
+    <li>A <em>block</em> is useful for <code class="highlighter-rouge">{% capturing %}</code>  blocks of text and transforming them <code class="highlighter-rouge">{% endcapturing %}</code>.</li>
+    <li>You can even have <code class="highlighter-rouge">{% nested %}{% blocks %}</code> that both process <code class="highlighter-rouge">{% endblocks %}{% endnested %}</code> the text.</li>
+  </ul>
 
 </div>
 
@@ -280,20 +290,177 @@ I want to write something like the following:</p>
 <span class="p">{%</span><span class="w"> </span><span class="nt">endaccordion</span><span class="w"> </span><span class="p">%}</span>
 </code></pre></div></div>
 
-<p>Much better!
-Now we only have to specify an HTML ID for our accordion–although we could automate this as well if desired–and a title for each collapsible.
+<p>Much better! And no hard-coded HTML.
+Now we only have to specify an HTML ID for our accordion–although we can automate this, too, if desired–and a title for each collapsible.
 Then, we can put normal markdown for each of our collapsibles.
 The HTML for the entire accordion and each collapsible card is generated for us, in one place, for all of our posts.
 Cool.</p>
 
-<p>Starting from the inside out, let’s create a custom <code class="highlighter-rouge">collapsible</code> block.
-We’ll start from the <a href="https://jekyllrb.com/docs/plugins/">Jekyll</a> and <a href="https://github.com/Shopify/liquid/wiki/Liquid-for-Programmers">Liquid</a> tutorials,
+<p>Let’s start our accordion block.</p>
+
+<hr />
+
+<p class="col-sm-5 float-right mb-sm-0"><a href="https://www.ocregister.com/2016/01/25/without-music-education-weird-al-might-not-be-rocking-an-accordion/"><img src="/img/weird_al_O-O.jpg" alt="weirdal" class="shadow-lg" style="width:100%; box-shadow:0 0 5px" /></a></p>
+
+<p class="clearfix">I couldn’t think of a quirky accordion title, so here’s a picture of Weird Al.
+(That’s actually not true, there were <em>‘Accordion to Jim’</em>, <em>‘The Sokovia Accordions’</em>,
+<em>‘Honda Accordion’</em>, <em>‘General Ackbar-rion’</em>, <em>‘The Siege of Acre-dion’</em> and others–the others were worse)</p>
+
+<p>O-kay, so moving on, we’ll start from the <a href="https://jekyllrb.com/docs/plugins/">Jekyll</a> and <a href="https://github.com/Shopify/liquid/wiki/Liquid-for-Programmers">Liquid</a> tutorials,
 leaving comments where we need to fill in code:</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd </span>my-jekyll-site
-mkdir _plugins  <span class="c"># if it doesn't exist</span>
-touch _plugins/collapseblock.rb
+mkdir _plugins
+touch _plugins/accordion.rb
 </code></pre></div></div>
+
+<div class="code-title">accordion.rb</div>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">Jekyll</span>
+  <span class="k">module</span> <span class="nn">Tags</span>
+    <span class="k">class</span> <span class="nc">AccordionTag</span> <span class="o">&lt;</span> <span class="no">Liquid</span><span class="o">::</span><span class="no">Block</span>
+      <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">tag_name</span><span class="p">,</span> <span class="n">block_options</span><span class="p">,</span> <span class="n">liquid_options</span><span class="p">)</span>
+        <span class="k">super</span>
+        <span class="vi">@accordionID</span> <span class="o">=</span> <span class="s2">"accordion-</span><span class="si">#{</span><span class="n">block_options</span><span class="p">.</span><span class="nf">strip</span><span class="si">}</span><span class="s2">"</span>
+      <span class="k">end</span>
+
+      <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+        <span class="c1"># TODO: </span>
+        <span class="c1">#   - add to context:</span>
+        <span class="c1">#     - accordionID</span>
+        <span class="c1">#     - initial collapse index</span>
+        <span class="c1">#   - render accordion HTML</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="no">Liquid</span><span class="o">::</span><span class="no">Template</span><span class="p">.</span><span class="nf">register_tag</span><span class="p">(</span><span class="s1">'accordion'</span><span class="p">,</span> <span class="no">Jekyll</span><span class="o">::</span><span class="no">Tags</span><span class="o">::</span><span class="no">AccordionTag</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>Jekyll loads plugins from the <code class="highlighter-rouge">_plugins</code> folder, so the first thing to do is put our plugin there.
+After that we can create a new <code class="highlighter-rouge">AccordionTag</code> class that inherits from the <code class="highlighter-rouge">Liquid::Block</code> class.
+Blocks only need to implement 2 methods:</p>
+<ul>
+  <li><code class="highlighter-rouge">initialize</code> is called when we encounter the <code class="highlighter-rouge">{% accordion my-accordion-id %}</code> tag.
+Anything that comes directly after <code class="highlighter-rouge">accordion</code> (e.g. <em>“my-accordion-id”</em>) is passed in via the second argument.
+We strip the leading and trailing white space off of it and save it to an instance variable so we can use later when
+we <em>render</em> the entire block.
+Note that we need to call <code class="highlighter-rouge">super</code> first to let Liquid handle any book-keeping (mostly setting some instance variables).</li>
+  <li><code class="highlighter-rouge">render</code> is where the fun happens. We’re given one argument, <code class="highlighter-rouge">context</code>, which is just a handle to the environment
+that needs to be rendered. This includes any assigned variables and all local and global Jekyll data.
+<strong>Here we have to return a string</strong> that will be output from our block and put into our document.
+I’ve added in our <code class="highlighter-rouge">TODO</code> list in the comments.</li>
+</ul>
+
+<p>We need to add our <code class="highlighter-rouge">@accordionID</code> to our context handle and initialize an index for our collapsibles,
+so they can identity which accordion to target and give themselves an ID.
+After that we return the final HTML as a string.</p>
+
+<p>The last bit in this example is to register our block in Liquid’s template engine. The string we pass in, ‘<em>accordion</em>’,
+will be used to create our <code class="highlighter-rouge">AccordionTag</code> class when parsing the block.</p>
+
+<h2 id="nested-liquid-blocks">Nested Liquid Blocks</h2>
+
+<p>Before we go any further, we should cover how Liquid handles nesting.
+Let’s look at our target syntax again:</p>
+
+<div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{%</span><span class="w"> </span><span class="nt">accordion</span><span class="w"> </span>a-unique-id<span class="w"> </span><span class="p">%}</span>
+  <span class="p">{%</span><span class="w"> </span><span class="nt">collapsible</span><span class="w"> </span>Title<span class="w"> </span>of<span class="w"> </span>a<span class="w"> </span>Collapsible<span class="w"> </span><span class="p">%}</span>
+    stuff
+  <span class="p">{%</span><span class="w"> </span><span class="nt">endcollapsible</span><span class="w"> </span><span class="p">%}</span>
+
+  <span class="p">{%</span><span class="w"> </span><span class="nt">collapsible</span><span class="w"> </span>A<span class="w"> </span>Second<span class="w"> </span>Collapsible<span class="w"> </span><span class="p">%}</span>
+    more stuff
+  <span class="p">{%</span><span class="w"> </span><span class="nt">endcollapsible</span><span class="w"> </span><span class="p">%}</span>
+
+  <span class="p">{%</span><span class="w"> </span><span class="nt">collapsible</span><span class="w"> </span>Another<span class="w"> </span>One?<span class="w"> </span><span class="p">%}</span>
+    even more stuff
+  <span class="p">{%</span><span class="w"> </span><span class="nt">endcollapsible</span><span class="w"> </span><span class="p">%}</span>
+<span class="p">{%</span><span class="w"> </span><span class="nt">endaccordion</span><span class="w"> </span><span class="p">%}</span>
+</code></pre></div></div>
+
+<p>Liquid works in multiple passes.
+First, when Jekyll initializes an instance of Liquid for our document,
+it will parse our document and build up a parse tree of <em>nodes</em>.
+A node can be a chunk of text, a liquid variable, a block, et al. 
+When we reach each <code class="highlighter-rouge">accordion</code> or <code class="highlighter-rouge">collapsible</code> node, we <code class="highlighter-rouge">initialize</code> them.
+Later, Jekyll will use that instance to render the document.
+Liquid will only call <code class="highlighter-rouge">render</code> on the <em>root</em> node, which will try to invoke <code class="highlighter-rouge">render</code> on all its children, and so on.
+A simple chunk of text will be rendered unmodified, while a block node will call its own <code class="highlighter-rouge">render</code> implementation.
+After Jekyll runs Liquid on our document, the markdown processor will finish formatting it to HTML.</p>
+
+<p>Eventually, we’ll traverse all the nodes and reach our <code class="highlighter-rouge">accordion</code> block.
+This block will probably have some child <code class="highlighter-rouge">collapsible</code> nodes which will have to render, too.
+<em>“But how do we get to those child nodes?”</em> you may ask. Ha-ha, good question, Johnny.
+It’s quite simple: our base class’ render implementation will invoke <code class="highlighter-rouge">render</code> on any child nodes
+and return the resulting text, <strong>including any content inside our block</strong>.</p>
+
+<h2 id="render-unto-caesar">Render unto Caesar</h2>
+
+<p>If we just want to return what’s inside of our block, without any further formatting, we can write:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+  <span class="k">super</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Why do I bring this up <em>now</em>?
+Well this means that our <code class="highlighter-rouge">context</code> variable is going to get passed down to all of our child (collapsible) blocks.
+Repeating from earlier, we need to add our <code class="highlighter-rouge">@accordionID</code> to our context handle and initialize an index for our collapsibles,
+so they can identity which accordion to target and give themselves an ID.
+Our <code class="highlighter-rouge">context</code> is a <code class="highlighter-rouge">Liquid::Context</code> and acts like glorified hash<sup id="fnref:1"><a href="#fn:1" class="footnote">1</a></sup>.
+To add the <code class="highlighter-rouge">@accordionID</code> and collapse index, we can do something straightforward like this:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+  <span class="n">context</span><span class="p">[</span><span class="s2">"accordionID"</span><span class="p">]</span> <span class="o">=</span> <span class="vi">@accordionID</span>
+  <span class="n">context</span><span class="p">[</span><span class="s2">"collapsed_idx"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+  <span class="k">super</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>When the collapsibles go to render themselves, they’ll pull out those values and everything will be fine.<br />
+Yep.<br />
+That’s it.<br />
+Buuuut–what if we decide to nest multiple accordions?
+In that case, each accordion level will be overwriting the data from the previous levels.
+We have to save the data from the previous level, and restore after calling <code class="highlighter-rouge">super</code>, in essence creating a new scope
+at every nesting level.
+Ack! That sounds annoying.
+Good thing the Liquid team built this machinery for us!
+We can manage a context <em>stack</em> as so:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+  <span class="n">context</span><span class="p">.</span><span class="nf">stack</span> <span class="k">do</span>
+    <span class="n">context</span><span class="p">[</span><span class="s2">"accordionID"</span><span class="p">]</span> <span class="o">=</span> <span class="vi">@accordionID</span>
+    <span class="n">context</span><span class="p">[</span><span class="s2">"collapsed_idx"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="vi">@content</span> <span class="o">=</span> <span class="k">super</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>Each new accordion level creates a new scope, and <em>contexts</em> have a custom implementation of <code class="highlighter-rouge">[]</code> to search up the stack for a matching value.
+After we’re done, the stack is automatically popped so upper levels never see any of our data. Nice.
+The last bit we add is saving the resulting output of our block contents to an instance variable so we can access it outside of the stack scope.</p>
+
+<p>O-kay, now we can get this show on the road.
+We know that all our accordion does is wrap up our content in a single div:</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+  <span class="n">context</span><span class="p">.</span><span class="nf">stack</span> <span class="k">do</span>
+    <span class="n">context</span><span class="p">[</span><span class="s2">"accordionID"</span><span class="p">]</span> <span class="o">=</span> <span class="vi">@accordionID</span>
+    <span class="n">context</span><span class="p">[</span><span class="s2">"collapsed_idx"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="vi">@content</span> <span class="o">=</span> <span class="k">super</span>
+  <span class="k">end</span>
+  <span class="n">output</span> <span class="o">=</span> <span class="sx">%(&lt;div class="accordion" id="#{@accordionID}"&gt;#{@content}&lt;/div&gt;)</span>
+
+  <span class="n">output</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p>And we’re all done for our accordion! Let’s look at our collapsible:</p>
+
+<div class="code-title">collapsible.rb</div>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">Jekyll</span>
   <span class="k">module</span> <span class="nn">Tags</span>
@@ -305,9 +472,9 @@ touch _plugins/collapseblock.rb
 
       <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
         <span class="c1"># TODO</span>
-        <span class="c1"># !!! need to get accordionID</span>
-        <span class="c1"># !!! need to get collapse index</span>
-        <span class="c1"># !!! generate collapsible card HTML</span>
+        <span class="c1">#   - need to get accordionID</span>
+        <span class="c1">#   - need to get collapse index</span>
+        <span class="c1">#   - generate collapsible card HTML</span>
       <span class="k">end</span>
     <span class="k">end</span>
   <span class="k">end</span>
@@ -316,58 +483,10 @@ touch _plugins/collapseblock.rb
 <span class="no">Liquid</span><span class="o">::</span><span class="no">Template</span><span class="p">.</span><span class="nf">register_tag</span><span class="p">(</span><span class="s1">'collapsible'</span><span class="p">,</span> <span class="no">Jekyll</span><span class="o">::</span><span class="no">Tags</span><span class="o">::</span><span class="no">CollapseTag</span><span class="p">)</span>
 </code></pre></div></div>
 
-<p>Jekyll loads plugins from the <code class="highlighter-rouge">_plugins</code> folder, so the first thing to do is put our plugin there.
-After that we can create a new <code class="highlighter-rouge">CollapseTag</code> class that inherits from the <code class="highlighter-rouge">Liquid::Block</code> class.
-Blocks only need to implement 2 methods:</p>
-<ul>
-  <li><code class="highlighter-rouge">initialize</code> is called when we encounter the <code class="highlighter-rouge">{% collapsible A Title %}</code> tag.
-Anything that comes directly after <code class="highlighter-rouge">collapsible</code> (“<em>A Title</em>” in this case) is passed in via the second argument.
-We strip the leading and trailing white space off of it and save it to an instance variable so we can use later when
-we <em>render</em> the entire block.
-Note that we need to call <code class="highlighter-rouge">super</code> first to let Liquid handle any book-keeping (mostly setting some instance variables).</li>
-  <li><code class="highlighter-rouge">render</code> is where the fun happens. We’re given one argument, <code class="highlighter-rouge">context</code>, which is just a handle to the environment
-that needs to be rendered. This includes any assigned variables and all local and global Jekyll data.
-I’ve added in our <strong>TODO</strong> list in the comments.
-To create our collapsible HTML, we need to ID of our accordion and a unique ID for this collapsible.
-We’ll generate a simple hash from the accordion ID and an collapsible index value.</li>
-</ul>
-
-<p>The last bit in this example is the register our block in Liquid’s template engine. The string we pass in, ‘<em>collapsible</em>’,
-will be used to call our <code class="highlighter-rouge">CollapseTag</code> parsing the block.</p>
-
-<h2 id="render-unto-caesar">Render unto Caesar</h2>
-
-<p>If we want to just output the block’s text doing any modifications, we could just do:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
-  <span class="k">super</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<p>The ancestor classes will handle any extra complexity.
-For example, if there are additional nested blocks (<em>hint-hint wink-wink</em>), those blocks will get processed first,
-and hand the resulting text back to us.
-Because the text is going to be markdown, we’ll start by converting the markdown to HTML.</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
-  <span class="n">site</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="nf">registers</span><span class="p">[</span><span class="ss">:site</span><span class="p">]</span>
-  <span class="n">converter</span> <span class="o">=</span> <span class="n">site</span><span class="p">.</span><span class="nf">find_converter_instance</span><span class="p">(</span><span class="o">::</span><span class="no">Jekyll</span><span class="o">::</span><span class="no">Converters</span><span class="o">::</span><span class="no">Markdown</span><span class="p">)</span>
-  <span class="n">content</span> <span class="o">=</span> <span class="n">converter</span><span class="p">.</span><span class="nf">convert</span><span class="p">(</span><span class="k">super</span><span class="p">(</span><span class="n">context</span><span class="p">))</span>
-  <span class="n">content</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<p>Wuh-What the devil just happened?
-When Jekyll runs the Liquid template engine, it passes in a default context that has some global data already set.
-Jekyll’s global configuration is accessed via its <code class="highlighter-rouge">site</code> variable.
-We grab the markdown converter Jekyll uses and use it ourselves.</p>
-
-<p>Note that <code class="highlighter-rouge">registers</code> is more like the <em>guts</em> of the context that templates wouldn’t use.
-We can access other environmental variables more naturally with <code class="highlighter-rouge">context["my_variable"]</code>.</p>
-
-<p>Cool. Let’s make the HTML for–<em>wait, wait, wait</em>–we’re missing something.
-Ack! We need to get the accordion and collapsible IDs!
-Well, let’s just assume some nice fellow put them into our <code class="highlighter-rouge">context</code> handle.</p>
+<p>We start off the same way we did for our accordion.
+First, we get the <code class="highlighter-rouge">@title</code> for our collapsible from the options during initialization.
+Then, when we go to <code class="highlighter-rouge">render</code> our collapsible, we note that we need to get the accordion ID
+and an index from our context. <em>Easy-peasy lemon-squeezy</em>:</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
   <span class="n">accordionID</span> <span class="o">=</span> <span class="n">context</span><span class="p">[</span><span class="s2">"accordionID"</span><span class="p">]</span>
@@ -378,17 +497,17 @@ Well, let’s just assume some nice fellow put them into our <code class="highli
   <span class="c1"># increment for the next collapsible</span>
   <span class="n">context</span><span class="p">[</span><span class="s2">"collapsed_idx"</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span>
 
-  <span class="n">site</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="nf">registers</span><span class="p">[</span><span class="ss">:site</span><span class="p">]</span>
-  <span class="n">converter</span> <span class="o">=</span> <span class="n">site</span><span class="p">.</span><span class="nf">find_converter_instance</span><span class="p">(</span><span class="o">::</span><span class="no">Jekyll</span><span class="o">::</span><span class="no">Converters</span><span class="o">::</span><span class="no">Markdown</span><span class="p">)</span>
-  <span class="n">content</span> <span class="o">=</span> <span class="n">converter</span><span class="p">.</span><span class="nf">convert</span><span class="p">(</span><span class="k">super</span><span class="p">(</span><span class="n">context</span><span class="p">))</span>
-  <span class="n">content</span>
+  <span class="n">content</span> <span class="o">=</span> <span class="k">super</span>
+  <span class="c1"># generate collapsible card HTML</span>
 <span class="k">end</span>
 </code></pre></div></div>
 
-<p>We retrieved the accordion ID and created IDs for our collapsible.
-We also increment the index for the next collapsible and write it back to the context.
-This works because all blocks in the same scope (inside our accordion) share the same context.
-O-kay, now we can get this show on the road:</p>
+<p>We access the <code class="highlighter-rouge">accordionID</code> and <code class="highlighter-rouge">collapsed_idx</code> set by our parent accordion and make unique ID’s from them.
+We increment the value of <code class="highlighter-rouge">context["collapsed_idx"]</code> for all the following collapsibles.
+This works because all the blocks in the same scope (inside our accordion) share the same context.
+We also get the contents of our block with <code class="highlighter-rouge">super</code>.
+Because we’re not changing the <code class="highlighter-rouge">context</code>, there’s no need to push the context stack as with the accordion.
+Now let’s add the collapsible HTML:</p>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
   <span class="n">accordionID</span> <span class="o">=</span> <span class="n">context</span><span class="p">[</span><span class="s2">"accordionID"</span><span class="p">]</span>
@@ -399,10 +518,7 @@ O-kay, now we can get this show on the road:</p>
   <span class="c1"># increment for the next collapsible</span>
   <span class="n">context</span><span class="p">[</span><span class="s2">"collapsed_idx"</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span>
 
-  <span class="n">site</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="nf">registers</span><span class="p">[</span><span class="ss">:site</span><span class="p">]</span>
-  <span class="n">converter</span> <span class="o">=</span> <span class="n">site</span><span class="p">.</span><span class="nf">find_converter_instance</span><span class="p">(</span><span class="o">::</span><span class="no">Jekyll</span><span class="o">::</span><span class="no">Converters</span><span class="o">::</span><span class="no">Markdown</span><span class="p">)</span>
-  <span class="n">content</span> <span class="o">=</span> <span class="n">converter</span><span class="p">.</span><span class="nf">convert</span><span class="p">(</span><span class="k">super</span><span class="p">(</span><span class="n">context</span><span class="p">))</span>
-
+  <span class="n">content</span> <span class="o">=</span> <span class="k">super</span>
   <span class="n">output</span> <span class="o">=</span> <span class="o">&lt;&lt;~</span><span class="no">EOS</span><span class="sh">
     &lt;div class="card"&gt;
       &lt;div class="card-header" id="</span><span class="si">#{</span><span class="n">headingID</span><span class="si">}</span><span class="sh">"&gt;
@@ -422,91 +538,71 @@ O-kay, now we can get this show on the road:</p>
 <span class="k">end</span>
 </code></pre></div></div>
 
-<p>Yay! This matches the Bootstrap example from earlier.
-You can see where we’re plugging in the <code class="highlighter-rouge">@title</code> we saved during the initial tag parse
-and the <code class="highlighter-rouge">content</code> goes in the main card body.</p>
+<p>This looks pretty good, but we’re going to run into one big problem.
+Usually markdown processors will not process anything inside HTML tags.
+None of the markdown inside our collapsible blocks will get rendered in our final rendered document!
+<em>Heavens to Betsy!</em></p>
 
-<p>That’s all for our collapsible. Let’s implement the external <code class="highlighter-rouge">{% accordion %}{% endaccordion %}</code> block.</p>
+<p>There are two options to get our content processed as markdown.
+The first option is slightly more laborious but is agnostic of the markdown processor.
+The second option may feel slightly cleaner for small amounts of HTML, but needs support from the markdown processor.</p>
 
 <hr />
 
-<p><a href="https://www.ocregister.com/2016/01/25/without-music-education-weird-al-might-not-be-rocking-an-accordion/"><img src="/img/weird_al_O-O.jpg" alt="weirdal" width="100%" /></a></p>
+<p>For the first method, we manually call the markdown converter from our Liquid plugin.</p>
 
-<p>I couldn’t think of a quirky accordion title, so here’s a picture of Weird Al.
-(That’s actually not true, there were <em>‘Accordion to Jim’</em>, <em>‘The Sokovia Accordions’</em>,
-<em>‘Honda Accordion’</em>, <em>‘General Ackbar-rion’</em>, <em>‘The Siege of Acre-dion’</em> and others–the others were worse)</p>
+<div class="code-title">manual-markdown.rb</div>
 
-<p>O-kay, so moving on, our accordion block will start off similar to our collapsible block:</p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+  <span class="n">site</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="nf">registers</span><span class="p">[</span><span class="ss">:site</span><span class="p">]</span>
+  <span class="n">converter</span> <span class="o">=</span> <span class="n">site</span><span class="p">.</span><span class="nf">find_converter_instance</span><span class="p">(</span><span class="o">::</span><span class="no">Jekyll</span><span class="o">::</span><span class="no">Converters</span><span class="o">::</span><span class="no">Markdown</span><span class="p">)</span>
+  <span class="n">content</span> <span class="o">=</span> <span class="n">converter</span><span class="p">.</span><span class="nf">convert</span><span class="p">(</span><span class="k">super</span><span class="p">)</span>
+
+  <span class="n">output</span> <span class="o">=</span> <span class="o">&lt;&lt;~</span><span class="no">EOS</span><span class="sh">
+    &lt;div&gt;
+      </span><span class="si">#{</span><span class="n">content</span><span class="si">}</span><span class="sh">
+    &lt;/div&gt;
+</span><span class="no">  EOS</span>
+
+  <span class="n">output</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<p><em>Huh?</em>
+When Jekyll runs the Liquid template engine, it passes in a default context that has some global data already set.
+Jekyll’s global configuration is accessed via its <code class="highlighter-rouge">site</code> variable,
+and we grab the markdown converter Jekyll is using for ourselves.
+Note that <code class="highlighter-rouge">registers</code> is more like the <em>guts</em> of the context that templates won’t normally use.</p>
+
+<hr />
+
+<p>For the second method, we just add an <a href="https://kramdown.gettalong.org/syntax.html#html-blocks">extra attribute to the parent tag</a> of our <code class="highlighter-rouge">content</code>.</p>
+
+<div class="code-title">markdown-html-attributes.rb</div>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+  <span class="n">content</span> <span class="o">=</span> <span class="k">super</span>
+
+  <span class="n">output</span> <span class="o">=</span> <span class="o">&lt;&lt;~</span><span class="no">EOS</span><span class="sh">
+    &lt;div markdown="block"&gt;
+      </span><span class="si">#{</span><span class="n">content</span><span class="si">}</span><span class="sh">
+    &lt;/div&gt;
+</span><span class="no">  EOS</span>
+
+  <span class="n">output</span>
+<span class="k">end</span>
+</code></pre></div></div>
+
+<hr />
+
+<p>I chose to use the first method because I find it more clear when the content is buried in multiple levels of tags.
+Without further ado, our final plugins:</p>
+
+<div class="code-title">accordion.rb</div>
 
 <div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">Jekyll</span>
   <span class="k">module</span> <span class="nn">Tags</span>
     <span class="k">class</span> <span class="nc">AccordionTag</span> <span class="o">&lt;</span> <span class="no">Liquid</span><span class="o">::</span><span class="no">Block</span>
-      <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">tag_name</span><span class="p">,</span> <span class="n">block_options</span><span class="p">,</span> <span class="n">liquid_options</span><span class="p">)</span>
-        <span class="k">super</span>
-        <span class="vi">@accordionID</span> <span class="o">=</span> <span class="s2">"accordion-</span><span class="si">#{</span><span class="n">block_options</span><span class="p">.</span><span class="nf">strip</span><span class="si">}</span><span class="s2">"</span>
-      <span class="k">end</span>
-
-      <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
-        <span class="c1"># TODO -- add to content:</span>
-        <span class="c1">#  - accordionID</span>
-        <span class="c1">#  - initial collapse index</span>
-        <span class="c1"># render accordion HTML</span>
-      <span class="k">end</span>
-    <span class="k">end</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-
-<span class="no">Liquid</span><span class="o">::</span><span class="no">Template</span><span class="p">.</span><span class="nf">register_tag</span><span class="p">(</span><span class="s1">'accordion'</span><span class="p">,</span> <span class="no">Jekyll</span><span class="o">::</span><span class="no">Tags</span><span class="o">::</span><span class="no">AccordionTag</span><span class="p">)</span>
-</code></pre></div></div>
-
-<p>To add the <code class="highlighter-rouge">@accordionID</code> and collapse index, we could do something straightforward like this:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
-  <span class="n">context</span><span class="p">[</span><span class="s2">"accordionID"</span><span class="p">]</span> <span class="o">=</span> <span class="vi">@accordionID</span>
-  <span class="n">context</span><span class="p">[</span><span class="s2">"collapsed_idx"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-  <span class="c1"># render accordion HTML</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<p>The collapsibles would receive this data and this works fine.<br />
-Yep.<br />
-That’s it.<br />
-Buuuut–let’s make sure this works for weird cases, like if we decide to nest multiple accordions.
-In such a case, each accordion level would be overwriting the data from the previous levels.
-We need to create a new scope for each nesting level.
-Good thing the Liquid team built this machinery for us!
-We can manage a context <em>stack</em> as so:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
-  <span class="n">context</span><span class="p">.</span><span class="nf">stack</span> <span class="k">do</span>
-    <span class="n">context</span><span class="p">[</span><span class="s2">"accordionID"</span><span class="p">]</span> <span class="o">=</span> <span class="vi">@accordionID</span>
-    <span class="n">context</span><span class="p">[</span><span class="s2">"collapsed_idx"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="c1"># render accordion HTML</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<p>Each new accordion creates a new scope, and <em>contexts</em> have a custom implementation of <code class="highlighter-rouge">[]</code> to search up the stack for a matching value.
-Now just to take care of this last bit of HTML:</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
-  <span class="n">context</span><span class="p">.</span><span class="nf">stack</span> <span class="k">do</span>
-    <span class="n">context</span><span class="p">[</span><span class="s2">"accordionID"</span><span class="p">]</span> <span class="o">=</span> <span class="vi">@accordionID</span>
-    <span class="n">context</span><span class="p">[</span><span class="s2">"collapsed_idx"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">output</span> <span class="o">=</span> <span class="s2">"&lt;div class=</span><span class="se">\"</span><span class="s2">accordion</span><span class="se">\"</span><span class="s2"> id=</span><span class="se">\"</span><span class="si">#{</span><span class="vi">@accordionID</span><span class="si">}</span><span class="se">\"</span><span class="s2">&gt;</span><span class="si">#{</span><span class="k">super</span><span class="p">(</span><span class="n">context</span><span class="p">)</span><span class="si">}</span><span class="s2">&lt;/div&gt;"</span>
-    <span class="n">output</span>
-  <span class="k">end</span>
-<span class="k">end</span>
-</code></pre></div></div>
-
-<p>When we invoke <code class="highlighter-rouge">super(context)</code>, the <code class="highlighter-rouge">Liquid::Block</code> base class runs through all the nested collapsible blocks
-and outputs their final rendered content as a result.
-That’s it! Here’s the entire plugin. You can try to add some error checking into the accordion ID.</p>
-
-<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">Jekyll</span>
-  <span class="k">module</span> <span class="nn">Tags</span>
-    <span class="k">class</span> <span class="nc">AccordionTag</span> <span class="o">&lt;</span> <span class="no">Liquid</span><span class="o">::</span><span class="no">Block</span>
-
       <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">tag_name</span><span class="p">,</span> <span class="n">block_options</span><span class="p">,</span> <span class="n">liquid_options</span><span class="p">)</span>
         <span class="k">super</span>
         <span class="vi">@accordionID</span> <span class="o">=</span> <span class="s2">"accordion-</span><span class="si">#{</span><span class="n">block_options</span><span class="p">.</span><span class="nf">strip</span><span class="si">}</span><span class="s2">"</span>
@@ -516,12 +612,23 @@ That’s it! Here’s the entire plugin. You can try to add some error checking 
         <span class="n">context</span><span class="p">.</span><span class="nf">stack</span> <span class="k">do</span>
           <span class="n">context</span><span class="p">[</span><span class="s2">"accordionID"</span><span class="p">]</span> <span class="o">=</span> <span class="vi">@accordionID</span>
           <span class="n">context</span><span class="p">[</span><span class="s2">"collapsed_idx"</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-          <span class="n">output</span> <span class="o">=</span> <span class="s2">"&lt;div class=</span><span class="se">\"</span><span class="s2">accordion</span><span class="se">\"</span><span class="s2"> id=</span><span class="se">\"</span><span class="si">#{</span><span class="vi">@accordionID</span><span class="si">}</span><span class="se">\"</span><span class="s2">&gt;</span><span class="si">#{</span><span class="k">super</span><span class="p">(</span><span class="n">context</span><span class="p">)</span><span class="si">}</span><span class="s2">&lt;/div&gt;"</span>
-          <span class="n">output</span>
+          <span class="vi">@content</span> <span class="o">=</span> <span class="k">super</span>
         <span class="k">end</span>
+        <span class="n">output</span> <span class="o">=</span> <span class="sx">%(&lt;div class="accordion" id="#{@accordionID}"&gt;#{@content}&lt;/div&gt;)</span>
+
+        <span class="n">output</span>
       <span class="k">end</span>
     <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
 
+<span class="no">Liquid</span><span class="o">::</span><span class="no">Template</span><span class="p">.</span><span class="nf">register_tag</span><span class="p">(</span><span class="s1">'accordion'</span><span class="p">,</span> <span class="no">Jekyll</span><span class="o">::</span><span class="no">Tags</span><span class="o">::</span><span class="no">AccordionTag</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="code-title">collapsible.rb</div>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">module</span> <span class="nn">Jekyll</span>
+  <span class="k">module</span> <span class="nn">Tags</span>
     <span class="k">class</span> <span class="nc">CollapseTag</span> <span class="o">&lt;</span> <span class="no">Liquid</span><span class="o">::</span><span class="no">Block</span>
       <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">tag_name</span><span class="p">,</span> <span class="n">block_options</span><span class="p">,</span> <span class="n">liquid_options</span><span class="p">)</span>
         <span class="k">super</span>
@@ -533,14 +640,14 @@ That’s it! Here’s the entire plugin. You can try to add some error checking 
         <span class="n">idx</span> <span class="o">=</span> <span class="n">context</span><span class="p">[</span><span class="s2">"collapsed_idx"</span><span class="p">]</span>
         <span class="n">collapsedID</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="n">accordionID</span><span class="si">}</span><span class="s2">-collapse-</span><span class="si">#{</span><span class="n">idx</span><span class="si">}</span><span class="s2">"</span>
         <span class="n">headingID</span> <span class="o">=</span> <span class="s2">"</span><span class="si">#{</span><span class="n">accordionID</span><span class="si">}</span><span class="s2">-heading-</span><span class="si">#{</span><span class="n">idx</span><span class="si">}</span><span class="s2">"</span>
-      
+
         <span class="c1"># increment for the next collapsible</span>
         <span class="n">context</span><span class="p">[</span><span class="s2">"collapsed_idx"</span><span class="p">]</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">+</span> <span class="mi">1</span>
-      
+
         <span class="n">site</span> <span class="o">=</span> <span class="n">context</span><span class="p">.</span><span class="nf">registers</span><span class="p">[</span><span class="ss">:site</span><span class="p">]</span>
         <span class="n">converter</span> <span class="o">=</span> <span class="n">site</span><span class="p">.</span><span class="nf">find_converter_instance</span><span class="p">(</span><span class="o">::</span><span class="no">Jekyll</span><span class="o">::</span><span class="no">Converters</span><span class="o">::</span><span class="no">Markdown</span><span class="p">)</span>
-        <span class="n">content</span> <span class="o">=</span> <span class="n">converter</span><span class="p">.</span><span class="nf">convert</span><span class="p">(</span><span class="k">super</span><span class="p">(</span><span class="n">context</span><span class="p">))</span>
-      
+        <span class="n">content</span> <span class="o">=</span> <span class="n">converter</span><span class="p">.</span><span class="nf">convert</span><span class="p">(</span><span class="k">super</span><span class="p">)</span>
+
         <span class="n">output</span> <span class="o">=</span> <span class="o">&lt;&lt;~</span><span class="no">EOS</span><span class="sh">
           &lt;div class="card"&gt;
             &lt;div class="card-header" id="</span><span class="si">#{</span><span class="n">headingID</span><span class="si">}</span><span class="sh">"&gt;
@@ -555,17 +662,30 @@ That’s it! Here’s the entire plugin. You can try to add some error checking 
             &lt;/div&gt;
           &lt;/div&gt;
 </span><span class="no">        EOS</span>
-      
+
         <span class="n">output</span>
       <span class="k">end</span>
     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span>
 
-<span class="no">Liquid</span><span class="o">::</span><span class="no">Template</span><span class="p">.</span><span class="nf">register_tag</span><span class="p">(</span><span class="s1">'accordion'</span><span class="p">,</span> <span class="no">Jekyll</span><span class="o">::</span><span class="no">Tags</span><span class="o">::</span><span class="no">AccordionTag</span><span class="p">)</span>
 <span class="no">Liquid</span><span class="o">::</span><span class="no">Template</span><span class="p">.</span><span class="nf">register_tag</span><span class="p">(</span><span class="s1">'collapsible'</span><span class="p">,</span> <span class="no">Jekyll</span><span class="o">::</span><span class="no">Tags</span><span class="o">::</span><span class="no">CollapseTag</span><span class="p">)</span>
 </code></pre></div></div>
 
+<p>That’s it!
+Don’t forget to add some error checking or sane defaults for block options.
+Try making your own plugins when you find yourself adding in a lot of HTML.</p>
+
+<div class="footnotes">
+  <ol>
+    <li id="fn:1">
+      <p>The <code class="highlighter-rouge">context</code> parameter is a Liquid::Context has some additional functionality in addition to 
+  just accessing template variables. Accessing Jekyll site level data is arguably the most useful feature for us.
+  For example, we can access our site’s name with <code class="highlighter-rouge">context["site.title"]</code>.
+  You can even search hashmaps and arrays: <code class="highlighter-rouge">context["site.mydict['mykey'][0]"]</code>. Neat, huh? <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
 
 
       <hr>
