@@ -48,3 +48,4 @@ pagination:
   enabled: true
   per_page: 5
   permalink : '/posts/page:num/'
+  sort_reverse: true
