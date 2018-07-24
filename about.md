@@ -19,7 +19,6 @@ You may find some of my thoughts on this sprinkled between my more tech-oriented
 I received my dual BS/MS from Drexel University in 2012.
 Afterwards, I worked as a multimedia hardware verification engineer for a couple years.
 Eventually I returned to Drexel University to pursue a PhD and gain further expertise in my area.
-Currently I am a [PhD candidate at Drexel University](http://vlsi.ece.drexel.edu/index.php?title=Michael_Lui)
-where I study hardware-software co-design techniques.
+Currently I am a [PhD candidate at Drexel University](http://vlsi.ece.drexel.edu/index.php?title=Michael_Lui).
 
 <i class="fa fa-address-book"></i> If you'd like to contact me, please see the links at the bottom of the page.
