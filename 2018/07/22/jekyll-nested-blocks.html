@@ -717,7 +717,7 @@ Try making your own plugins when you find yourself adding in a lot of HTML.</p>
 <div class="dot-tooltip-wrapper"><div class="dot-tooltip">Custom Liquid Blocks</div></div>
 <a class="dot" href="#custom-liquid-blocks"></a>
 </li>
-<div id="sidenav-collapsible-1" class="collapsible-sibling position-relative collapse">
+<div id="sidenav-collapsible-1" class="collapsible-sibling position-relative ml-collapse">
 <div class="border-wrapper position-absolute d-flex h-100"><div class="border-left align-self-center"></div></div>
 <ul class="nav dotstyle">
 <li>
@@ -807,106 +807,4 @@ Try making your own plugins when you find yourself adding in a lot of HTML.</p>
   
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gumshoe/3.5.1/js/gumshoe.min.js"></script><script>
-  function getSiblingCollapse(elem) {
-    var sibling = elem.nextElementSibling;
-    var siblingCollapse = sibling ? sibling.className.includes('collapsible-sibling') ? sibling : null : null;
-    return siblingCollapse;
-  }
-
-  function getElemCollapse(elem) {
-    // if we activated a nav item that has a collapse
-    // XXX is this useful anymore?
-    var elemCollapse = elem.querySelector('.collapse');
-    return elemCollapse;
-  }
-
-  function getParentCollapse(elem) {
-    // if we activated a nav item that's inside a collapse
-    var parCollapse = elem.closest('[data-gumshoe] .collapse');
-    return parCollapse;
-  }
-
-  $('#sidenav > ul[data-gumshoe]').hover(
-    function () {
-      var collapsibles = this.querySelectorAll('.collapse');
-      collapsibles.forEach(e => $(e).collapse('show'));
-    },
-    function () {
-      var nav = gumshoe.getCurrentNav();
-      var collapsibles = Array.from(this.querySelectorAll('.collapse'));
-      if (nav && nav.parent) {
-        collapse = getElemCollapse(nav.parent) || getParentCollapse(nav.parent) || getSiblingCollapse(nav.parent);
-        if (collapse) {
-          collapsibles = collapsibles.filter(e => !(e.getAttribute('id') === collapse.getAttribute('id')));
-        }
-      }
-      collapsibles.forEach(e => $(e).collapse('hide'));
-    });
-
-  // custom function to [un]collapse with gumshoe scrollspy
-  function _checkCollapse () {
-    var lastCollapse = null;
-
-    function __checkCollapse (parent) {
-      // if we activated a nav item that has a next-sibling collapsible
-      // NB: we do this because of a 'hover' hack that requires an
-      // element that would normally be a child, to be a sibling
-
-      collapse = getElemCollapse(parent) || getParentCollapse(parent) || getSiblingCollapse(parent);
-
-      // XXX don't use 'toggle' for collapsing, since multiple
-      // gumshoe callbacks can fire on the same scroll when
-      // using 'smooth scroll', causing jumping back and forth
-      // between collapse states
-
-      // if anything to do
-      if (collapse) {
-        $(collapse).collapse('show');
-      }
-
-      if (lastCollapse) {
-        // if no longer collapsed
-        if (!collapse) {
-          $(lastCollapse).collapse('hide');
-        }
-        // different collapse
-        else if (collapse.getAttribute('id') != lastCollapse.getAttribute('id')) {
-          $(lastCollapse).collapse('hide');
-        }
-      }
-
-      lastCollapse = collapse;
-    }
-
-    return __checkCollapse;
-  }
-
-  var checkCollapse = _checkCollapse();
-
-  gumshoe.init({
-    offset: 100,
-  	callback: function (nav) {
-      if (!nav) {
-        return;
-      }
-
-  		// Deactivate any currently active parent
-  		var current = document.querySelector('.active-parent');
-  		if (current) {
-  			current.classList.remove('active-parent');
-  		}
-
-  		// Check if the nav link has a parent nav
-  		var parNav = nav.parent.closest('[data-gumshoe] > li');
-
-  		// If the nav link has a parent item,
-  		// Then add a class to that link
-  		if (parNav) {
-  			parNav.classList.add('active-parent');
-  		}
-
-      checkCollapse(nav.parent);
-  	}
-});
-</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gumshoe/3.5.1/js/gumshoe.min.js"></script><script src="/assets/js/side-nav.js"></script>
