@@ -38,9 +38,6 @@ Jekyll::Hooks.register :posts, :post_render do |post, payload|
   sidenav = Nokogiri::XML::Node.new 'nav', html_doc
   sidenav['id'] = "sidenav"
 
-  # TODO media breakpoint
-  sidenav['class'] = "col-xl-2 col-lg-2"
-
   # first level
   topul = sidenav.add_child(Nokogiri::XML::Node.new 'ul', html_doc)
   topul['data-gumshoe'] = ""
