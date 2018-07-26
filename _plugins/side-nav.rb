@@ -21,7 +21,7 @@ Jekyll::Hooks.register :posts, :post_render do |post, payload|
   # Render a scrollspy-style (https://github.com/cferdinandi/gumshoe) side nav
   next unless post['sidenav'] == true
 
-  html_doc = Nokogiri::HTML::DocumentFragment.parse(post.output)
+  html_doc = Nokogiri::HTML(post.output)
 
   # Choose only h1 and h2 tags
   # Don't care about other navs
@@ -77,7 +77,12 @@ Jekyll::Hooks.register :posts, :post_render do |post, payload|
   main_row = html_doc.css('.post > .row')
   raise 'unexpected HTML layout' unless main_row.length == 1
   main_row.first.add_child(sidenav)
-  html_doc.add_child('<script src="https://cdnjs.cloudflare.com/ajax/libs/gumshoe/3.5.1/js/gumshoe.min.js"></script>')
-  html_doc.add_child('<script src="/assets/js/side-nav.js"></script>')
+
+  body = html_doc.css('body')
+  raise 'HTML missing body' unless body.length == 1
+  body = body.first
+  body.last_element_child.add_next_sibling('<script src="https://cdnjs.cloudflare.com/ajax/libs/gumshoe/3.5.1/js/gumshoe.min.js"></script>')
+  body.last_element_child.add_next_sibling('<script src="/assets/js/side-nav.js"></script>')
+
   post.output = html_doc.to_s
 end
