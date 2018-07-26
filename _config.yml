@@ -28,6 +28,8 @@ plugins:
   - jekyll-seo-tag
 sass:
   style: compressed
+exclude:
+  - assets/vendor/bootstrap-4.1.3/
 
 # Conversion
 markdown:    kramdown
