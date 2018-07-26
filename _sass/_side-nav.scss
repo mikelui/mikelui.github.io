@@ -1,4 +1,9 @@
 
+@include media-breakpoint-down(md) {
+  #sidenav { display: none; }
+}
+
+@include media-breakpoint-up(md) {
 #sidenav {
   position: fixed;
   top: 50%;
@@ -153,4 +158,5 @@
       height: calc(100% - 1rem);
     }
   }
+}
 }
