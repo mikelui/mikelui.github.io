@@ -58,7 +58,7 @@ Jekyll::Hooks.register :posts, :post_render do |post, payload|
         # so that the :hover pseudo-selector only selects one level
         div = Nokogiri::XML::Node.new 'div', html_doc
         div['id'] = "sidenav-collapsible-#{collapsible_idx}"
-        div['class'] = "collapsible-sibling position-relative collapse";
+        div['class'] = "collapsible-sibling position-relative ml-collapse";
         collapsible_idx += 1
 
         div_border_wrapper = div.add_child(Nokogiri::XML::Node.new 'div', html_doc)
@@ -81,114 +81,6 @@ Jekyll::Hooks.register :posts, :post_render do |post, payload|
   raise 'unexpected HTML layout' unless main_row.length == 1
   main_row.first.add_child(sidenav)
   html_doc.add_child('<script src="https://cdnjs.cloudflare.com/ajax/libs/gumshoe/3.5.1/js/gumshoe.min.js"></script>')
-
-  # TODO init only if sufficient screen size, will need to register a resize event callback, too
-  # https://github.com/cferdinandi/gumshoe/pull/74
-  html_doc.add_child(<<~EOS
-<script>
-  function getSiblingCollapse(elem) {
-    var sibling = elem.nextElementSibling;
-    var siblingCollapse = sibling ? sibling.className.includes('collapsible-sibling') ? sibling : null : null;
-    return siblingCollapse;
-  }
-
-  function getElemCollapse(elem) {
-    // if we activated a nav item that has a collapse
-    // XXX is this useful anymore?
-    var elemCollapse = elem.querySelector('.collapse');
-    return elemCollapse;
-  }
-
-  function getParentCollapse(elem) {
-    // if we activated a nav item that's inside a collapse
-    var parCollapse = elem.closest('[data-gumshoe] .collapse');
-    return parCollapse;
-  }
-
-  $('#sidenav > ul[data-gumshoe]').hover(
-    function () {
-      var collapsibles = this.querySelectorAll('.collapse');
-      collapsibles.forEach(e => $(e).collapse('show'));
-    },
-    function () {
-      var nav = gumshoe.getCurrentNav();
-      var collapsibles = Array.from(this.querySelectorAll('.collapse'));
-      if (nav && nav.parent) {
-        collapse = getElemCollapse(nav.parent) || getParentCollapse(nav.parent) || getSiblingCollapse(nav.parent);
-        if (collapse) {
-          collapsibles = collapsibles.filter(e => !(e.getAttribute('id') === collapse.getAttribute('id')));
-        }
-      }
-      collapsibles.forEach(e => $(e).collapse('hide'));
-    });
-
-  // custom function to [un]collapse with gumshoe scrollspy
-  function _checkCollapse () {
-    var lastCollapse = null;
-
-    function __checkCollapse (parent) {
-      // if we activated a nav item that has a next-sibling collapsible
-      // NB: we do this because of a 'hover' hack that requires an
-      // element that would normally be a child, to be a sibling
-
-      collapse = getElemCollapse(parent) || getParentCollapse(parent) || getSiblingCollapse(parent);
-
-      // XXX don't use 'toggle' for collapsing, since multiple
-      // gumshoe callbacks can fire on the same scroll when
-      // using 'smooth scroll', causing jumping back and forth
-      // between collapse states
-
-      // if anything to do
-      if (collapse) {
-        $(collapse).collapse('show');
-      }
-
-      if (lastCollapse) {
-        // if no longer collapsed
-        if (!collapse) {
-          $(lastCollapse).collapse('hide');
-        }
-        // different collapse
-        else if (collapse.getAttribute('id') != lastCollapse.getAttribute('id')) {
-          $(lastCollapse).collapse('hide');
-        }
-      }
-
-      lastCollapse = collapse;
-    }
-
-    return __checkCollapse;
-  }
-
-  var checkCollapse = _checkCollapse();
-
-  gumshoe.init({
-    offset: 100,
-  	callback: function (nav) {
-      if (!nav) {
-        return;
-      }
-
-  		// Deactivate any currently active parent
-  		var current = document.querySelector('.active-parent');
-  		if (current) {
-  			current.classList.remove('active-parent');
-  		}
-
-  		// Check if the nav link has a parent nav
-  		var parNav = nav.parent.closest('[data-gumshoe] > li');
-
-  		// If the nav link has a parent item,
-  		// Then add a class to that link
-  		if (parNav) {
-  			parNav.classList.add('active-parent');
-  		}
-
-      checkCollapse(nav.parent);
-  	}
-});
-</script>
-                     EOS
-                    )
+  html_doc.add_child('<script src="/assets/js/side-nav.js"></script>')
   post.output = html_doc.to_s
 end

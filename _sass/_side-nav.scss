@@ -12,11 +12,6 @@
   @include sans-serif-font;
   font-weight: bold;
 
-  > ul {
-    //border: solid 1px rgba(0,0,0,.3);
-    //border-radius: 3px;
-  }
-
   ul {
     position: relative;
     display: inline-block;
@@ -31,23 +26,22 @@
     -ms-user-select: none;
     user-select: none;
 
+		// second-level
     ul {
       left: 10%;
+			li:first-child {
+				margin-top: 2rem;
+			}
     }
   }
 
 	ul {
     li {
 		  position: relative;
-      margin: 1rem 1rem;
-		  margin-top: 2rem;
-		  margin-bottom: 2rem;
+      margin: 2rem 1rem 0;
     }
     li:first-child {
       margin-top: 0;
-    }
-    li:last-child {
-      margin-bottom: 0;
     }
 	}
 
@@ -154,9 +148,19 @@
 		//transition: transform 0.3s ease, opacity 0.3s ease;
 
   .border-wrapper {
+		top: 1rem;
     div {
       height: calc(100% - 1rem);
     }
+  }
+
+  .ml-collapse {
+    height: 0;
+    overflow: hidden;
+    transition: height 0.3s;
+    -moz-transition: height 0.3s;
+    -webkit-transition: height 0.3s;
+    -o-transition: height 0.3s;
   }
 }
 }
