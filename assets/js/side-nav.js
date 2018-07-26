@@ -17,6 +17,9 @@
 //
 // This further assumes that there's only margins on one side of li's
 // Otherwise, when we shrink our .ml-collapse, there won't be the expected margin collapsing
+
+if( $(window).width() > 992 )
+{
 function mlshow($elem) {
   $elem.addClass('show');
   $elem.css('height', $elem.find('ul').height());
@@ -108,7 +111,7 @@ function _checkCollapse () {
 var checkCollapse = _checkCollapse();
 
 gumshoe.init({
-  offset: 100,
+  offset: ($(window).height() * 0.4),
   callback: function (nav) {
     if (!nav) {
       return;
@@ -132,5 +135,5 @@ gumshoe.init({
     checkCollapse(nav.parent);
   }
 });
-
+}
 
