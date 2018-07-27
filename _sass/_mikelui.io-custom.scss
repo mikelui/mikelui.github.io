@@ -96,3 +96,11 @@ p {
     margin-top: -1rem;
   }
 }
+
+// footnotes
+.footnotes:before {
+  display: block;
+  content: "Footnotes:";
+  @include sans-serif-font;
+  font-weight: 700;
+}
