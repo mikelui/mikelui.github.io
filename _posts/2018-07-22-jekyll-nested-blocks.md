@@ -163,7 +163,7 @@ We could actually write an entire post with just custom templates, but that woul
 
 There's three types of templates: filters, tags, and blocks.  
  - A *filter* transforms text or is replaced with the value of a {%raw%}`{{ variable | filter }}`{% endraw%}.
- - A *tag* typically does something more complex like {%raw%}`{% create variables %}`{%endraw%} for later use.  
+ - A *tag* typically does something more complex like use options or {%raw%}`{% create variables %}`{%endraw%} for later use.
  - A *block* is useful for {%raw%}`{% capturing %}`{%endraw%}  blocks of text and transforming them {%raw%}`{% endcapturing %}`{%endraw%}.
  - You can even have {%raw%}`{% nested %}{% blocks %}`{%endraw%} that both process {%raw%}`{% endblocks %}{% endnested %}`{%endraw%} the text.
 

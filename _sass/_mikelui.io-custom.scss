@@ -1,3 +1,5 @@
+//----------------------------------------------------------------------------
+// FONTS
 @font-face {
   font-family: 'Mononoki';
   src: url('/assets/fonts/mononoki/mononoki-Regular.woff2') format('woff2'),
@@ -25,6 +27,14 @@ body {
   color: #212529;
 }
 
+//----------------------------------------------------------------------------
+// Color text easily
+span.text-red { color: $red; }
+span.text-blue { color: $blue; }
+span.text-green { color: $green; }
+
+//----------------------------------------------------------------------------
+// Navbar - modified to allow initial white bg
 #mainNav.text-dark {
   .navbar-brand { color: $gray-900; }
   .navbar-brand:hover { color: $primary; }
@@ -36,6 +46,9 @@ body {
   }
 }
 
+//----------------------------------------------------------------------------
+// Blank header - if there's no image background,
+// then center the title/subtitle
 header.masthead.no-bg {
   background-color: unset;
 
@@ -58,17 +71,15 @@ header.masthead.no-bg {
   }
 }
 
-.container .lead:first-child {
-  margin-top: 0;
-}
+//----------------------------------------------------------------------------
+// Miscellaneous
 
-.lead {
-  @include sans-serif-font;
-}
+// Lead text - reduce space when starting a post with lead
+.container .lead:first-child { margin-top: 0; }
+.lead { @include sans-serif-font; }
 
-.post li a {
-  text-decoration: underline;
-}
+// underline anchors in a list item, turned off by Bootstrap
+.post li a { text-decoration: underline; }
 
 // Stack Overflow(ish) style blockquotes
 blockquote {
@@ -90,14 +101,14 @@ blockquote p {
   display: inline;
 }
 
-// spacings
+// reduce space, ...maybe margin-collapsing issue?
 p {
   + ul, + blockquote {
     margin-top: -1rem;
   }
 }
 
-// footnotes
+// add "Footnotes:" lead before footnotes for separation
 .footnotes:before {
   display: block;
   content: "Footnotes:";

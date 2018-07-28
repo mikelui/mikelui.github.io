@@ -25,6 +25,10 @@ module Jekyll
                  '<i class="fa fa-info-circle"></i> <b>Note:</b>'
                end
 
+        # NB! This is a 'span' markdown, so paragraphs will be merged together!
+        # Otherwise we'd need to add special CSS to remove the pre- and post-
+        # margins added on the div block.
+        # It is acceptable to add '<br>'s if you really want the newline.
         output = <<~EOS
                    <div markdown="span" class="alert alert-#{@type}" role="alert">
                      #{icon if icon} #{super}

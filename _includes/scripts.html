@@ -85,9 +85,16 @@
 {% if page.url contains 'guides' or page.url contains 'posts' %}
   <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.1/anchor.min.js"></script>
-  <script>
+  <script type="application/javascript">
     anchors.options.placement = 'left'
     anchors.options.visible = 'touch'
     anchors.add('h1, h2').remove('header h1, header h2, .post-preview h1, .post-preview h2')
+  </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+                         "HTML-CSS": { linebreaks: { automatic: true } },
+                         SVG: { linebreaks: { automatic: true } },
+                         TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
   </script>
 {% endif %}

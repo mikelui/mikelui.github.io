@@ -15,6 +15,9 @@
 #
 # {% endaccordion %}
 
+# for uuids
+require 'securerandom'
+
 module Jekyll
   module Tags
     class AccordionTag < Liquid::Block
@@ -44,32 +47,50 @@ module Jekyll
 
       def initialize(tag_name, block_options, liquid_options)
         super
-        @title = block_options.strip
+        options = block_options.strip
+        words = options.split ' '
+        if words.length == 1
+          @title = options
+        elsif words[0].downcase == 'id=name'  #... please don't use this as an actual header name :(
+          @title = words.drop(1).join(' ')
+          @id = Utils.slugify(@title)
+        else
+          @title = options
+        end
       end
 
       def render(context)
-        accordionID = context["accordionID"]
-        idx = context["collapsed_idx"]
-        collapsedID = "#{accordionID}-collapse-#{idx}"
-        headingID = "#{accordionID}-heading-#{idx}"
-        context["collapsed_idx"] = idx + 1
+        # generate a unique id if not in an accordion
+        accordionID = context["accordionID"] || "a-#{SecureRandom.uuid}"
+
+        if @id
+          headingID = "#{@id}"
+          collapsedID = "#{@id}-collapse"
+        else
+          idx = context["collapsed_idx"] || 1
+          headingID = "#{accordionID}-heading-#{idx}"
+          collapsedID = "#{accordionID}-collapse-#{idx}"
+          context["collapsed_idx"] = idx + 1
+        end
 
         site = context.registers[:site]
         converter = site.find_converter_instance(::Jekyll::Converters::Markdown)
         content = converter.convert(super)
 
-"<div class=\"card\">
-  <div class=\"card-header\" id=\"#{headingID}\">
-    <h4 class=\"mb-0\">
-      <button class=\"btn btn-link collapsed\" data-toggle=\"collapse\" data-target=\"##{collapsedID}\" aria-expanded=\"false\" aria-controls=\"#{collapsedID}\">
-        <span class=\"plus-minus-wrapper\"><div class=\"plus-minus\"></div></span><span class=\"collapse-title\">#{@title}</span>
-      </button>
-    </h4>
-  </div>
-  <div id=\"#{collapsedID}\" class=\"collapse\" aria-labelledby=\"#{headingID}\" data-parent=\"##{accordionID}\">
-    <div class=\"card-body\">#{content}</div>
-  </div>
-</div>"
+        output = <<~EOS
+        <div class="card ml-collapse-card">
+          <div class="card-header" id="#{headingID}">
+            <h4 class="mb-0">
+              <button class="btn btn-link collapsed" data-toggle="collapse" data-target="##{collapsedID}" aria-expanded="false" aria-controls="#{collapsedID}">
+                <span class="plus-minus-wrapper"><div class="plus-minus"></div></span><span class="collapse-title">#{@title}</span>
+              </button>
+            </h4>
+          </div>
+          <div id="#{collapsedID}" class="collapse" aria-labelledby="#{headingID}" data-parent="##{accordionID}">
+            <div class="card-body">#{content}</div>
+          </div>
+        </div>
+        EOS
       end
     end
 
