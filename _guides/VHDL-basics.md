@@ -111,7 +111,7 @@ VHDL and other HDLs can be thought of as a programming language for digital circ
 {% callout primary %}
 #### Ordering in VHDL
 Before we move on, let's distinguish one more difference between VHDL
-and imperative programming languages, which you have probably seen in the past.
+and the imperative programming languages you've probably seen in the past.
 Imperative programming languages are based on the idea of *sequential* statements.
 In other words, steps are executed one after the other in the order they appear.
 For example, we can assign a value in one step and read it back in consecutive steps.
@@ -138,7 +138,7 @@ BEGIN
     -- at the same time!
     b <= between;
     between <= a;
-    c <= between
+    c <= between;
 END df;
 ```
 
@@ -213,19 +213,12 @@ $$
 output &= (select \cdot s_0\prime \cdot s_1) + (select \cdot s_0 \cdot s_1) \nonumber\\
 &\phantom{{}1} + (select\prime \cdot s_0 \cdot s_1\prime) + (select\prime \cdot s_0 \cdot s_1) \\
 \nonumber\\
-& = select \cdot ((s_0\prime \cdot s_1) + (s_0 \cdot s_1)) \nonumber\\
-&\phantom{{}1} + select\prime \cdot ((s_0 \cdot s_1\prime) + (s_0 \cdot s_1)) \\
+& = select \cdot s_1 \cdot (s_0\prime + s_0 ) \nonumber\\
+&\phantom{{}1} + select\prime \cdot s_0 \cdot (s_1\prime + s_1) \\
 \nonumber\\
-& = select \cdot (s_0\prime \cdot s_0 + s_1 \cdot s_0 + s_0\prime \cdot s_1 + s_1 \cdot s_1) \nonumber\\
-&\phantom{{}1} + select\prime \cdot (s_0 \cdot s_0 + s_1\prime \cdot s_0 + s_0 \cdot s_1 + s_1\prime \cdot s1) \\
+& = select \cdot s_1 \cdot (1) + select\prime \cdot s_0 \cdot (1) \\
 \nonumber\\
-& = select \cdot (0 + s_1 \cdot (s_0\prime + s_0 + s_1)) \nonumber\\
-&\phantom{{}1} + select\prime \cdot (s_0 \cdot (s_0 + s_1\prime + s_1) + 0) \\
-\nonumber\\
-& = select \cdot (0 + s_1 \cdot (1)) \nonumber\\
-&\phantom{{}1} + select\prime \cdot (s_0 \cdot (1) + 0 ) \\
-\nonumber\\
-& = (select \cdot s_1) + (select\prime \cdot s_0)
+& = select \cdot s_1 + select\prime \cdot s_0
 \label{mux:final}
 \end{align}
 {%endraw%}
@@ -262,10 +255,10 @@ We've made a...box (helpfully color coded)!
    That might seem obvious, but it's important to establish the *interface* to our box.
  - Second, we filled in our other {{ "*components*" | colorize_blue }}.
    Sometimes our components will be other complex circuits that have *inputs* and *outputs*.
-   In this circuit, our components are basic gates--NOT, AND, and OR.
+   In this circuit, our components are basic gates--AND, OR, and NOT.
  - Last, we made sure everything had a name.
    That includes all the "{{ "wires" | colorize_green }}", or {{ "*signals*" | colorize_green }}, in our design.
-   If we had more complex components other than NOT, AND, and OR, then we would make sure that those were named, too.
+   If we had more complex components other than AND, OR, and NOT, then we would make sure that those were named, too.
    (We'll see an example of that later on.)
    If a {{ "signal" | colorize_green }} is directly connected to an {{ "input" | colorize_red }}
    or {{ "output" | colorize_red }} we can just use the name of that input or output.
@@ -474,7 +467,7 @@ Port mapping is, quite simply, mapping *signals* to *ports* of other *instances*
 In `line 24`, I decided to use the `and4` we made earlier to connect up some signals in my circuit.
  - First, we give a name to that particular `and4` instance (`a_name_for_this_part_of_my_schematic`).
    Each `and4` I create here is called making a new *instance*, compared to just *declaring* it as a component.
-   Everything in our circuit needs a name unless it's a basic [NOT, AND, OR, NOR, et al](http://www.brunel.ac.uk/~eestmba/hdl/opervhdl.html) gate.
+   Everything in our circuit needs a name unless it's a basic [AND, OR, NOT, NOR, et al](http://www.brunel.ac.uk/~eestmba/hdl/opervhdl.html) gate.
  - Then, we specify that we're using an `and4`.
  - Last, we specify how to connect our signals to the component.
 
