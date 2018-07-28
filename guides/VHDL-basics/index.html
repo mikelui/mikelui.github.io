@@ -201,7 +201,7 @@ VHDL and other HDLs can be thought of as a programming language for digital circ
 
   <h4 id="ordering-in-vhdl">Ordering in VHDL</h4>
   <p>Before we move on, let’s distinguish one more difference between VHDL
-and imperative programming languages, which you have probably seen in the past.
+and the imperative programming languages you’ve probably seen in the past.
 Imperative programming languages are based on the idea of <em>sequential</em> statements.
 In other words, steps are executed one after the other in the order they appear.
 For example, we can assign a value in one step and read it back in consecutive steps.</p>
@@ -226,7 +226,7 @@ For example, we can assign a value in one step and read it back in consecutive s
     <span class="c1">-- at the same time!</span>
     <span class="n">b</span> <span class="o">&lt;=</span> <span class="n">between</span><span class="p">;</span>
     <span class="n">between</span> <span class="o">&lt;=</span> <span class="n">a</span><span class="p">;</span>
-    <span class="n">c</span> <span class="o">&lt;=</span> <span class="n">between</span>
+    <span class="n">c</span> <span class="o">&lt;=</span> <span class="n">between</span><span class="p">;</span>
 <span class="k">END</span> <span class="n">df</span><span class="p">;</span>
 </code></pre></div>  </div>
 
@@ -357,19 +357,12 @@ If you’re able to jump right to the final equation, that’s great!</p>
 output &= (select \cdot s_0\prime \cdot s_1) + (select \cdot s_0 \cdot s_1) \nonumber\\
 &\phantom{{}1} + (select\prime \cdot s_0 \cdot s_1\prime) + (select\prime \cdot s_0 \cdot s_1) \\
 \nonumber\\
-& = select \cdot ((s_0\prime \cdot s_1) + (s_0 \cdot s_1)) \nonumber\\
-&\phantom{{}1} + select\prime \cdot ((s_0 \cdot s_1\prime) + (s_0 \cdot s_1)) \\
+& = select \cdot s_1 \cdot (s_0\prime + s_0 ) \nonumber\\
+&\phantom{{}1} + select\prime \cdot s_0 \cdot (s_1\prime + s_1) \\
 \nonumber\\
-& = select \cdot (s_0\prime \cdot s_0 + s_1 \cdot s_0 + s_0\prime \cdot s_1 + s_1 \cdot s_1) \nonumber\\
-&\phantom{{}1} + select\prime \cdot (s_0 \cdot s_0 + s_1\prime \cdot s_0 + s_0 \cdot s_1 + s_1\prime \cdot s1) \\
+& = select \cdot s_1 \cdot (1) + select\prime \cdot s_0 \cdot (1) \\
 \nonumber\\
-& = select \cdot (0 + s_1 \cdot (s_0\prime + s_0 + s_1)) \nonumber\\
-&\phantom{{}1} + select\prime \cdot (s_0 \cdot (s_0 + s_1\prime + s_1) + 0) \\
-\nonumber\\
-& = select \cdot (0 + s_1 \cdot (1)) \nonumber\\
-&\phantom{{}1} + select\prime \cdot (s_0 \cdot (1) + 0 ) \\
-\nonumber\\
-& = (select \cdot s_1) + (select\prime \cdot s_0)
+& = select \cdot s_1 + select\prime \cdot s_0
 \label{mux:final}
 \end{align} %]]></script>
 
@@ -405,10 +398,10 @@ A drawn schematic is not always required, but can help when we’re feeling lost
 That might seem obvious, but it’s important to establish the <em>interface</em> to our box.</li>
   <li>Second, we filled in our other <span class="text-blue"><em>components</em></span>.
 Sometimes our components will be other complex circuits that have <em>inputs</em> and <em>outputs</em>.
-In this circuit, our components are basic gates–NOT, AND, and OR.</li>
+In this circuit, our components are basic gates–AND, OR, and NOT.</li>
   <li>Last, we made sure everything had a name.
 That includes all the “<span class="text-green">wires</span>”, or <span class="text-green"><em>signals</em></span>, in our design.
-If we had more complex components other than NOT, AND, and OR, then we would make sure that those were named, too.
+If we had more complex components other than AND, OR, and NOT, then we would make sure that those were named, too.
 (We’ll see an example of that later on.)
 If a <span class="text-green">signal</span> is directly connected to an <span class="text-red">input</span>
 or <span class="text-red">output</span> we can just use the name of that input or output.
@@ -463,14 +456,14 @@ Some of our signals just exist between our gates, so we give those names (<em>se
 <p>Let’s unpack this one piece at a time.</p>
 
 <div class="card ml-collapse-card">
-  <div class="card-header" id="a-290b5ce7-4550-430b-a2ac-09a047f8a028-heading-1">
+  <div class="card-header" id="a-fbbb9a78-6043-4a12-9ddc-6369be2ae85f-heading-1">
     <h4 class="mb-0">
-      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#a-290b5ce7-4550-430b-a2ac-09a047f8a028-collapse-1" aria-expanded="false" aria-controls="a-290b5ce7-4550-430b-a2ac-09a047f8a028-collapse-1">
+      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#a-fbbb9a78-6043-4a12-9ddc-6369be2ae85f-collapse-1" aria-expanded="false" aria-controls="a-fbbb9a78-6043-4a12-9ddc-6369be2ae85f-collapse-1">
         <span class="plus-minus-wrapper"><div class="plus-minus"></div></span><span class="collapse-title">Keywords, Identifiers, and Operators</span>
       </button>
     </h4>
   </div>
-  <div id="a-290b5ce7-4550-430b-a2ac-09a047f8a028-collapse-1" class="collapse" aria-labelledby="a-290b5ce7-4550-430b-a2ac-09a047f8a028-heading-1" data-parent="#a-290b5ce7-4550-430b-a2ac-09a047f8a028">
+  <div id="a-fbbb9a78-6043-4a12-9ddc-6369be2ae85f-collapse-1" class="collapse" aria-labelledby="a-fbbb9a78-6043-4a12-9ddc-6369be2ae85f-heading-1" data-parent="#a-fbbb9a78-6043-4a12-9ddc-6369be2ae85f">
     <div class="card-body">
 <p>In the above example, the highlighted code differentiates between:</p>
 <ul>
@@ -493,14 +486,14 @@ Just remember to stay consistent.
 </div>
 
 <div class="card ml-collapse-card">
-  <div class="card-header" id="a-ecba9f5e-13a0-45f9-844d-a1282c2c754c-heading-2">
+  <div class="card-header" id="a-7d1970d6-b354-42e3-97b7-2e7ecd9d1d69-heading-2">
     <h4 class="mb-0">
-      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#a-ecba9f5e-13a0-45f9-844d-a1282c2c754c-collapse-2" aria-expanded="false" aria-controls="a-ecba9f5e-13a0-45f9-844d-a1282c2c754c-collapse-2">
+      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#a-7d1970d6-b354-42e3-97b7-2e7ecd9d1d69-collapse-2" aria-expanded="false" aria-controls="a-7d1970d6-b354-42e3-97b7-2e7ecd9d1d69-collapse-2">
         <span class="plus-minus-wrapper"><div class="plus-minus"></div></span><span class="collapse-title">Modules</span>
       </button>
     </h4>
   </div>
-  <div id="a-ecba9f5e-13a0-45f9-844d-a1282c2c754c-collapse-2" class="collapse" aria-labelledby="a-ecba9f5e-13a0-45f9-844d-a1282c2c754c-heading-2" data-parent="#a-ecba9f5e-13a0-45f9-844d-a1282c2c754c">
+  <div id="a-7d1970d6-b354-42e3-97b7-2e7ecd9d1d69-collapse-2" class="collapse" aria-labelledby="a-7d1970d6-b354-42e3-97b7-2e7ecd9d1d69-heading-2" data-parent="#a-7d1970d6-b354-42e3-97b7-2e7ecd9d1d69">
     <div class="card-body">
 <p>We’ve created a <em>design entity</em> (commonly referred to as a <em>module</em>).<br />
 <code class="highlighter-rouge">3.1</code> in the IEEE Standard VHDL Language Reference Manual:</p>
@@ -532,14 +525,14 @@ Conversely, a single file might have multiple modules.
 </div>
 
 <div class="card ml-collapse-card">
-  <div class="card-header" id="a-2a4b6fab-55a2-46ce-a199-414bfcf26304-heading-3">
+  <div class="card-header" id="a-f399dacf-01cd-475e-baa0-c6edbab3f09f-heading-3">
     <h4 class="mb-0">
-      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#a-2a4b6fab-55a2-46ce-a199-414bfcf26304-collapse-3" aria-expanded="false" aria-controls="a-2a4b6fab-55a2-46ce-a199-414bfcf26304-collapse-3">
+      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#a-f399dacf-01cd-475e-baa0-c6edbab3f09f-collapse-3" aria-expanded="false" aria-controls="a-f399dacf-01cd-475e-baa0-c6edbab3f09f-collapse-3">
         <span class="plus-minus-wrapper"><div class="plus-minus"></div></span><span class="collapse-title">Signals</span>
       </button>
     </h4>
   </div>
-  <div id="a-2a4b6fab-55a2-46ce-a199-414bfcf26304-collapse-3" class="collapse" aria-labelledby="a-2a4b6fab-55a2-46ce-a199-414bfcf26304-heading-3" data-parent="#a-2a4b6fab-55a2-46ce-a199-414bfcf26304">
+  <div id="a-f399dacf-01cd-475e-baa0-c6edbab3f09f-collapse-3" class="collapse" aria-labelledby="a-f399dacf-01cd-475e-baa0-c6edbab3f09f-heading-3" data-parent="#a-f399dacf-01cd-475e-baa0-c6edbab3f09f">
     <div class="card-body">
 <p>Signals are the basic <em>data values</em> in VHDL.
 We <strong>don’t</strong> use the term <em>variable</em> because it is reserved for sequential processes which won’t be covered in this guide.</p>
@@ -557,14 +550,14 @@ For example, <code class="highlighter-rouge">s1 &lt;= s2</code> means data is be
 </div>
 
 <div class="card ml-collapse-card">
-  <div class="card-header" id="a-116700e0-385c-485b-912a-8c47bf9e2a5f-heading-4">
+  <div class="card-header" id="a-3735e260-cad2-4a3b-90e8-420937d884d6-heading-4">
     <h4 class="mb-0">
-      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#a-116700e0-385c-485b-912a-8c47bf9e2a5f-collapse-4" aria-expanded="false" aria-controls="a-116700e0-385c-485b-912a-8c47bf9e2a5f-collapse-4">
+      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#a-3735e260-cad2-4a3b-90e8-420937d884d6-collapse-4" aria-expanded="false" aria-controls="a-3735e260-cad2-4a3b-90e8-420937d884d6-collapse-4">
         <span class="plus-minus-wrapper"><div class="plus-minus"></div></span><span class="collapse-title">Inputs and Outputs</span>
       </button>
     </h4>
   </div>
-  <div id="a-116700e0-385c-485b-912a-8c47bf9e2a5f-collapse-4" class="collapse" aria-labelledby="a-116700e0-385c-485b-912a-8c47bf9e2a5f-heading-4" data-parent="#a-116700e0-385c-485b-912a-8c47bf9e2a5f">
+  <div id="a-3735e260-cad2-4a3b-90e8-420937d884d6-collapse-4" class="collapse" aria-labelledby="a-3735e260-cad2-4a3b-90e8-420937d884d6-heading-4" data-parent="#a-3735e260-cad2-4a3b-90e8-420937d884d6">
     <div class="card-body">
 <p>The <code class="highlighter-rouge">ENTITY</code> describes the interface to our <em>thing</em>.
 The <em>inputs and outputs</em>, the wires we can <em>set</em> and <em>read</em> from, is described in the <code class="highlighter-rouge">ENTITY</code>.</p>
@@ -595,14 +588,14 @@ we can reuse their names in our <code class="highlighter-rouge">ARCHITECTURE</co
 </div>
 
 <div class="card ml-collapse-card">
-  <div class="card-header" id="a-7556f630-7b04-423f-8f96-834da2904a96-heading-5">
+  <div class="card-header" id="a-0fe5f2eb-0513-4edd-a049-3c23c516fcbc-heading-5">
     <h4 class="mb-0">
-      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#a-7556f630-7b04-423f-8f96-834da2904a96-collapse-5" aria-expanded="false" aria-controls="a-7556f630-7b04-423f-8f96-834da2904a96-collapse-5">
+      <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#a-0fe5f2eb-0513-4edd-a049-3c23c516fcbc-collapse-5" aria-expanded="false" aria-controls="a-0fe5f2eb-0513-4edd-a049-3c23c516fcbc-collapse-5">
         <span class="plus-minus-wrapper"><div class="plus-minus"></div></span><span class="collapse-title">Architecture</span>
       </button>
     </h4>
   </div>
-  <div id="a-7556f630-7b04-423f-8f96-834da2904a96-collapse-5" class="collapse" aria-labelledby="a-7556f630-7b04-423f-8f96-834da2904a96-heading-5" data-parent="#a-7556f630-7b04-423f-8f96-834da2904a96">
+  <div id="a-0fe5f2eb-0513-4edd-a049-3c23c516fcbc-collapse-5" class="collapse" aria-labelledby="a-0fe5f2eb-0513-4edd-a049-3c23c516fcbc-heading-5" data-parent="#a-0fe5f2eb-0513-4edd-a049-3c23c516fcbc">
     <div class="card-body">
 <p>The <code class="highlighter-rouge">ARCHITECTURE</code> structure describes what goes on inside our schematic.
 On <code class="highlighter-rouge">line 11</code> we start by giving our architecture a name: <code class="highlighter-rouge">df</code>, and declaring that this is the architecture <code class="highlighter-rouge">OF mux_2x1</code>.
@@ -639,7 +632,7 @@ They are how we make our circuit…well…<em>work</em>.</p>
       </button>
     </h4>
   </div>
-  <div id="bonus-components-collapse" class="collapse" aria-labelledby="bonus-components" data-parent="#a-2470113a-87a1-42ca-9ac7-7162ab9f116e">
+  <div id="bonus-components-collapse" class="collapse" aria-labelledby="bonus-components" data-parent="#a-4a1d171d-d4ec-4338-b01a-73d3d75feee2">
     <div class="card-body">
 <p>I <a href="#step-3-sketch-out-a-schematic">alluded to extra components earlier</a>, beyond simple NOT, AND, and OR gates.
 This is the cool part about VHDL! We can bit-by-bit (<em>no pun intended</em> 🤡) build up a bigger circuit from smaller
@@ -741,7 +734,7 @@ In <code class="highlighter-rouge">line 24</code>, I decided to use the <code cl
 <ul>
   <li>First, we give a name to that particular <code class="highlighter-rouge">and4</code> instance (<code class="highlighter-rouge">a_name_for_this_part_of_my_schematic</code>).
 Each <code class="highlighter-rouge">and4</code> I create here is called making a new <em>instance</em>, compared to just <em>declaring</em> it as a component.
-Everything in our circuit needs a name unless it’s a basic <a href="http://www.brunel.ac.uk/~eestmba/hdl/opervhdl.html">NOT, AND, OR, NOR, et al</a> gate.</li>
+Everything in our circuit needs a name unless it’s a basic <a href="http://www.brunel.ac.uk/~eestmba/hdl/opervhdl.html">AND, OR, NOT, NOR, et al</a> gate.</li>
   <li>Then, we specify that we’re using an <code class="highlighter-rouge">and4</code>.</li>
   <li>Last, we specify how to connect our signals to the component.</li>
 </ul>
