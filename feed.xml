@@ -1,4 +1,775 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://mikelui.io/feed.xml" rel="self" type="application/atom+xml" /><link href="http://mikelui.io/" rel="alternate" type="text/html" /><updated>2018-07-28T14:08:12-04:00</updated><id>http://mikelui.io/</id><title type="html">No TV and No Beer</title><subtitle>Experiences in the digital world and sometimes the real world, too</subtitle><author><name>Mike Lui</name></author><entry><title type="html">Creating an Accordion Plugin for Jekyll</title><link href="http://mikelui.io/2018/07/22/jekyll-nested-blocks.html" rel="alternate" type="text/html" title="Creating an Accordion Plugin for Jekyll" /><published>2018-07-21T20:00:00-04:00</published><updated>2018-07-21T20:00:00-04:00</updated><id>http://mikelui.io/2018/07/22/jekyll-nested-blocks</id><content type="html" xml:base="http://mikelui.io/2018/07/22/jekyll-nested-blocks.html">&lt;p class=&quot;lead&quot;&gt;Let’s start this blog off with some straight-forward informative posts.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://mikelui.io/feed.xml" rel="self" type="application/atom+xml" /><link href="http://mikelui.io/" rel="alternate" type="text/html" /><updated>2019-01-03T18:38:42-05:00</updated><id>http://mikelui.io/</id><title type="html">No TV and No Beer</title><subtitle>Experiences in the digital world and sometimes the real world, too</subtitle><author><name>Mike Lui</name></author><entry><title type="html">Initialization in C++ is Seriously Bonkers</title><link href="http://mikelui.io/2019/01/03/seriously-bonkers.html" rel="alternate" type="text/html" title="Initialization in C++ is Seriously Bonkers" /><published>2019-01-03T00:00:00-05:00</published><updated>2019-01-03T00:00:00-05:00</updated><id>http://mikelui.io/2019/01/03/seriously-bonkers</id><content type="html" xml:base="http://mikelui.io/2019/01/03/seriously-bonkers.html">&lt;p class=&quot;lead&quot;&gt;I was recently reminded of why I think it’s a bad idea to teach beginners C++.
+It’s a bad idea because it is an objective mess–albeit a beautiful, twisted, tragic, wondrous mess.
+This is partly a follow-up on &lt;a href=&quot;https://blog.tartanllama.xyz/&quot;&gt;Simon Brand’s&lt;/a&gt; article, &lt;a href=&quot;https://blog.tartanllama.xyz/initialization-is-bonkers/&quot;&gt;Initialization in C++ is bonkers&lt;/a&gt;,
+and partly a commentary on every student who’s wanted to begin their education by gazing into the abyss.&lt;/p&gt;
+
+&lt;p&gt;Here are some common remarks I get when students find out they’ll be using C:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;em&gt;“People still use C?”&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;“C is stupid.”&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;“Why are we learning C?”&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;“We should be learning something better like C++.”&lt;/em&gt; (&lt;strong&gt;&lt;em&gt;cue laugh track&lt;/em&gt;&lt;/strong&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Many students seem to think learning C is of little relevance (&lt;strong&gt;&lt;em&gt;narrator:&lt;/em&gt;&lt;/strong&gt; &lt;em&gt;it’s not&lt;/em&gt;) and,
+more relevant to this post, seem to think that they should instead start with C++.
+Let’s investigate just one of the reasons this is an absurd suggestion: &lt;strong&gt;&lt;em&gt;creating a frickin’ variable.&lt;/em&gt;&lt;/strong&gt;
+In Simon Brand’s original article, he assumed the reader was already familiar with pre-C++11 initialization
+oddities. I’ll introduce some of those here and go a bit beyond, too.&lt;/p&gt;
+
+&lt;p&gt;Let me preface by pointing out that, although I currently work for Drexel University’s Electrical and Computer Engineering department,
+the thoughts and opinions in this post–and every post–are my own and &lt;strong&gt;&lt;em&gt;not&lt;/em&gt;&lt;/strong&gt; the university’s.
+The classes I normally assist/instruct are part an engineering curriculum and not computer science,
+and thus have different needs geared more towards embedded systems and systems programming.&lt;/p&gt;
+
+&lt;h1 id=&quot;initialization-in-c&quot;&gt;Initialization in C&lt;/h1&gt;
+&lt;h3 id=&quot;prologue&quot;&gt;Prologue&lt;/h3&gt;
+
+&lt;p&gt;First let’s look at initialization in C&lt;sup id=&quot;fnref:c_init&quot;&gt;&lt;a href=&quot;#fn:c_init&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;, since it’s similar to C++ for compatibility reasons.
+This should go by fairly quick since C is so boring and simple (&lt;em&gt;sarcasm meter explodes&lt;/em&gt;).
+Initialization is hammered into anyone new to the language because it acts rather differently in C than
+in many newer statically typed languages, that will either default to sane values or provide 
+compile time errors if used uninitialized.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;%d&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Any C programmer worth anything knows that this initializes &lt;code class=&quot;highlighter-rouge&quot;&gt;i&lt;/code&gt; to an indeterminate value
+(for all intents and purposes, &lt;code class=&quot;highlighter-rouge&quot;&gt;i&lt;/code&gt; is uninitialized).
+Generally, it’s good practice to initialize variables &lt;em&gt;when they are defined&lt;/em&gt;, e.g. &lt;code class=&quot;highlighter-rouge&quot;&gt;int i = 0;&lt;/code&gt;,
+and variables must always be initialized &lt;em&gt;before&lt;/em&gt; they’re used.
+No matter how many times we &lt;del&gt;repeat, shout, scream, badger&lt;/del&gt; gently remind students about this,
+there are still those who think it gets initialized to &lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt; by default.&lt;/p&gt;
+
+&lt;p&gt;Great, let’s try something else simple.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;%d&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So this is obviously the same, right?
+We have no idea what value &lt;code class=&quot;highlighter-rouge&quot;&gt;i&lt;/code&gt; might have when we print–it could be anything.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Nope&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Because &lt;code class=&quot;highlighter-rouge&quot;&gt;i&lt;/code&gt; has static storage duration, it’s initialized to unsigned zero.
+Why, you ask? Because the standard says so.
+This has similar behavior for pointer types, which I’m not even going to address in this post.&lt;/p&gt;
+
+&lt;p&gt;O-kay, let’s look at structs.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;%d&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Same deal. &lt;code class=&quot;highlighter-rouge&quot;&gt;a&lt;/code&gt; is uninitialized.
+We can see this if we compile with warnings.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ gcc -Wuninitalized a.c
+a.c: In function ‘main’:
+a.c:9:5: warning: ‘a.i’ is used uninitialized in this function [-Wuninitialized]
+     printf(&quot;%d\n&quot;, a.i);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In C, we can initialize our object a few straight-forward ways.
+For example:
+1) by using a helper function,
+2) initializing during definition, or
+3) assigning some default global value.&lt;/p&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;default_A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;init_A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ptr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;cm&quot;&gt;/* helper function */&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;init_A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;cm&quot;&gt;/* during definition;
+     * initialize each member, in order... */&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+    &lt;span class=&quot;cm&quot;&gt;/* ...or allow members to be implicitly initialized,
+     * which defaults to the value it would take during
+     * static initialization (i.e. 0) */&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{};&lt;/span&gt;
+
+    &lt;span class=&quot;cm&quot;&gt;/* ...or use designated initializers if C99 or later */&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+    &lt;span class=&quot;cm&quot;&gt;/* default value */&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a5&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;default_A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;That’s pretty much it for C, and it’s enough to cause many tricksy bugs to manifest in many student projects.
+It’s certainly enough to cause a minor headache deciding how to simply default everything to &lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h1 id=&quot;initialization-in-c-1&quot;&gt;Initialization in C++&lt;/h1&gt;
+&lt;h3 id=&quot;act-1-our-heros-journey-begins&quot;&gt;Act 1: Our Hero’s Journey Begins&lt;/h3&gt;
+
+&lt;p&gt;If you’re eager to learn all the &lt;del&gt;terrors&lt;/del&gt; wonders of C++, you should first learn how to initialize your variables.
+All the same &lt;em&gt;behaviors&lt;/em&gt; apply for C++ as in C for the previous code, with some caveats in the &lt;em&gt;rules&lt;/em&gt;
+for those behaviors.
+C++-specific lingo will be &lt;em&gt;italicized&lt;/em&gt; to emphasize when I’m not just arbitrarily naming things
+and to emphasize how many more…&lt;em&gt;features&lt;/em&gt;…C++ has compared to C.
+Let’s start off with an easy one:&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;C++ has almost the same behavior as C here.
+In C, this just creates an object of type &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; whose value could be anything.
+In C++, &lt;code class=&quot;highlighter-rouge&quot;&gt;a&lt;/code&gt; is &lt;em&gt;default initialized&lt;/em&gt;&lt;sup id=&quot;fnref:default_init&quot;&gt;&lt;a href=&quot;#fn:default_init&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt;, meaning its &lt;em&gt;default constructor&lt;/em&gt;&lt;sup id=&quot;fnref:default_constructor&quot;&gt;&lt;a href=&quot;#fn:default_constructor&quot; class=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt; is used to construct it.
+Because &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; is so trivial, it has an &lt;em&gt;implicitly-defined default constructor&lt;/em&gt; which does nothing
+in this case. The implicitly-defined default constructor &lt;em&gt;“has exactly the same effect”&lt;/em&gt; as:&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){}&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;To check that we’re getting an uninitialized value, we can opt for a compile-time warning.
+As of this post, I’ve found that &lt;code class=&quot;highlighter-rouge&quot;&gt;g++ 8.2.1&lt;/code&gt; provides good warnings, while &lt;code class=&quot;highlighter-rouge&quot;&gt;clang++ 7.0.1&lt;/code&gt;
+does not for this case.
+Note that optimizations are turned on to catch some extra examples where variables would be uninitialized.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ g++ -Wuninitalized -O2 a.cpp
+a.cpp: In function ‘int main()’:
+a.cpp:9:20: warning: ‘a.A::i’ is used uninitialized in this function [-Wuninitialized]
+     std::cout &amp;lt;&amp;lt; a.i &amp;lt;&amp;lt; std::endl;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So in essence, this is as we’d expect coming from C.
+So how do we initialize &lt;code class=&quot;highlighter-rouge&quot;&gt;A::i&lt;/code&gt;?&lt;/p&gt;
+
+&lt;h3 id=&quot;act-2-our-hero-stumbles&quot;&gt;Act 2: Our Hero Stumbles&lt;/h3&gt;
+
+&lt;p&gt;Well, we could at least use the same ways as we did in C, right?
+C++ is a superset of C, after all, right? (&lt;em&gt;ahem&lt;/em&gt;)&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ g++ -Wuninitialized -O2 -pedantic-errors a.cpp
+a.cpp: In function ‘int main()’:
+a.cpp:9:12: error: C++ designated initializers only available with -std=c++2a or -std=gnu++2a [-Wpedantic]
+     A a = {.i = 0};
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Well there goes the neighborhood.
+Apparently designated initializers aren’t supported in C++ until C++20.
+That is, the C++ standards targeted for 2020.
+Yes, C++ is getting a feature 21 years after C.
+Note that I’ve added &lt;code class=&quot;highlighter-rouge&quot;&gt;-pedantic-errors&lt;/code&gt; to remove support for non-standard gcc extensions.&lt;/p&gt;
+
+&lt;p&gt;What about this?&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ g++ -Wuninitialized -O2 -pedantic-errors a.cpp
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Well at least that works.
+As in C, we can also do &lt;code class=&quot;highlighter-rouge&quot;&gt;A a = {};&lt;/code&gt; and it will have the same effect of zero-initializing &lt;code class=&quot;highlighter-rouge&quot;&gt;a.i&lt;/code&gt;.
+That’s because &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; is an &lt;em&gt;aggregate type&lt;/em&gt;&lt;sup id=&quot;fnref:agg_init&quot;&gt;&lt;a href=&quot;#fn:agg_init&quot; class=&quot;footnote&quot;&gt;4&lt;/a&gt;&lt;/sup&gt;.
+What’s an aggregate type?&lt;/p&gt;
+
+&lt;p&gt;In &lt;strong&gt;&lt;em&gt;pre-C++11&lt;/em&gt;&lt;/strong&gt; world: an aggregate type is (essentially) either a simple C-style array,
+or a struct that looks like a simple C struct.
+No access specifiers, no base classes, no user-declared constructors, no virtual functions.
+An aggregate type gets &lt;em&gt;aggregate initialized&lt;/em&gt;.
+What’s aggregate initialization?&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Each member of the aggregate is initialized by each element of the braced list in order.&lt;/li&gt;
+  &lt;li&gt;Each member without a corresponding element braced list will get &lt;em&gt;value initialized&lt;/em&gt;&lt;sup id=&quot;fnref:value_init&quot;&gt;&lt;a href=&quot;#fn:value_init&quot; class=&quot;footnote&quot;&gt;5&lt;/a&gt;&lt;/sup&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Great, what does that mean?
+If the member is another class type with a user-provided constructor, it’ll be called.
+If the member is a class type without a user-provided constructor, like &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt;, it’ll be recursively value-initialized.
+If the member is a built-in like our &lt;code class=&quot;highlighter-rouge&quot;&gt;int i&lt;/code&gt;, then it’s &lt;em&gt;zero-initialized&lt;/em&gt;&lt;sup id=&quot;fnref:zero_init&quot;&gt;&lt;a href=&quot;#fn:zero_init&quot; class=&quot;footnote&quot;&gt;6&lt;/a&gt;&lt;/sup&gt;.&lt;/p&gt;
+
+&lt;p&gt;HooOOooOOrraay! We finally achieved a sort-of-default value of zero!  Whew.&lt;/p&gt;
+
+&lt;p&gt;In &lt;strong&gt;&lt;em&gt;post-C++11&lt;/em&gt;&lt;/strong&gt; world: …we’ll get to that later.&lt;/p&gt;
+
+&lt;p&gt;Does that seem hard to remember and confusing?
+Note there’s a different set of rules for each version of C++.
+&lt;strong&gt;&lt;em&gt;It is. It’s frickin’ confusing and no one likes it&lt;/em&gt;&lt;/strong&gt;.
+These rules are mostly in place so things act like you’d expect them to when you go to initialize something with nothing.
+In practice, it’s best to explicitly initialize.
+I’m not picking on aggregate initialization in its own right.
+I’m picking on having to partake in a goose-chase through the standard to find out precisely what happens during initialization.&lt;/p&gt;
+
+&lt;h3 id=&quot;act-3-our-hero-journeys-into-the-cave&quot;&gt;Act 3: Our Hero Journeys Into the Cave&lt;/h3&gt;
+
+&lt;p&gt;Let’s use the C++ way to initialize &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt;, with &lt;strong&gt;constructors&lt;/strong&gt;! (&lt;em&gt;triumphant music&lt;/em&gt;)
+We can give &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt;’s member, &lt;code class=&quot;highlighter-rouge&quot;&gt;i&lt;/code&gt;, an initial value in a &lt;em&gt;user-provided&lt;/em&gt; default constructor:&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This initializes &lt;code class=&quot;highlighter-rouge&quot;&gt;i&lt;/code&gt; in a &lt;em&gt;member initializer list&lt;/em&gt;&lt;sup id=&quot;fnref:init_list&quot;&gt;&lt;a href=&quot;#fn:init_list&quot; class=&quot;footnote&quot;&gt;7&lt;/a&gt;&lt;/sup&gt;.
+A smellier way would be to set the value inside the constructor body:&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Because the constructor body can pretty much do anything, it’s better to separate initialization into
+the member initializer list (technically a part of the constructor body).&lt;/p&gt;
+
+&lt;div class=&quot;bs-callout bs-callout-info&quot;&gt;
+
+  &lt;p class=&quot;mt-0&quot;&gt;In C++11 or later, we can use &lt;em&gt;default member initializers&lt;/em&gt;&lt;sup id=&quot;fnref:default_member&quot;&gt;&lt;a href=&quot;#fn:default_member&quot; class=&quot;footnote&quot;&gt;8&lt;/a&gt;&lt;/sup&gt; (seriously, just use these when you can).&lt;/p&gt;
+  &lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// default member initializer, available in C++11 and later
+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;p&gt;O-kay, now the default constructor ensures that &lt;code class=&quot;highlighter-rouge&quot;&gt;i&lt;/code&gt; is set to 0 when any &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; is default initialized.
+Finally, if we wanted to allow users of &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; to set &lt;code class=&quot;highlighter-rouge&quot;&gt;i&lt;/code&gt;’s initial value, we could create another constructor just for that,
+or alternatively mush them together using default arguments:&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ g++ -pedantic-errors -Wuninitialized -O2 a.cpp
+$ ./a.out
+0 1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;alert alert-info&quot; role=&quot;alert&quot;&gt;
+  &lt;i class=&quot;fa fa-info-circle&quot;&gt;&lt;/i&gt; &lt;b&gt;Note:&lt;/b&gt; 
+We can’t write &lt;code class=&quot;highlighter-rouge&quot;&gt;A a();&lt;/code&gt; to call the default constructor because it gets parsed as:
+a declaration of a function, named &lt;code class=&quot;highlighter-rouge&quot;&gt;a&lt;/code&gt;, that takes no arguments and returns an &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; object.
+Why? Because someone somewhere a long time ago wanted to allow function declarations in compound statement blocks,
+and now we’re stuck with it.
+
+&lt;/div&gt;
+
+&lt;p&gt;Great! That’s it. Mission accomplished. Roll credits.
+You are now ready your adventures into C++ primed with your handy-dandy
+C++ survival guide with instructions on initializing variables.
+Turn around and be on your way!&lt;/p&gt;
+
+&lt;h3 id=&quot;act-4-our-hero-continues-into-the-blackness&quot;&gt;Act 4: Our Hero Continues Into the Blackness&lt;/h3&gt;
+&lt;p&gt;We &lt;em&gt;could&lt;/em&gt; stop there.
+But, if we want to use the &lt;em&gt;modern&lt;/em&gt; features of &lt;em&gt;modern C++&lt;/em&gt;, we have to delve further.
+In fact the version of g++ I’ve been using (8.2.1) uses &lt;code class=&quot;highlighter-rouge&quot;&gt;gnu++1y&lt;/code&gt; by default, which equivalent to C++14 with some extra GNU extensions.
+Even more, this version of g++ also fully supports C++17.
+&lt;em&gt;“Does that matter?”&lt;/em&gt; you might ask. Put on your fishing waders and wade with me yonder.&lt;/p&gt;
+
+&lt;p&gt;All versions following, and including, C++11, have this new-fangled way to initialize objects, called &lt;em&gt;list initialization&lt;/em&gt;&lt;sup id=&quot;fnref:list_init&quot;&gt;&lt;a href=&quot;#fn:list_init&quot; class=&quot;footnote&quot;&gt;9&lt;/a&gt;&lt;/sup&gt;.
+Did anyone else feel a chill up their spine just now?
+This is also referred to as &lt;em&gt;uniform initialization&lt;/em&gt;.
+There are some good reasons to use this syntax, covered &lt;a href=&quot;https://isocpp.org/wiki/faq/cpp11-language-misc#cpp11-narrowing&quot;&gt;here&lt;/a&gt;
+and &lt;a href=&quot;https://isocpp.org/wiki/faq/cpp11-language#uniform-init&quot;&gt;here&lt;/a&gt;.
+One amusing quote from the FAQ:&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;C++11 uniform initialization is not perfectly uniform, but it’s very nearly so.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;List initialization uses braces (&lt;code class=&quot;highlighter-rouge&quot;&gt;{thing1, thing2, ...}&lt;/code&gt;, called a &lt;em&gt;braced-init-list&lt;/em&gt;) and looks like this:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;iostream&amp;gt; 
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;      &lt;span class=&quot;c1&quot;&gt;// default initialization -- as before
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{};&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;// direct-list-initialization with empty list
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{};&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// copy-list-initialization with empty list
+&lt;/span&gt;    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
+a.cpp: In function ‘int main()’:
+a.cpp:9:26: warning: ‘a1.A::i’ is used uninitialized in this function [-Wuninitialized]
+     std::cout &amp;lt;&amp;lt; a1.i &amp;lt;&amp;lt; &quot; &quot; &amp;lt;&amp;lt; a2.i &amp;lt;&amp;lt; &quot; &quot; &amp;lt;&amp;lt; a3.i « std::endl;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;Whoa, whoa, whoa&lt;/em&gt;. Did you catch that? Only &lt;code class=&quot;highlighter-rouge&quot;&gt;a1.i&lt;/code&gt; is uninitialized.
+Clearly, list initialization works differently than just calling a constructor.&lt;/p&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;A a{};&lt;/code&gt; produces the same behavior as &lt;code class=&quot;highlighter-rouge&quot;&gt;A a = {};&lt;/code&gt;.
+In both, &lt;code class=&quot;highlighter-rouge&quot;&gt;a&lt;/code&gt; is initialized with an empty braced-init-list.
+Also, &lt;code class=&quot;highlighter-rouge&quot;&gt;A a = {};&lt;/code&gt; isn’t called aggregate initialization anymore–now it’s &lt;em&gt;copy-list-initialization&lt;/em&gt; (&lt;em&gt;sigh&lt;/em&gt;).
+We already said that &lt;code class=&quot;highlighter-rouge&quot;&gt;A a;&lt;/code&gt; creates an object with indeterminate value and calls the default constructor.&lt;/p&gt;
+
+&lt;p&gt;The following happens in lines 7/8 (remember, this is &lt;strong&gt;&lt;em&gt;post-C++11&lt;/em&gt;&lt;/strong&gt;):&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;List initialization of &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt;, causes 2.&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;aggregate initialization&lt;/em&gt; because &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; is an &lt;em&gt;aggregate type&lt;/em&gt;.&lt;/li&gt;
+  &lt;li&gt;Because all the list is empty, all members are initialized by empty lists.
+    &lt;ol&gt;
+      &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;int i{}&lt;/code&gt; leads to value initialization which initializes &lt;code class=&quot;highlighter-rouge&quot;&gt;i&lt;/code&gt; to 0.&lt;/li&gt;
+    &lt;/ol&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;What if this list isn’t empty?&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt; 
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{{}};&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;a1.i&lt;/code&gt; is initialized with &lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;a2.i&lt;/code&gt; is initialized with an empty list, and &lt;code class=&quot;highlighter-rouge&quot;&gt;a3&lt;/code&gt; is copy constructed from &lt;code class=&quot;highlighter-rouge&quot;&gt;a1&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Unfortunately, the definition of an aggregate has changed in every version since C++11,
+although there is functionally no difference between C++17 and C++20 aggregates, so far.
+Depending on which version of the C++ standard is used, something may or may not be an aggregate.
+The trend is to be more permissive of what is considered an aggregate.
+For example, public base classes are allowed in aggregates as of C++17, which in turn complicates the rules of aggregate initialization.
+Everything is great!&lt;/p&gt;
+
+&lt;p&gt;How are you feeling? Do you need some water? Are your fists clenching? Maybe take a break, go outside.&lt;/p&gt;
+
+&lt;h3 id=&quot;act-5-sanitys-requiem&quot;&gt;Act 5: Sanity’s Requiem&lt;/h3&gt;
+&lt;p&gt;What happens if &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; isn’t an aggregate?&lt;/p&gt;
+
+&lt;p&gt;Quick recap, an aggregate is:&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;an array, or&lt;/li&gt;
+  &lt;li&gt;a struct/class/union with
+    &lt;ul&gt;
+      &lt;li&gt;no private/protected members&lt;/li&gt;
+      &lt;li&gt;no user-(provided/declared) constructors&lt;/li&gt;
+      &lt;li&gt;no virtual functions&lt;/li&gt;
+      &lt;li&gt;no default member initializers (in C++11, doesn’t matter for later)&lt;/li&gt;
+      &lt;li&gt;no base classes (public bases allowed in C++17)&lt;/li&gt;
+      &lt;li&gt;no inherited constructors (&lt;code class=&quot;highlighter-rouge&quot;&gt;using Base::Base;&lt;/code&gt;, in C++17)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;So not-an-aggregate could be:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;iostream&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){};&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{};&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
+a.cpp: In function ‘int main()’:
+a.cpp:8:20: warning: ‘a.A::i’ is used uninitialized in this function [-Wuninitialized]
+     std::cout &amp;lt;&amp;lt; a.i &amp;lt;&amp;lt; std::endl;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Here, &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; has a user-provided constructor so list initialization works differently.&lt;br /&gt;
+The following happens on line 8:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;List initialization of &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt;, causes 2.&lt;/li&gt;
+  &lt;li&gt;Non-aggregate with an empty braced-init-list causes value initialization, go to 3.&lt;/li&gt;
+  &lt;li&gt;A user-provided constructor was found, so the default constructor called which does nothing in this case.
+&lt;code class=&quot;highlighter-rouge&quot;&gt;a.i&lt;/code&gt; is uninitialized.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr /&gt;
+
+&lt;div class=&quot;bs-callout bs-callout-info&quot;&gt;
+
+  &lt;p class=&quot;mt-0&quot;&gt;What’s a user-provided constructor anyway?&lt;/p&gt;
+
+  &lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+
+  &lt;p&gt;The above is &lt;em&gt;not&lt;/em&gt; a user-provided constructor.
+It’s as if no constructor was declared at all and &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; is an aggregate.&lt;/p&gt;
+
+  &lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;  &lt;/div&gt;
+  &lt;p&gt;The above &lt;em&gt;is&lt;/em&gt; a user-provided constructor.
+It’s as if we wrote &lt;code class=&quot;highlighter-rouge&quot;&gt;A(){}&lt;/code&gt; in the body and &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; is not an aggregate.&lt;/p&gt;
+
+  &lt;p&gt;Guess what, in C++20, the wording has changed to require aggregates to have no user-&lt;em&gt;declared&lt;/em&gt; constructors 😊.
+What does that mean in practice? I’m not sure! Let’s carry on.&lt;/p&gt;
+
+&lt;/div&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;What about the following:&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;iostream&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;friend&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{};&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; is a class, not a struct, so &lt;code class=&quot;highlighter-rouge&quot;&gt;i&lt;/code&gt; is private, and we had to set &lt;code class=&quot;highlighter-rouge&quot;&gt;main&lt;/code&gt; as a friend function.
+That makes &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; not an aggregate. That means &lt;code class=&quot;highlighter-rouge&quot;&gt;a.i&lt;/code&gt; will be uninitialized, right?&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Dangit. And just when we thought we were getting the hang of this.
+Turns out &lt;code class=&quot;highlighter-rouge&quot;&gt;a.i&lt;/code&gt; will be initialized to &lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt;, even though it doesn’t invoke aggregate initialization:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;List initialization of &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt;, causes 2.&lt;/li&gt;
+  &lt;li&gt;Non-aggregate with an empty braced-init-list causes value initialization, go to 3.&lt;/li&gt;
+  &lt;li&gt;No user-provided constructor found, so zero-initialize the object, go to 4.&lt;/li&gt;
+  &lt;li&gt;Invoke default-initialization if the implicitly-defined default constructor is non-trivial
+(it is in this case so nothing is done).&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;What if we tried to use aggregate initialize:&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;iostream&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;friend&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
+a.cpp: In function ‘int main()’:
+a.cpp:7:13: error: could not convert ‘{1}’ from ‘&amp;lt;brace-enclosed initializer list&amp;gt;’ to ‘A’
+     A a = {1};
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; is &lt;em&gt;not&lt;/em&gt; an aggregate, so the following happens:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;List initialization of &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt;, causes 2.&lt;/li&gt;
+  &lt;li&gt;Search for a matching constructor&lt;/li&gt;
+  &lt;li&gt;No way to convert a &lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt; to an &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt;, compilation fails&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;One last example for good measure:&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;iostream&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){}&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;B&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;B&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{};&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; &quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;j&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
+a.cpp: In function ‘int main()’:
+a.cpp:11:25: warning: ‘b.B::&amp;lt;anonymous&amp;gt;.A::i’ is used uninitialized in this function [-Wuninitialized]
+     std::cout &amp;lt;&amp;lt; b.i &amp;lt;&amp;lt; &quot; &quot; &amp;lt;&amp;lt; b.j &amp;lt;&amp;lt; std::endl;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;b.j&lt;/code&gt; is initialized but &lt;code class=&quot;highlighter-rouge&quot;&gt;b.i&lt;/code&gt; is uninitialized. What’s happening in this example?
+I’m not sure! 🤷
+I’ve asked about this on &lt;a href=&quot;https://stackoverflow.com/questions/54028846/why-is-a-member-not-getting-zero-initialized-in-this-example&quot;&gt;Stack Overflow&lt;/a&gt;,
+and as of publishing this post haven’t received a sufficient answer.&lt;/p&gt;
+
+&lt;p&gt;… (&lt;em&gt;blankly stares at you&lt;/em&gt;) (&lt;em&gt;stare turns to polite smile&lt;/em&gt;) alright let’s dive deeper!&lt;/p&gt;
+
+&lt;h3 id=&quot;act-5-the-abyss&quot;&gt;Act 5: The Abyss&lt;/h3&gt;
+
+&lt;p&gt;C++11 introduced something called a &lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&lt;/code&gt;&lt;sup id=&quot;fnref:initializer_list&quot;&gt;&lt;a href=&quot;#fn:initializer_list&quot; class=&quot;footnote&quot;&gt;10&lt;/a&gt;&lt;/sup&gt;.
+It has its own type, which is obviously &lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&amp;lt;T&amp;gt;&lt;/code&gt;.
+You can create one with a braced-init-list.
+Oh by the way, a braced-init-list, used in list initialization, that has &lt;em&gt;no type&lt;/em&gt;.
+Make sure you don’t confuse an initializer_list with list initialization or braced-init-lists!
+And they are sorta related to member initializer lists but also very different.
+They are related but different! Easy, right?&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;template&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;typename&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;initializer_list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;T&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;hey&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;thanks&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;for&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;reading!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;g++ -std=c++17 -pedantic-errors -Wuninitialized -O2 a.cpp
+a.cpp: In function ‘int main()’:
+a.cpp:12:21: warning: ‘a1.A::i’ is used uninitialized in this function [-Wuninitialized]
+     std::cout &amp;lt;&amp;lt; a1.i &amp;lt;&amp;lt; a2.i &amp;lt;&amp;lt; a3.i &amp;lt;&amp;lt; std::endl;
+                     ^
+a.cpp:12:29: warning: ‘a2.A::i’ is used uninitialized in this function [-Wuninitialized]
+     std::cout &amp;lt;&amp;lt; a1.i &amp;lt;&amp;lt; a2.i &amp;lt;&amp;lt; a3.i &amp;lt;&amp;lt; std::endl;
+                             ^
+a.cpp:12:37: warning: ‘a3.A::i’ is used uninitialized in this function [-Wuninitialized]
+     std::cout &amp;lt;&amp;lt; a1.i &amp;lt;&amp;lt; a2.i &amp;lt;&amp;lt; a3.i &amp;lt;&amp;lt; std::endl;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;O—kay. &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; has one templated constructor that takes a &lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&amp;lt;T&amp;gt;&lt;/code&gt;.
+The constructor is called each time, which does nothing, so &lt;code class=&quot;highlighter-rouge&quot;&gt;i&lt;/code&gt; remains uninitialized.
+The type of &lt;code class=&quot;highlighter-rouge&quot;&gt;T&lt;/code&gt; is deduced depending the elements in the list, and a new constructor is instantiated depending on the type.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;So in line 8, &lt;code class=&quot;highlighter-rouge&quot;&gt;{0}&lt;/code&gt; is deduced as a &lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&amp;lt;int&amp;gt;&lt;/code&gt; with one element, &lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;In line 9, &lt;code class=&quot;highlighter-rouge&quot;&gt;{1, 2, 3}&lt;/code&gt; is deduced as a &lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&amp;lt;int&amp;gt;&lt;/code&gt; with three elements.&lt;/li&gt;
+  &lt;li&gt;In line 10, the braced-init-list is deduced as a &lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&amp;lt;const char*&amp;gt;&lt;/code&gt; with 4 elements.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;alert alert-info&quot; role=&quot;alert&quot;&gt;
+  &lt;i class=&quot;fa fa-info-circle&quot;&gt;&lt;/i&gt; &lt;b&gt;Note:&lt;/b&gt; 
+&lt;code class=&quot;highlighter-rouge&quot;&gt;A a{}&lt;/code&gt; will produce an error because a type cannot be deduced.
+We would have to write &lt;code class=&quot;highlighter-rouge&quot;&gt;A a{std::initializer_list&amp;lt;int&amp;gt;{}}&lt;/code&gt;, for example.
+Or, we could exactly specify the constructor as in &lt;code class=&quot;highlighter-rouge&quot;&gt;A(std::initializer_list&amp;lt;int&amp;gt;){}&lt;/code&gt;.
+
+&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&lt;/code&gt; acts like a normal STL container, but it only has three member functions: &lt;code class=&quot;highlighter-rouge&quot;&gt;size&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;begin&lt;/code&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;end&lt;/code&gt;.
+&lt;code class=&quot;highlighter-rouge&quot;&gt;begin&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;end&lt;/code&gt; return iterators you can dereference and increment normally.
+This is useful if you want to initialize an object with varying length lists:&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;vector&amp;gt;
+#include &amp;lt;string&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v_1_int&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v_5_ints&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vector&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;string&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;v_strs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;neato!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;blammo!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;whammo!&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;egh&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vector&lt;/code&gt; has a constructor that takes a &lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&amp;lt;T&amp;gt;&lt;/code&gt;, so we can easily initialize vectors this way.&lt;/p&gt;
+&lt;div class=&quot;alert alert-info&quot; role=&quot;alert&quot;&gt;
+  &lt;i class=&quot;fa fa-info-circle&quot;&gt;&lt;/i&gt; &lt;b&gt;Note:&lt;/b&gt; 
+&lt;code class=&quot;highlighter-rouge&quot;&gt;v_1_int&lt;/code&gt; is a vector created from its constructor taking a &lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&amp;lt;int&amp;gt; init&lt;/code&gt; with one element, &lt;code class=&quot;highlighter-rouge&quot;&gt;5&lt;/code&gt;.&lt;br /&gt;
+&lt;code class=&quot;highlighter-rouge&quot;&gt;v_5_ints&lt;/code&gt; is a vector created from its constructor taking a &lt;strong&gt;&lt;em&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;size_t count&lt;/code&gt;&lt;/em&gt;&lt;/strong&gt;, which initializes a vector of count (&lt;code class=&quot;highlighter-rouge&quot;&gt;5&lt;/code&gt;) elements and value-initializes them (all set to &lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt; in this case).
+
+&lt;/div&gt;
+
+&lt;p&gt;Okie–dokie, one last example:&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-c--&quot; data-lang=&quot;c++&quot;&gt;&lt;table class=&quot;rouge-table&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;iostream&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;initializer_list&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;l&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{};&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; &quot;&lt;/span&gt;
+              &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; &quot;&lt;/span&gt;
+              &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; &quot;&lt;/span&gt;
+              &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot; &quot;&lt;/span&gt;
+              &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;At first glance, this isn’t too complicated.
+We have two constructors, one that takes a &lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&lt;/code&gt;, so any braced-init-list,
+and another with default arguments taking an &lt;code class=&quot;highlighter-rouge&quot;&gt;int&lt;/code&gt;.
+Before you look below at the output, try to figure out what will be value for each &lt;code class=&quot;highlighter-rouge&quot;&gt;i&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p class=&quot;pb-5&quot;&gt;Thought about it…? Let’s see what we get.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
+$ ./a.out
+1 1 3 2 2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;a1&lt;/code&gt; should have been easy. This is simple default initialization, which chooses the default constructor using its default arguments.
+&lt;code class=&quot;highlighter-rouge&quot;&gt;a2&lt;/code&gt; uses list initialization with an empty list.
+Because &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; has a default constructor (with default arguments), value initialization occurs which just calls that constructor.
+If &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; didn’t have that constructor, then the constructor on line 3 would be called with an empty list.
+&lt;code class=&quot;highlighter-rouge&quot;&gt;a3&lt;/code&gt; uses parenthesis, not a braced-init-list, so the overload resolution matches &lt;code class=&quot;highlighter-rouge&quot;&gt;3&lt;/code&gt; with the constructor taking an &lt;code class=&quot;highlighter-rouge&quot;&gt;int&lt;/code&gt;.
+&lt;code class=&quot;highlighter-rouge&quot;&gt;a4&lt;/code&gt; uses list initialization, which overload resolution will more favorably match with a constructor taking a &lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&lt;/code&gt;.
+&lt;code class=&quot;highlighter-rouge&quot;&gt;a5&lt;/code&gt; obviously can’t match against a single &lt;code class=&quot;highlighter-rouge&quot;&gt;int&lt;/code&gt;, so same constructor as &lt;code class=&quot;highlighter-rouge&quot;&gt;a4&lt;/code&gt; is used.&lt;/p&gt;
+
+&lt;h3 id=&quot;epilogue&quot;&gt;Epilogue&lt;/h3&gt;
+&lt;p&gt;Hopefully you’ve realized this post is (&lt;em&gt;mostly&lt;/em&gt;) tongue-in-cheek and hopefully a bit informative.
+Many of the peculiarities described in this post can be ignored and the language will act as you’d expect
+if you remember to initialize your variables before use, and initialize your class members during construction.
+Knowing all of the corner cases of C++ is not necessary to write competent code, and you will otherwise learn
+common pitfalls and idioms along the way.&lt;/p&gt;
+
+&lt;p&gt;The point I’ve hopefully gotten across is that C++ is a big, crusty language (for many historical reasons).
+This entire post was a rabbit hole on initialization rules. &lt;em&gt;Just initializing variables&lt;/em&gt;. And we didn’t even cover all of it.
+This post briefly covers 5 types of initialization.
+Simon mentions in his &lt;a href=&quot;https://blog.tartanllama.xyz/initialization-is-bonkers/&quot;&gt;original post&lt;/a&gt; that he found 18 types of initialization.&lt;/p&gt;
+
+&lt;p&gt;C++ is not a language I’d want to teach beginners.
+At no point in this post was there room for systems programming concepts, discourse on programming paradigms,
+computational-oriented problem solving methodologies, or fundamental algorithms.
+If you are interested in C++ then feel free to take a class specifically on C++, but know that the class will probably be specifically on learning C++.&lt;/p&gt;
+
+&lt;p&gt;C is a great, focused, fast, widely-supported, widely-used language for solving problems across a variety of domains.
+And it doesn’t have at least 18 types of initialization.&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:c_init&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://en.cppreference.com/w/c/language/initialization&quot;&gt;C initialization&lt;/a&gt; &lt;a href=&quot;#fnref:c_init&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:default_init&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://en.cppreference.com/w/cpp/language/default_initialization&quot;&gt;Default initialization&lt;/a&gt; &lt;a href=&quot;#fnref:default_init&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:default_constructor&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://en.cppreference.com/w/cpp/language/default_constructor&quot;&gt;Default constructors&lt;/a&gt; &lt;a href=&quot;#fnref:default_constructor&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:agg_init&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://en.cppreference.com/w/cpp/language/aggregate_initialization&quot;&gt;Aggregate initialization&lt;/a&gt; &lt;a href=&quot;#fnref:agg_init&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:value_init&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://en.cppreference.com/w/cpp/language/value_initialization&quot;&gt;Value initialization&lt;/a&gt; &lt;a href=&quot;#fnref:value_init&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:zero_init&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://en.cppreference.com/w/cpp/language/zero_initialization&quot;&gt;Zero initialization&lt;/a&gt; &lt;a href=&quot;#fnref:zero_init&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:init_list&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://en.cppreference.com/w/cpp/language/initializer_list&quot;&gt;Member initializer lists&lt;/a&gt; &lt;a href=&quot;#fnref:init_list&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:default_member&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://en.cppreference.com/w/cpp/language/data_members#Member_initialization&quot;&gt;Default member initializers&lt;/a&gt; &lt;a href=&quot;#fnref:default_member&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:list_init&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://en.cppreference.com/w/cpp/language/list_initialization&quot;&gt;List initialization&lt;/a&gt; &lt;a href=&quot;#fnref:list_init&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:initializer_list&quot;&gt;
+      &lt;p&gt;&lt;a href=&quot;https://en.cppreference.com/w/cpp/utility/initializer_list&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&lt;/code&gt;&lt;/a&gt; &lt;a href=&quot;#fnref:initializer_list&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;</content><author><name>Mike Lui</name></author><category term="C++" /><summary type="html">I was recently reminded of why I think it’s a bad idea to teach beginners C++. It’s a bad idea because it is an objective mess–albeit a beautiful, twisted, tragic, wondrous mess. This is partly a follow-up on Simon Brand’s article, Initialization in C++ is bonkers, and partly a commentary on every student who’s wanted to begin their education by gazing into the abyss.</summary></entry><entry><title type="html">Creating an Accordion Plugin for Jekyll</title><link href="http://mikelui.io/2018/07/22/jekyll-nested-blocks.html" rel="alternate" type="text/html" title="Creating an Accordion Plugin for Jekyll" /><published>2018-07-21T20:00:00-04:00</published><updated>2018-07-21T20:00:00-04:00</updated><id>http://mikelui.io/2018/07/22/jekyll-nested-blocks</id><content type="html" xml:base="http://mikelui.io/2018/07/22/jekyll-nested-blocks.html">&lt;p class=&quot;lead&quot;&gt;Let’s start this blog off with some straight-forward informative posts.
 As I’m still updating the look of this site, which uses the popular &lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt; static site generation framework,
 I thought it would be nice to share some useful tidbits I’ve learned.
 This is the first real post so I apologize in advance for any dissociative identity disorder
@@ -491,6 +1262,8 @@ Note that &lt;code class=&quot;highlighter-rouge&quot;&gt;registers&lt;/code&gt;
 &lt;p&gt;I chose to use the first method because I find it more clear when the content is buried in multiple levels of tags.
 Without further ado, our final plugins:&lt;/p&gt;
 
+&lt;h1 id=&quot;final-accordion-plugin&quot;&gt;Final Accordion Plugin&lt;/h1&gt;
+
 &lt;div class=&quot;code-title&quot;&gt;accordion.rb&lt;/div&gt;
 
 &lt;div class=&quot;language-ruby highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;module&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Jekyll&lt;/span&gt;
@@ -578,5 +1351,5 @@ Try making your own plugins when you find yourself adding in a lot of HTML.&lt;/
   You can even search hashmaps and arrays: &lt;code class=&quot;highlighter-rouge&quot;&gt;context[&quot;site.mydict['mykey'][0]&quot;]&lt;/code&gt;. Neat, huh? &lt;a href=&quot;#fnref:1&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name>Mike Lui</name></author><summary type="html">Let’s start this blog off with some straight-forward informative posts. As I’m still updating the look of this site, which uses the popular Jekyll static site generation framework, I thought it would be nice to share some useful tidbits I’ve learned. This is the first real post so I apologize in advance for any dissociative identity disorder exhibited in the tone and writing.</summary></entry><entry><title type="html">First Post</title><link href="http://mikelui.io/2018/07/07/Reboot.html" rel="alternate" type="text/html" title="First Post" /><published>2018-07-06T20:00:00-04:00</published><updated>2018-07-06T20:00:00-04:00</updated><id>http://mikelui.io/2018/07/07/Reboot</id><content type="html" xml:base="http://mikelui.io/2018/07/07/Reboot.html">&lt;p&gt;I tried starting this site a couple years ago, and then I realized I didn’t have the patience to collect my thoughts.
+&lt;/div&gt;</content><author><name>Mike Lui</name></author><category term="web-dev" /><category term="jekyll" /><category term="liquid" /><summary type="html">Let’s start this blog off with some straight-forward informative posts. As I’m still updating the look of this site, which uses the popular Jekyll static site generation framework, I thought it would be nice to share some useful tidbits I’ve learned. This is the first real post so I apologize in advance for any dissociative identity disorder exhibited in the tone and writing.</summary></entry><entry><title type="html">First Post</title><link href="http://mikelui.io/2018/07/07/Reboot.html" rel="alternate" type="text/html" title="First Post" /><published>2018-07-06T20:00:00-04:00</published><updated>2018-07-06T20:00:00-04:00</updated><id>http://mikelui.io/2018/07/07/Reboot</id><content type="html" xml:base="http://mikelui.io/2018/07/07/Reboot.html">&lt;p&gt;I tried starting this site a couple years ago, and then I realized I didn’t have the patience to collect my thoughts.
 Let’s try again.&lt;/p&gt;</content><author><name>Mike Lui</name></author><summary type="html">I tried starting this site a couple years ago, and then I realized I didn’t have the patience to collect my thoughts. Let’s try again.</summary></entry></feed>
