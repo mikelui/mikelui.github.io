@@ -28,7 +28,7 @@
 
 		// second-level
     ul {
-      left: 30%;
+      left: 10%;
 			li:first-child {
 				margin-top: 2rem;
 			}
@@ -76,7 +76,7 @@
   }
 
 	.dot-tooltip-wrapper {
-	  transform: translateX(200%);
+	  transform: translateX(300%);
 		opacity: 0;
 
     -webkit-transition: -webkit-transform 0.3s ease, opacity 0.3s ease, visibility 0s 0.3s ease;
@@ -85,7 +85,7 @@
 		.dot-tooltip {
       box-shadow: 0 0 3px;
 			position: absolute;
-			padding: 10px 10px;
+			padding: 5px 5px;
 			height: auto;
       width: auto;
 			border-radius: 3px;
@@ -118,7 +118,7 @@
 
   li:hover > .dot-tooltip-wrapper,
   li.active > .dot-tooltip-wrapper {
-	  transform: translateX(150%);
+	  transform: translateX(155%);
   }
 
   li:hover > .dot-tooltip-wrapper {

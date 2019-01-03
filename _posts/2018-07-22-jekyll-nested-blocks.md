@@ -6,6 +6,10 @@ subtitle: "Using Nested Liquid Blocks"
 date: 2018-07-22T00:00:00.000Z
 author: Mike Lui
 sidenav: true
+tags:
+  - web-dev
+  - jekyll
+  - liquid
 ---
 
 Let's start this blog off with some straight-forward informative posts.
@@ -524,6 +528,8 @@ end
 
 I chose to use the first method because I find it more clear when the content is buried in multiple levels of tags.
 Without further ado, our final plugins:
+
+# Final Accordion Plugin
 
 {% include code-title.html contents="accordion.rb" %}
 ``` ruby

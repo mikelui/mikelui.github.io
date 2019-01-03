@@ -191,7 +191,9 @@ var $mainUl = $('#sidenav > ul');
 $mainUl.css('width', $mainUl.find('li').outerWidth(true));
 
 var $collapseSib = $('div.collapsible-sibling');
-$collapseSib.css('width', $collapseSib.find('ul').outerWidth(true) * 1.2);
+$collapseSib.css('width', $collapseSib.find('ul').outerWidth(true) * 3); // a fudge number
+// NB: this is still not wide enough to show the entire tooltip, increasing the width further
+// moves the dots over too much, since it's position is relative to the containing block
 
 // Manually resize a tooltip if it spills over into the main content
 // Can't figure out a way to do this with pure html and css that makes sense
@@ -202,19 +204,22 @@ $collapseSib.css('width', $collapseSib.find('ul').outerWidth(true) * 1.2);
 //
 // Here we manually shrink, by setting a width and breaking on a word, if any of the tooltips
 // are too wide. Kind of a pain but not too much processing, and it's only done once.
-
 var $postDiv = $('body > .container > .row > div'); // main div with all post text
 var padding = parseInt($postDiv.css('padding-left'), 10);
 var leftEdge = $postDiv.offset().left + padding;
 
 var $tooltips = $('.dot-tooltip-wrapper');
 $tooltips.each(function (idx) {
-  $t = $(this)
-  $text = $t.find('.dot-tooltip')
+  var $t = $(this)
+  var $text = $t.find('.dot-tooltip')
 
-  w = $text.width()
-  rightEdge = $t.offset().left + w;
-  overlap = rightEdge - leftEdge;
+  var w = $text.width()
+  // account for translated x-coords
+  var translatedX = $t.css('transform').split(/[()]/)[1].split(',')[4];
+  var offset = $t.offset().left - translatedX; 
+
+  var rightEdge = offset + w;
+  var overlap = rightEdge - leftEdge;
 
   if (overlap > 0) {
     $text.css('width', w - overlap);
