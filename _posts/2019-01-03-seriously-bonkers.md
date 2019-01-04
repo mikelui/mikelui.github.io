@@ -180,7 +180,6 @@ To check that we're getting an uninitialized value, we can opt for a compile-tim
 As of this post, I've found that `g++ 8.2.1` provides good warnings, while `clang++ 7.0.1`
 does not for this case (with `-Wuninitialized`).
 Note that optimizations are turned on to catch some extra examples where variables would be uninitialized.
-Alternatively, Visual Studio has powerful debugging support that includes "initializing" 
 
 ```
 $ g++ -Wuninitalized -O2 a.cpp
