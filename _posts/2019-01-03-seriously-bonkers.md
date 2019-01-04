@@ -392,7 +392,7 @@ The following happens in lines 7/8 (remember, this is ***post-C++11***):
  3. Because the list is empty, all members are initialized by empty lists.
     1. `int i{}` leads to value initialization which initializes `i` to 0.
 
-What if this list isn't empty?
+What if the list isn't empty?
 
 ```c++
 int main() {
