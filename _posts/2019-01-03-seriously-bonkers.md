@@ -516,7 +516,7 @@ g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
 Dangit. And just when we thought we were getting the hang of this.
 Turns out `a.i` will be initialized to `0`, even though it doesn't invoke aggregate initialization:
 1. List initialization of `A`, causes 2.
-2. Non-aggregate with an empty braced-init-list causes value initialization, go to 3.
+2. Non-aggregate, class type with a default constructor, and an empty braced-init-list causes value initialization, go to 3.
 3. No user-provided constructor found, so zero-initialize the object, go to 4.
 4. Invoke default-initialization if the implicitly-defined default constructor is non-trivial
    (it is in this case so nothing is done).
