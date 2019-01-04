@@ -4,6 +4,7 @@ layout: post
 title: "Initialization in C++ is Seriously Bonkers"
 subtitle: "Footguns Galore"
 author: Mike Lui
+sidenav: true
 tags:
   - C++
 ---
@@ -48,7 +49,7 @@ and thus have different needs geared more towards embedded systems and systems p
 
 
 # Initialization in C
-### Prologue
+## Prologue
 
 First let's look at initialization in C[^c_init], since it's similar to C++ for compatibility reasons.
 This should go by fairly quick since C is so boring and simple (*ahem*).
@@ -154,7 +155,7 @@ That's pretty much it for C, and it's enough to cause many tricksy bugs to manif
 It's certainly enough to cause a minor headache deciding how to simply default everything to `0`.
 
 # Initialization in C++
-### Act 1: Our Hero's Journey Begins
+## Act 1: Our Hero's Journey Begins
 
 If you're eager to learn all the ~~terrors~~ wonders of C++, you should first learn how to initialize your variables.
 All the same *behaviors* apply for C++ as in C for the previous code, with some caveats in the *rules*
@@ -203,7 +204,7 @@ a.cpp:9:20: warning: ‘a.A::i’ is used uninitialized in this function [-Wunin
 So in essence, this is as we'd expect coming from C.
 So how do we initialize `A::i`?
 
-### Act 2: Our Hero Stumbles
+## Act 2: Our Hero Stumbles
 
 Well, we could at least use the same ways as we did in C, right?
 C++ is a superset of C, after all, right? (*ahem*)
@@ -280,7 +281,7 @@ In practice, it's best to explicitly initialize.
 I'm not picking on aggregate initialization in its own right.
 I'm picking on having to partake in a goose-chase through the standard to find out precisely what happens during initialization.
 
-### Act 3: Our Hero Journeys Into the Cave
+## Act 3: Our Hero Journeys Into the Cave
 
 Let's use the C++ way to initialize `A`, with **constructors**! (*triumphant music*)
 We can give `A`'s member, `i`, an initial value in a *user-provided* default constructor:
@@ -353,7 +354,7 @@ You are now ready your adventures into C++ primed with your handy-dandy
 C++ survival guide with instructions on initializing variables.
 Turn around and be on your way!
 
-### Act 4: Our Hero Continues Into the Blackness
+## Act 4: Our Hero Continues Into the Blackness
 We *could* stop there.
 But, if we want to use the *modern* features of *modern C++*, we have to delve further.
 In fact the version of g++ I've been using (8.2.1) uses `gnu++1y` by default, which equivalent to C++14 with some extra GNU extensions.
@@ -430,7 +431,7 @@ Everything is great!
 
 How are you feeling? Do you need some water? Are your fists clenching? Maybe take a break, go outside.
 
-### Act 5: Sanity's Requiem
+## Act 5: Sanity's Requiem
 What happens if `A` isn't an aggregate?
 
 Quick recap, an aggregate is:
@@ -596,7 +597,7 @@ Go figure.
 ... (*blankly stares at you*) (*stare turns to polite smile*) alright let's dive deeper!
 
 
-### Act 5: The Abyss
+## Act 5: The Abyss
 
 C++11 introduced something called a `std::initializer_list`[^initializer_list].
 It has its own type, which is obviously `std::initializer_list<T>`.
@@ -717,7 +718,7 @@ If `A` didn't have that constructor, then the constructor on line 3 would be cal
 `a5` obviously can't match against a single `int`, so the same constructor as `a4` is used.
 
 
-### Epilogue
+## Epilogue
 Hopefully you've realized this post is (*mostly*) tongue-in-cheek and hopefully a bit informative, too.
 Many of the peculiarities described in this post can be ignored and the language will act as you'd expect
 if you remember to initialize your variables before use and initialize your data members during construction.
