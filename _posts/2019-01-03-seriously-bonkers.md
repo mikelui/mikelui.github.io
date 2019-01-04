@@ -39,7 +39,7 @@ and thus have different needs geared more towards embedded systems and systems p
 ### Prologue
 
 First let's look at initialization in C[^c_init], since it's similar to C++ for compatibility reasons.
-This should go by fairly quick since C is so boring and simple (*sarcasm meter explodes*).
+This should go by fairly quick since C is so boring and simple (*ahem*).
 Initialization is hammered into anyone new to the language because it acts rather differently in C than
 in many newer statically typed languages, that will either default to sane values or provide 
 compile time errors if used uninitialized.
