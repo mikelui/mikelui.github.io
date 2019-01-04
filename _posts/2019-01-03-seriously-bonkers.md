@@ -178,8 +178,9 @@ struct A {
 
 To check that we're getting an uninitialized value, we can opt for a compile-time warning.
 As of this post, I've found that `g++ 8.2.1` provides good warnings, while `clang++ 7.0.1`
-does not for this case.
+does not for this case (with `-Wuninitialized`).
 Note that optimizations are turned on to catch some extra examples where variables would be uninitialized.
+Alternatively, Visual Studio has powerful debugging support that includes "initializing" 
 
 ```
 $ g++ -Wuninitalized -O2 a.cpp
@@ -577,6 +578,7 @@ I'm not sure! 🤷
 All of `b`'s bases and members *should* be getting zero-initialized here.
 I've asked about this on [Stack Overflow](https://stackoverflow.com/questions/54028846/why-is-a-member-not-getting-zero-initialized-in-this-example),
 and as of publishing this post haven't received a sufficient answer other than a possible compiler bug.
+For comparison, clang's static analyzer (not the normal compiler warnings) does not warn about uninitialized values.
 Go figure.
 
 ... (*blankly stares at you*) (*stare turns to polite smile*) alright let's dive deeper!
