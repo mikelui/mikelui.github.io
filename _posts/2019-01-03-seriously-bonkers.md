@@ -718,7 +718,7 @@ If `A` didn't have that constructor, then the constructor on line 3 would be cal
 `a5` obviously can't match against a single `int`, so the same constructor as `a4` is used.
 
 
-## Epilogue
+# Epilogue
 Hopefully you've realized this post is (*mostly*) tongue-in-cheek and hopefully a bit informative, too.
 Many of the peculiarities described in this post can be ignored and the language will act as you'd expect
 if you remember to initialize your variables before use and initialize your data members during construction.
