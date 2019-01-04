@@ -265,8 +265,7 @@ in this case. The implicitly-defined default constructor <em>“has exactly the 
 <p>To check that we’re getting an uninitialized value, we can opt for a compile-time warning.
 As of this post, I’ve found that <code class="highlighter-rouge">g++ 8.2.1</code> provides good warnings, while <code class="highlighter-rouge">clang++ 7.0.1</code>
 does not for this case (with <code class="highlighter-rouge">-Wuninitialized</code>).
-Note that optimizations are turned on to catch some extra examples where variables would be uninitialized.
-Alternatively, Visual Studio has powerful debugging support that includes “initializing”</p>
+Note that optimizations are turned on to catch some extra examples where variables would be uninitialized.</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ g++ -Wuninitalized -O2 a.cpp
 a.cpp: In function ‘int main()’:
