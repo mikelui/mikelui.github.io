@@ -9,11 +9,23 @@ tags:
 ---
 
 
-I was recently reminded of why I think it's a bad idea to teach beginners C++.
-It's a bad idea because it is an objective mess--albeit a beautiful, twisted, tragic, wondrous mess.
-This is partly a follow-up on [Simon Brand's][simon-brand] article, [Initialization in C++ is bonkers][simon-brand-init],
+I was [recently][niebler] [reminded][aras_twitter] of [why][aras_blog] I [think][jean_blog]
+it's a [bad idea][parent] to teach beginners C++.
+It's a [bad][deane] [idea][wilson] because it is an objective mess--albeit a beautiful, twisted, tragic, wondrous mess.
+Despite the current state of the community, this post is not a polemic against *"modern"* C++.
+This post is partly a follow-up on [Simon Brand's][simon-brand] article, [Initialization in C++ is bonkers][simon-brand-init],
 and partly a commentary on every student who's wanted to begin their education by gazing into the abyss.
 {:.lead}
+
+{:.lead}
+
+[niebler]: http://ericniebler.com/2018/12/05/standard-ranges/
+[aras_twitter]: https://twitter.com/aras_p/status/1076947443823136768
+[aras_blog]: http://aras-p.info/blog/2018/12/28/Modern-C-Lamentations/
+[jean_blog]: https://thephd.github.io/perspective-standardization-in-2018
+[parent]: https://sean-parent.stlab.cc/2018/12/30/cpp-ruminations.html
+[deane]: http://www.elbeno.com/blog/?p=1598
+[wilson]: https://medium.com/@pat_wilson/get-your-shit-together-6ccbfd6bb755
 
 Here are some common remarks I get when students find out they'll be using C:
  * *"People still use C?"*
