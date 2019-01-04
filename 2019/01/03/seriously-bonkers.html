@@ -264,8 +264,9 @@ in this case. The implicitly-defined default constructor <em>“has exactly the 
 
 <p>To check that we’re getting an uninitialized value, we can opt for a compile-time warning.
 As of this post, I’ve found that <code class="highlighter-rouge">g++ 8.2.1</code> provides good warnings, while <code class="highlighter-rouge">clang++ 7.0.1</code>
-does not for this case.
-Note that optimizations are turned on to catch some extra examples where variables would be uninitialized.</p>
+does not for this case (with <code class="highlighter-rouge">-Wuninitialized</code>).
+Note that optimizations are turned on to catch some extra examples where variables would be uninitialized.
+Alternatively, Visual Studio has powerful debugging support that includes “initializing”</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ g++ -Wuninitalized -O2 a.cpp
 a.cpp: In function ‘int main()’:
@@ -678,6 +679,7 @@ I’m not sure! 🤷
 All of <code class="highlighter-rouge">b</code>’s bases and members <em>should</em> be getting zero-initialized here.
 I’ve asked about this on <a href="https://stackoverflow.com/questions/54028846/why-is-a-member-not-getting-zero-initialized-in-this-example">Stack Overflow</a>,
 and as of publishing this post haven’t received a sufficient answer other than a possible compiler bug.
+For comparison, clang’s static analyzer (not the normal compiler warnings) does not warn about uninitialized values.
 Go figure.</p>
 
 <p>… (<em>blankly stares at you</em>) (<em>stare turns to polite smile</em>) alright let’s dive deeper!</p>

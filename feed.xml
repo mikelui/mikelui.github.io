@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://mikelui.io/feed.xml" rel="self" type="application/atom+xml" /><link href="http://mikelui.io/" rel="alternate" type="text/html" /><updated>2019-01-04T10:03:22-05:00</updated><id>http://mikelui.io/</id><title type="html">No TV and No Beer</title><subtitle>Experiences in the digital world and sometimes the real world, too</subtitle><author><name>Mike Lui</name></author><entry><title type="html">Initialization in C++ is Seriously Bonkers</title><link href="http://mikelui.io/2019/01/03/seriously-bonkers.html" rel="alternate" type="text/html" title="Initialization in C++ is Seriously Bonkers" /><published>2019-01-03T00:00:00-05:00</published><updated>2019-01-03T00:00:00-05:00</updated><id>http://mikelui.io/2019/01/03/seriously-bonkers</id><content type="html" xml:base="http://mikelui.io/2019/01/03/seriously-bonkers.html">&lt;p class=&quot;lead&quot;&gt;I was recently reminded of why I think it’s a bad idea to teach beginners C++.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://mikelui.io/feed.xml" rel="self" type="application/atom+xml" /><link href="http://mikelui.io/" rel="alternate" type="text/html" /><updated>2019-01-04T10:52:42-05:00</updated><id>http://mikelui.io/</id><title type="html">No TV and No Beer</title><subtitle>Experiences in the digital world and sometimes the real world, too</subtitle><author><name>Mike Lui</name></author><entry><title type="html">Initialization in C++ is Seriously Bonkers</title><link href="http://mikelui.io/2019/01/03/seriously-bonkers.html" rel="alternate" type="text/html" title="Initialization in C++ is Seriously Bonkers" /><published>2019-01-03T00:00:00-05:00</published><updated>2019-01-03T00:00:00-05:00</updated><id>http://mikelui.io/2019/01/03/seriously-bonkers</id><content type="html" xml:base="http://mikelui.io/2019/01/03/seriously-bonkers.html">&lt;p class=&quot;lead&quot;&gt;I was recently reminded of why I think it’s a bad idea to teach beginners C++.
 It’s a bad idea because it is an objective mess–albeit a beautiful, twisted, tragic, wondrous mess.
 This is partly a follow-up on &lt;a href=&quot;https://blog.tartanllama.xyz/&quot;&gt;Simon Brand’s&lt;/a&gt; article, &lt;a href=&quot;https://blog.tartanllama.xyz/initialization-is-bonkers/&quot;&gt;Initialization in C++ is bonkers&lt;/a&gt;,
 and partly a commentary on every student who’s wanted to begin their education by gazing into the abyss.&lt;/p&gt;
@@ -157,8 +157,9 @@ in this case. The implicitly-defined default constructor &lt;em&gt;“has exactl
 
 &lt;p&gt;To check that we’re getting an uninitialized value, we can opt for a compile-time warning.
 As of this post, I’ve found that &lt;code class=&quot;highlighter-rouge&quot;&gt;g++ 8.2.1&lt;/code&gt; provides good warnings, while &lt;code class=&quot;highlighter-rouge&quot;&gt;clang++ 7.0.1&lt;/code&gt;
-does not for this case.
-Note that optimizations are turned on to catch some extra examples where variables would be uninitialized.&lt;/p&gt;
+does not for this case (with &lt;code class=&quot;highlighter-rouge&quot;&gt;-Wuninitialized&lt;/code&gt;).
+Note that optimizations are turned on to catch some extra examples where variables would be uninitialized.
+Alternatively, Visual Studio has powerful debugging support that includes “initializing”&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ g++ -Wuninitalized -O2 a.cpp
 a.cpp: In function ‘int main()’:
@@ -571,6 +572,7 @@ I’m not sure! 🤷
 All of &lt;code class=&quot;highlighter-rouge&quot;&gt;b&lt;/code&gt;’s bases and members &lt;em&gt;should&lt;/em&gt; be getting zero-initialized here.
 I’ve asked about this on &lt;a href=&quot;https://stackoverflow.com/questions/54028846/why-is-a-member-not-getting-zero-initialized-in-this-example&quot;&gt;Stack Overflow&lt;/a&gt;,
 and as of publishing this post haven’t received a sufficient answer other than a possible compiler bug.
+For comparison, clang’s static analyzer (not the normal compiler warnings) does not warn about uninitialized values.
 Go figure.&lt;/p&gt;
 
 &lt;p&gt;… (&lt;em&gt;blankly stares at you&lt;/em&gt;) (&lt;em&gt;stare turns to polite smile&lt;/em&gt;) alright let’s dive deeper!&lt;/p&gt;
