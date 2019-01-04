@@ -478,7 +478,7 @@ We already said that <code class="highlighter-rouge">A a;</code> creates an obje
 <ol>
   <li>List initialization of <code class="highlighter-rouge">A</code>, causes 2.</li>
   <li><em>aggregate initialization</em> because <code class="highlighter-rouge">A</code> is an <em>aggregate type</em>.</li>
-  <li>Because all the list is empty, all members are initialized by empty lists.
+  <li>Because the list is empty, all members are initialized by empty lists.
     <ol>
       <li><code class="highlighter-rouge">int i{}</code> leads to value initialization which initializes <code class="highlighter-rouge">i</code> to 0.</li>
     </ol>
@@ -608,7 +608,8 @@ What does that mean in practice? I’m not sure! Let’s carry on.</p>
 </code></pre></div></div>
 
 <p><code class="highlighter-rouge">A</code> is a class, not a struct, so <code class="highlighter-rouge">i</code> is private, and we had to set <code class="highlighter-rouge">main</code> as a friend function.
-That makes <code class="highlighter-rouge">A</code> not an aggregate. That means <code class="highlighter-rouge">a.i</code> will be uninitialized, right?</p>
+That makes <code class="highlighter-rouge">A</code> not an aggregate. It’s just a normal class type.
+That means <code class="highlighter-rouge">a.i</code> will be uninitialized, right?</p>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
 </code></pre></div></div>
@@ -748,8 +749,9 @@ Or, we could exactly specify the constructor as in <code class="highlighter-roug
 
 </div>
 
-<p><code class="highlighter-rouge">std::initializer_list</code> acts like a typical STL container, but it only has three member functions: <code class="highlighter-rouge">size</code>, <code class="highlighter-rouge">begin</code>, and <code class="highlighter-rouge">end</code>.
-<code class="highlighter-rouge">begin</code> and <code class="highlighter-rouge">end</code> return iterators you can dereference and increment normally.
+<p><code class="highlighter-rouge">std::initializer_list</code> acts kinda like a typical STL container,
+but it only has three member functions: <code class="highlighter-rouge">size</code>, <code class="highlighter-rouge">begin</code>, and <code class="highlighter-rouge">end</code>.
+<code class="highlighter-rouge">begin</code> and <code class="highlighter-rouge">end</code> return iterators you can dereference, increment, and compare normally.
 This is useful when you want to initialize an object with varying length lists:</p>
 
 <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;vector&gt;

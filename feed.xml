@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://mikelui.io/feed.xml" rel="self" type="application/atom+xml" /><link href="http://mikelui.io/" rel="alternate" type="text/html" /><updated>2019-01-04T13:06:33-05:00</updated><id>http://mikelui.io/</id><title type="html">No TV and No Beer</title><subtitle>Experiences in the digital world and sometimes the real world, too</subtitle><author><name>Mike Lui</name></author><entry><title type="html">Initialization in C++ is Seriously Bonkers</title><link href="http://mikelui.io/2019/01/03/seriously-bonkers.html" rel="alternate" type="text/html" title="Initialization in C++ is Seriously Bonkers" /><published>2019-01-03T00:00:00-05:00</published><updated>2019-01-03T00:00:00-05:00</updated><id>http://mikelui.io/2019/01/03/seriously-bonkers</id><content type="html" xml:base="http://mikelui.io/2019/01/03/seriously-bonkers.html">&lt;p class=&quot;lead&quot;&gt;I was recently reminded of why I think it’s a bad idea to teach beginners C++.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://mikelui.io/feed.xml" rel="self" type="application/atom+xml" /><link href="http://mikelui.io/" rel="alternate" type="text/html" /><updated>2019-01-04T13:30:55-05:00</updated><id>http://mikelui.io/</id><title type="html">No TV and No Beer</title><subtitle>Experiences in the digital world and sometimes the real world, too</subtitle><author><name>Mike Lui</name></author><entry><title type="html">Initialization in C++ is Seriously Bonkers</title><link href="http://mikelui.io/2019/01/03/seriously-bonkers.html" rel="alternate" type="text/html" title="Initialization in C++ is Seriously Bonkers" /><published>2019-01-03T00:00:00-05:00</published><updated>2019-01-03T00:00:00-05:00</updated><id>http://mikelui.io/2019/01/03/seriously-bonkers</id><content type="html" xml:base="http://mikelui.io/2019/01/03/seriously-bonkers.html">&lt;p class=&quot;lead&quot;&gt;I was recently reminded of why I think it’s a bad idea to teach beginners C++.
 It’s a bad idea because it is an objective mess–albeit a beautiful, twisted, tragic, wondrous mess.
 This is partly a follow-up on &lt;a href=&quot;https://blog.tartanllama.xyz/&quot;&gt;Simon Brand’s&lt;/a&gt; article, &lt;a href=&quot;https://blog.tartanllama.xyz/initialization-is-bonkers/&quot;&gt;Initialization in C++ is bonkers&lt;/a&gt;,
 and partly a commentary on every student who’s wanted to begin their education by gazing into the abyss.&lt;/p&gt;
@@ -371,7 +371,7 @@ We already said that &lt;code class=&quot;highlighter-rouge&quot;&gt;A a;&lt;/co
 &lt;ol&gt;
   &lt;li&gt;List initialization of &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt;, causes 2.&lt;/li&gt;
   &lt;li&gt;&lt;em&gt;aggregate initialization&lt;/em&gt; because &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; is an &lt;em&gt;aggregate type&lt;/em&gt;.&lt;/li&gt;
-  &lt;li&gt;Because all the list is empty, all members are initialized by empty lists.
+  &lt;li&gt;Because the list is empty, all members are initialized by empty lists.
     &lt;ol&gt;
       &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;int i{}&lt;/code&gt; leads to value initialization which initializes &lt;code class=&quot;highlighter-rouge&quot;&gt;i&lt;/code&gt; to 0.&lt;/li&gt;
     &lt;/ol&gt;
@@ -501,7 +501,8 @@ What does that mean in practice? I’m not sure! Let’s carry on.&lt;/p&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; is a class, not a struct, so &lt;code class=&quot;highlighter-rouge&quot;&gt;i&lt;/code&gt; is private, and we had to set &lt;code class=&quot;highlighter-rouge&quot;&gt;main&lt;/code&gt; as a friend function.
-That makes &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; not an aggregate. That means &lt;code class=&quot;highlighter-rouge&quot;&gt;a.i&lt;/code&gt; will be uninitialized, right?&lt;/p&gt;
+That makes &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; not an aggregate. It’s just a normal class type.
+That means &lt;code class=&quot;highlighter-rouge&quot;&gt;a.i&lt;/code&gt; will be uninitialized, right?&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
@@ -641,8 +642,9 @@ Or, we could exactly specify the constructor as in &lt;code class=&quot;highligh
 
 &lt;/div&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&lt;/code&gt; acts like a typical STL container, but it only has three member functions: &lt;code class=&quot;highlighter-rouge&quot;&gt;size&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;begin&lt;/code&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;end&lt;/code&gt;.
-&lt;code class=&quot;highlighter-rouge&quot;&gt;begin&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;end&lt;/code&gt; return iterators you can dereference and increment normally.
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&lt;/code&gt; acts kinda like a typical STL container,
+but it only has three member functions: &lt;code class=&quot;highlighter-rouge&quot;&gt;size&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;begin&lt;/code&gt;, and &lt;code class=&quot;highlighter-rouge&quot;&gt;end&lt;/code&gt;.
+&lt;code class=&quot;highlighter-rouge&quot;&gt;begin&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;end&lt;/code&gt; return iterators you can dereference, increment, and compare normally.
 This is useful when you want to initialize an object with varying length lists:&lt;/p&gt;
 
 &lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;vector&amp;gt;
