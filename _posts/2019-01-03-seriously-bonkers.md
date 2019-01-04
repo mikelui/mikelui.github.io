@@ -389,7 +389,7 @@ We already said that `A a;` creates an object with indeterminate value and calls
 The following happens in lines 7/8 (remember, this is ***post-C++11***):
  1. List initialization of `A`, causes 2.
  2. *aggregate initialization* because `A` is an *aggregate type*.
- 3. Because all the list is empty, all members are initialized by empty lists.
+ 3. Because the list is empty, all members are initialized by empty lists.
     1. `int i{}` leads to value initialization which initializes `i` to 0.
 
 What if this list isn't empty?
@@ -506,7 +506,8 @@ int main() {
 ```
 
 `A` is a class, not a struct, so `i` is private, and we had to set `main` as a friend function.
-That makes `A` not an aggregate. That means `a.i` will be uninitialized, right?
+That makes `A` not an aggregate. It's just a normal class type.
+That means `a.i` will be uninitialized, right?
 
 ```
 g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
@@ -635,8 +636,9 @@ We would have to write `A a{std::initializer_list<int>{}}`, for example.
 Or, we could exactly specify the constructor as in `A(std::initializer_list<int>){}`.
 {% endalert %}
 
-`std::initializer_list` acts like a typical STL container, but it only has three member functions: `size`, `begin`, and `end`.
-`begin` and `end` return iterators you can dereference and increment normally.
+`std::initializer_list` acts kinda like a typical STL container,
+but it only has three member functions: `size`, `begin`, and `end`.
+`begin` and `end` return iterators you can dereference, increment, and compare normally.
 This is useful when you want to initialize an object with varying length lists:
 
 ```c++
