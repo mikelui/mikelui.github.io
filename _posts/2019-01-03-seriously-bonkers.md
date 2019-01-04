@@ -684,7 +684,7 @@ int main() {
 
 At first glance, this isn't too complicated.
 We have two constructors, one that takes a `std::initializer_list<int>` and another with default arguments taking an `int`.
-Before you look below at the output, try to figure out what will be value for each `i`.
+Before you look below at the output, try to figure out what will be the value for each `i`.
 
 Thought about it...? Let's see what we get.
 {:.pb-5}
