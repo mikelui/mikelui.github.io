@@ -29,15 +29,15 @@
 <meta property="og:title" content="Initialization in C++ is Seriously Bonkers" />
 <meta name="author" content="Mike Lui" />
 <meta property="og:locale" content="en_US" />
-<meta name="description" content="I was recently reminded of why I think it’s a bad idea to teach beginners C++. It’s a bad idea because it is an objective mess–albeit a beautiful, twisted, tragic, wondrous mess. This is partly a follow-up on Simon Brand’s article, Initialization in C++ is bonkers, and partly a commentary on every student who’s wanted to begin their education by gazing into the abyss." />
-<meta property="og:description" content="I was recently reminded of why I think it’s a bad idea to teach beginners C++. It’s a bad idea because it is an objective mess–albeit a beautiful, twisted, tragic, wondrous mess. This is partly a follow-up on Simon Brand’s article, Initialization in C++ is bonkers, and partly a commentary on every student who’s wanted to begin their education by gazing into the abyss." />
+<meta name="description" content="I was recently reminded of why I think it’s a bad idea to teach beginners C++. It’s a bad idea because it is an objective mess–albeit a beautiful, twisted, tragic, wondrous mess. Despite the current state of the community, this post is not a polemic against “modern” C++. This post is partly a follow-up on Simon Brand’s article, Initialization in C++ is bonkers, and partly a commentary on every student who’s wanted to begin their education by gazing into the abyss." />
+<meta property="og:description" content="I was recently reminded of why I think it’s a bad idea to teach beginners C++. It’s a bad idea because it is an objective mess–albeit a beautiful, twisted, tragic, wondrous mess. Despite the current state of the community, this post is not a polemic against “modern” C++. This post is partly a follow-up on Simon Brand’s article, Initialization in C++ is bonkers, and partly a commentary on every student who’s wanted to begin their education by gazing into the abyss." />
 <link rel="canonical" href="http://mikelui.io/2019/01/03/seriously-bonkers.html" />
 <meta property="og:url" content="http://mikelui.io/2019/01/03/seriously-bonkers.html" />
 <meta property="og:site_name" content="No TV and No Beer" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2019-01-03T00:00:00-05:00" />
 <script type="application/ld+json">
-{"headline":"Initialization in C++ is Seriously Bonkers","description":"I was recently reminded of why I think it’s a bad idea to teach beginners C++. It’s a bad idea because it is an objective mess–albeit a beautiful, twisted, tragic, wondrous mess. This is partly a follow-up on Simon Brand’s article, Initialization in C++ is bonkers, and partly a commentary on every student who’s wanted to begin their education by gazing into the abyss.","datePublished":"2019-01-03T00:00:00-05:00","dateModified":"2019-01-03T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://mikelui.io/2019/01/03/seriously-bonkers.html"},"@type":"BlogPosting","url":"http://mikelui.io/2019/01/03/seriously-bonkers.html","author":{"@type":"Person","name":"Mike Lui"},"@context":"http://schema.org"}</script>
+{"headline":"Initialization in C++ is Seriously Bonkers","description":"I was recently reminded of why I think it’s a bad idea to teach beginners C++. It’s a bad idea because it is an objective mess–albeit a beautiful, twisted, tragic, wondrous mess. Despite the current state of the community, this post is not a polemic against “modern” C++. This post is partly a follow-up on Simon Brand’s article, Initialization in C++ is bonkers, and partly a commentary on every student who’s wanted to begin their education by gazing into the abyss.","datePublished":"2019-01-03T00:00:00-05:00","dateModified":"2019-01-03T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://mikelui.io/2019/01/03/seriously-bonkers.html"},"@type":"BlogPosting","url":"http://mikelui.io/2019/01/03/seriously-bonkers.html","author":{"@type":"Person","name":"Mike Lui"},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 </head>
@@ -105,9 +105,11 @@
   <div class="row">
     <div class="col-lg-8 col-md-10 mx-auto">
 
-      <p class="lead">I was recently reminded of why I think it’s a bad idea to teach beginners C++.
-It’s a bad idea because it is an objective mess–albeit a beautiful, twisted, tragic, wondrous mess.
-This is partly a follow-up on <a href="https://blog.tartanllama.xyz/">Simon Brand’s</a> article, <a href="https://blog.tartanllama.xyz/initialization-is-bonkers/">Initialization in C++ is bonkers</a>,
+      <p class="lead">I was <a class="lead" href="http://ericniebler.com/2018/12/05/standard-ranges/">recently</a> <a href="https://twitter.com/aras_p/status/1076947443823136768">reminded</a> of <a href="http://aras-p.info/blog/2018/12/28/Modern-C-Lamentations/">why</a> I <a href="https://thephd.github.io/perspective-standardization-in-2018">think</a>
+it’s a <a href="https://sean-parent.stlab.cc/2018/12/30/cpp-ruminations.html">bad idea</a> to teach beginners C++.
+It’s a <a href="http://www.elbeno.com/blog/?p=1598">bad</a> <a href="https://medium.com/@pat_wilson/get-your-shit-together-6ccbfd6bb755">idea</a> because it is an objective mess–albeit a beautiful, twisted, tragic, wondrous mess.
+Despite the current state of the community, this post is not a polemic against <em>“modern”</em> C++.
+This post is partly a follow-up on <a href="https://blog.tartanllama.xyz/">Simon Brand’s</a> article, <a href="https://blog.tartanllama.xyz/initialization-is-bonkers/">Initialization in C++ is bonkers</a>,
 and partly a commentary on every student who’s wanted to begin their education by gazing into the abyss.</p>
 
 <p>Here are some common remarks I get when students find out they’ll be using C:</p>
