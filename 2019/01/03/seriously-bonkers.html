@@ -122,7 +122,8 @@ and partly a commentary on every student who’s wanted to begin their education
 more relevant to this post, seem to think that they should instead start with C++.
 Let’s investigate just one of the reasons this is an absurd suggestion: <strong><em>creating a frickin’ variable.</em></strong>
 In Simon Brand’s original article, he assumed the reader was already familiar with pre-C++11 initialization
-oddities. I’ll introduce some of those here and go a bit beyond, too.</p>
+oddities.
+I’ll introduce some of those here and go a bit beyond, too.</p>
 
 <p>Let me preface by pointing out that, although I currently work for Drexel University’s Electrical and Computer Engineering department,
 the thoughts and opinions in this post–and every post–are my own and <strong><em>not</em></strong> the university’s.
@@ -635,7 +636,7 @@ Turns out <code class="highlighter-rouge">a.i</code> will be initialized to <cod
 <span class="p">}</span>
 </code></pre></div></div>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
 a.cpp: In function ‘int main()’:
 a.cpp:7:13: error: could not convert ‘{1}’ from ‘&lt;brace-enclosed initializer list&gt;’ to ‘A’
      A a = {1};
@@ -674,8 +675,10 @@ a.cpp:11:25: warning: ‘b.B::&lt;anonymous&gt;.A::i’ is used uninitialized in
 
 <p><code class="highlighter-rouge">b.j</code> is initialized but <code class="highlighter-rouge">b.i</code> is uninitialized. What’s happening in this example?
 I’m not sure! 🤷
+All of <code class="highlighter-rouge">b</code>’s bases and members <em>should</em> be getting zero-initialized here.
 I’ve asked about this on <a href="https://stackoverflow.com/questions/54028846/why-is-a-member-not-getting-zero-initialized-in-this-example">Stack Overflow</a>,
-and as of publishing this post haven’t received a sufficient answer.</p>
+and as of publishing this post haven’t received a sufficient answer other than a possible compiler bug.
+Go figure.</p>
 
 <p>… (<em>blankly stares at you</em>) (<em>stare turns to polite smile</em>) alright let’s dive deeper!</p>
 
@@ -686,7 +689,8 @@ It has its own type, which is obviously <code class="highlighter-rouge">std::ini
 You can create one with a braced-init-list.
 Oh by the way, a braced-init-list, used in list initialization, that has <em>no type</em>.
 Make sure you don’t confuse an initializer_list with list initialization or braced-init-lists!
-And they are sorta related to member initializer lists but also very different.
+And they are sorta related to member initializer lists and default member initializers,
+in that they help initialize non-static data members, but are also quite different.
 They are related but different! Easy, right?</p>
 
 <figure class="highlight"><pre><code class="language-c--" data-lang="c++"><table class="rouge-table"><tbody><tr><td class="gutter gl"><pre class="lineno">1
@@ -714,7 +718,7 @@ They are related but different! Easy, right?</p>
     <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a1</span><span class="p">.</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">a2</span><span class="p">.</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">a3</span><span class="p">.</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
 <span class="p">}</span></pre></td></tr></tbody></table></code></pre></figure>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>g++ -std=c++17 -pedantic-errors -Wuninitialized -O2 a.cpp
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ g++ -std=c++17 -pedantic-errors -Wuninitialized -O2 a.cpp
 a.cpp: In function ‘int main()’:
 a.cpp:12:21: warning: ‘a1.A::i’ is used uninitialized in this function [-Wuninitialized]
      std::cout &lt;&lt; a1.i &lt;&lt; a2.i &lt;&lt; a3.i &lt;&lt; std::endl;
@@ -727,7 +731,7 @@ a.cpp:12:37: warning: ‘a3.A::i’ is used uninitialized in this function [-Wun
 </code></pre></div></div>
 
 <p>O—kay. <code class="highlighter-rouge">A</code> has one templated constructor that takes a <code class="highlighter-rouge">std::initializer_list&lt;T&gt;</code>.
-The constructor is called each time, which does nothing, so <code class="highlighter-rouge">i</code> remains uninitialized.
+The user-provided constructor is called each time, which does nothing, so <code class="highlighter-rouge">i</code> remains uninitialized.
 The type of <code class="highlighter-rouge">T</code> is deduced depending the elements in the list, and a new constructor is instantiated depending on the type.</p>
 <ul>
   <li>So in line 8, <code class="highlighter-rouge">{0}</code> is deduced as a <code class="highlighter-rouge">std::initializer_list&lt;int&gt;</code> with one element, <code class="highlighter-rouge">0</code>.</li>
@@ -743,9 +747,9 @@ Or, we could exactly specify the constructor as in <code class="highlighter-roug
 
 </div>
 
-<p><code class="highlighter-rouge">std::initializer_list</code> acts like a normal STL container, but it only has three member functions: <code class="highlighter-rouge">size</code>, <code class="highlighter-rouge">begin</code>, and <code class="highlighter-rouge">end</code>.
+<p><code class="highlighter-rouge">std::initializer_list</code> acts like a typical STL container, but it only has three member functions: <code class="highlighter-rouge">size</code>, <code class="highlighter-rouge">begin</code>, and <code class="highlighter-rouge">end</code>.
 <code class="highlighter-rouge">begin</code> and <code class="highlighter-rouge">end</code> return iterators you can dereference and increment normally.
-This is useful if you want to initialize an object with varying length lists:</p>
+This is useful when you want to initialize an object with varying length lists:</p>
 
 <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;vector&gt;
 #include &lt;string&gt;
@@ -756,11 +760,11 @@ This is useful if you want to initialize an object with varying length lists:</p
 <span class="p">}</span>
 </code></pre></div></div>
 
-<p><code class="highlighter-rouge">vector</code> has a constructor that takes a <code class="highlighter-rouge">std::initializer_list&lt;T&gt;</code>, so we can easily initialize vectors this way.</p>
+<p><code class="highlighter-rouge">vector</code> has a constructor that takes a <code class="highlighter-rouge">std::initializer_list&lt;T&gt;</code>, so we can easily initialize vectors as shown above.</p>
 <div class="alert alert-info" role="alert">
   <i class="fa fa-info-circle"></i> <b>Note:</b> 
 <code class="highlighter-rouge">v_1_int</code> is a vector created from its constructor taking a <code class="highlighter-rouge">std::initializer_list&lt;int&gt; init</code> with one element, <code class="highlighter-rouge">5</code>.<br />
-<code class="highlighter-rouge">v_5_ints</code> is a vector created from its constructor taking a <strong><em><code class="highlighter-rouge">size_t count</code></em></strong>, which initializes a vector of count (<code class="highlighter-rouge">5</code>) elements and value-initializes them (all set to <code class="highlighter-rouge">0</code> in this case).
+<code class="highlighter-rouge">v_5_ints</code> is a vector created from its constructor taking a <strong><code class="highlighter-rouge">size_t count</code></strong>, which initializes a vector of count (<code class="highlighter-rouge">5</code>) elements and value-initializes them (all set to <code class="highlighter-rouge">0</code> in this case).
 
 </div>
 
@@ -804,8 +808,7 @@ This is useful if you want to initialize an object with varying length lists:</p
 <span class="p">}</span></pre></td></tr></tbody></table></code></pre></figure>
 
 <p>At first glance, this isn’t too complicated.
-We have two constructors, one that takes a <code class="highlighter-rouge">std::initializer_list</code>, so any braced-init-list,
-and another with default arguments taking an <code class="highlighter-rouge">int</code>.
+We have two constructors, one that takes a <code class="highlighter-rouge">std::initializer_list&lt;int&gt;</code> and another with default arguments taking an <code class="highlighter-rouge">int</code>.
 Before you look below at the output, try to figure out what will be value for each <code class="highlighter-rouge">i</code>.</p>
 
 <p class="pb-5">Thought about it…? Let’s see what we get.</p>
@@ -821,26 +824,29 @@ Because <code class="highlighter-rouge">A</code> has a default constructor (with
 If <code class="highlighter-rouge">A</code> didn’t have that constructor, then the constructor on line 3 would be called with an empty list.
 <code class="highlighter-rouge">a3</code> uses parenthesis, not a braced-init-list, so the overload resolution matches <code class="highlighter-rouge">3</code> with the constructor taking an <code class="highlighter-rouge">int</code>.
 <code class="highlighter-rouge">a4</code> uses list initialization, which overload resolution will more favorably match with a constructor taking a <code class="highlighter-rouge">std::initializer_list</code>.
-<code class="highlighter-rouge">a5</code> obviously can’t match against a single <code class="highlighter-rouge">int</code>, so same constructor as <code class="highlighter-rouge">a4</code> is used.</p>
+<code class="highlighter-rouge">a5</code> obviously can’t match against a single <code class="highlighter-rouge">int</code>, so the same constructor as <code class="highlighter-rouge">a4</code> is used.</p>
 
 <h3 id="epilogue">Epilogue</h3>
-<p>Hopefully you’ve realized this post is (<em>mostly</em>) tongue-in-cheek and hopefully a bit informative.
+<p>Hopefully you’ve realized this post is (<em>mostly</em>) tongue-in-cheek and hopefully a bit informative, too.
 Many of the peculiarities described in this post can be ignored and the language will act as you’d expect
-if you remember to initialize your variables before use, and initialize your class members during construction.
+if you remember to initialize your variables before use and initialize your data members during construction.
 Knowing all of the corner cases of C++ is not necessary to write competent code, and you will otherwise learn
 common pitfalls and idioms along the way.</p>
 
 <p>The point I’ve hopefully gotten across is that C++ is a big, crusty language (for many historical reasons).
-This entire post was a rabbit hole on initialization rules. <em>Just initializing variables</em>. And we didn’t even cover all of it.
+This entire post was a rabbit hole on initialization rules.
+<em>Just initializing variables</em>.
+And we didn’t even cover all of it.
 This post briefly covers 5 types of initialization.
 Simon mentions in his <a href="https://blog.tartanllama.xyz/initialization-is-bonkers/">original post</a> that he found 18 types of initialization.</p>
 
 <p>C++ is not a language I’d want to teach beginners.
 At no point in this post was there room for systems programming concepts, discourse on programming paradigms,
 computational-oriented problem solving methodologies, or fundamental algorithms.
-If you are interested in C++ then feel free to take a class specifically on C++, but know that the class will probably be specifically on learning C++.</p>
+If you are interested in C++ then feel free to take a class specifically on C++,
+but know that the class will probably be specifically on learning C++.</p>
 
-<p>C is a great, focused, fast, widely-supported, widely-used language for solving problems across a variety of domains.
+<p>C is a great, focused, fast, widely-supported, and widely-used language for solving problems across a variety of domains.
 And it doesn’t have at least 18 types of initialization.</p>
 
 <div class="footnotes">
