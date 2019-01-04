@@ -25,7 +25,8 @@ Many students seem to think learning C is of little relevance (***narrator:*** *
 more relevant to this post, seem to think that they should instead start with C++.
 Let's investigate just one of the reasons this is an absurd suggestion: ***creating a frickin' variable.***
 In Simon Brand's original article, he assumed the reader was already familiar with pre-C++11 initialization
-oddities. I'll introduce some of those here and go a bit beyond, too.
+oddities.
+I'll introduce some of those here and go a bit beyond, too.
 
 Let me preface by pointing out that, although I currently work for Drexel University's Electrical and Computer Engineering department,
 the thoughts and opinions in this post--and every post--are my own and ***not*** the university's.
@@ -534,7 +535,7 @@ int main() {
 ```
 
 ```
-g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
+$ g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
 a.cpp: In function ‘int main()’:
 a.cpp:7:13: error: could not convert ‘{1}’ from ‘<brace-enclosed initializer list>’ to ‘A’
      A a = {1};
@@ -573,8 +574,10 @@ a.cpp:11:25: warning: ‘b.B::<anonymous>.A::i’ is used uninitialized in this 
 
 `b.j` is initialized but `b.i` is uninitialized. What's happening in this example?
 I'm not sure! 🤷
+All of `b`'s bases and members *should* be getting zero-initialized here.
 I've asked about this on [Stack Overflow](https://stackoverflow.com/questions/54028846/why-is-a-member-not-getting-zero-initialized-in-this-example),
-and as of publishing this post haven't received a sufficient answer.
+and as of publishing this post haven't received a sufficient answer other than a possible compiler bug.
+Go figure.
 
 ... (*blankly stares at you*) (*stare turns to polite smile*) alright let's dive deeper!
 
@@ -586,7 +589,8 @@ It has its own type, which is obviously `std::initializer_list<T>`.
 You can create one with a braced-init-list.
 Oh by the way, a braced-init-list, used in list initialization, that has *no type*.
 Make sure you don't confuse an initializer_list with list initialization or braced-init-lists!
-And they are sorta related to member initializer lists but also very different.
+And they are sorta related to member initializer lists and default member initializers,
+in that they help initialize non-static data members, but are also quite different.
 They are related but different! Easy, right?
 
 {% highlight c++ linenos %}
@@ -605,7 +609,7 @@ int main() {
 {% endhighlight %}
 
 ```
-g++ -std=c++17 -pedantic-errors -Wuninitialized -O2 a.cpp
+$ g++ -std=c++17 -pedantic-errors -Wuninitialized -O2 a.cpp
 a.cpp: In function ‘int main()’:
 a.cpp:12:21: warning: ‘a1.A::i’ is used uninitialized in this function [-Wuninitialized]
      std::cout << a1.i << a2.i << a3.i << std::endl;
@@ -618,7 +622,7 @@ a.cpp:12:37: warning: ‘a3.A::i’ is used uninitialized in this function [-Wun
 ```
 
 O---kay. `A` has one templated constructor that takes a `std::initializer_list<T>`.
-The constructor is called each time, which does nothing, so `i` remains uninitialized.
+The user-provided constructor is called each time, which does nothing, so `i` remains uninitialized.
 The type of `T` is deduced depending the elements in the list, and a new constructor is instantiated depending on the type.
 * So in line 8, `{0}` is deduced as a `std::initializer_list<int>` with one element, `0`.
 * In line 9, `{1, 2, 3}` is deduced as a `std::initializer_list<int>` with three elements.
@@ -630,9 +634,9 @@ We would have to write `A a{std::initializer_list<int>{}}`, for example.
 Or, we could exactly specify the constructor as in `A(std::initializer_list<int>){}`.
 {% endalert %}
 
-`std::initializer_list` acts like a normal STL container, but it only has three member functions: `size`, `begin`, and `end`.
+`std::initializer_list` acts like a typical STL container, but it only has three member functions: `size`, `begin`, and `end`.
 `begin` and `end` return iterators you can dereference and increment normally.
-This is useful if you want to initialize an object with varying length lists:
+This is useful when you want to initialize an object with varying length lists:
 
 ```c++
 #include <vector>
@@ -644,10 +648,10 @@ int main() {
 }
 ```
 
-`vector` has a constructor that takes a `std::initializer_list<T>`, so we can easily initialize vectors this way. 
+`vector` has a constructor that takes a `std::initializer_list<T>`, so we can easily initialize vectors as shown above. 
 {% alert info %}
 `v_1_int` is a vector created from its constructor taking a `std::initializer_list<int> init` with one element, `5`.  
-`v_5_ints` is a vector created from its constructor taking a ***`size_t count`***, which initializes a vector of count (`5`) elements and value-initializes them (all set to `0` in this case).
+`v_5_ints` is a vector created from its constructor taking a **`size_t count`**, which initializes a vector of count (`5`) elements and value-initializes them (all set to `0` in this case).
 {% endalert %}
 
 
@@ -676,8 +680,7 @@ int main() {
 {% endhighlight %}
 
 At first glance, this isn't too complicated.
-We have two constructors, one that takes a `std::initializer_list`, so any braced-init-list,
-and another with default arguments taking an `int`.
+We have two constructors, one that takes a `std::initializer_list<int>` and another with default arguments taking an `int`.
 Before you look below at the output, try to figure out what will be value for each `i`.
 
 Thought about it...? Let's see what we get.
@@ -696,27 +699,30 @@ Because `A` has a default constructor (with default arguments), value initializa
 If `A` didn't have that constructor, then the constructor on line 3 would be called with an empty list.
 `a3` uses parenthesis, not a braced-init-list, so the overload resolution matches `3` with the constructor taking an `int`.
 `a4` uses list initialization, which overload resolution will more favorably match with a constructor taking a `std::initializer_list`.
-`a5` obviously can't match against a single `int`, so same constructor as `a4` is used.
+`a5` obviously can't match against a single `int`, so the same constructor as `a4` is used.
 
 
 ### Epilogue
-Hopefully you've realized this post is (*mostly*) tongue-in-cheek and hopefully a bit informative.
+Hopefully you've realized this post is (*mostly*) tongue-in-cheek and hopefully a bit informative, too.
 Many of the peculiarities described in this post can be ignored and the language will act as you'd expect
-if you remember to initialize your variables before use, and initialize your class members during construction.
+if you remember to initialize your variables before use and initialize your data members during construction.
 Knowing all of the corner cases of C++ is not necessary to write competent code, and you will otherwise learn
 common pitfalls and idioms along the way. 
 
 The point I've hopefully gotten across is that C++ is a big, crusty language (for many historical reasons).
-This entire post was a rabbit hole on initialization rules. *Just initializing variables*. And we didn't even cover all of it.
+This entire post was a rabbit hole on initialization rules.
+*Just initializing variables*.
+And we didn't even cover all of it.
 This post briefly covers 5 types of initialization.
 Simon mentions in his [original post][simon-brand-init] that he found 18 types of initialization.
 
 C++ is not a language I'd want to teach beginners.
 At no point in this post was there room for systems programming concepts, discourse on programming paradigms,
 computational-oriented problem solving methodologies, or fundamental algorithms.
-If you are interested in C++ then feel free to take a class specifically on C++, but know that the class will probably be specifically on learning C++.
+If you are interested in C++ then feel free to take a class specifically on C++,
+but know that the class will probably be specifically on learning C++.
 
-C is a great, focused, fast, widely-supported, widely-used language for solving problems across a variety of domains.
+C is a great, focused, fast, widely-supported, and widely-used language for solving problems across a variety of domains.
 And it doesn't have at least 18 types of initialization.
 
 [simon-brand]: https://blog.tartanllama.xyz/
