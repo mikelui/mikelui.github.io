@@ -618,7 +618,7 @@ That means <code class="highlighter-rouge">a.i</code> will be uninitialized, rig
 Turns out <code class="highlighter-rouge">a.i</code> will be initialized to <code class="highlighter-rouge">0</code>, even though it doesn’t invoke aggregate initialization:</p>
 <ol>
   <li>List initialization of <code class="highlighter-rouge">A</code>, causes 2.</li>
-  <li>Non-aggregate with an empty braced-init-list causes value initialization, go to 3.</li>
+  <li>Non-aggregate, class type with a default constructor, and an empty braced-init-list causes value initialization, go to 3.</li>
   <li>No user-provided constructor found, so zero-initialize the object, go to 4.</li>
   <li>Invoke default-initialization if the implicitly-defined default constructor is non-trivial
 (it is in this case so nothing is done).</li>
