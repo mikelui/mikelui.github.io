@@ -671,6 +671,39 @@ a.cpp:7:13: error: could not convert ‘{1}’ from ‘&lt;brace-enclosed initia
 
 <hr>
 
+<p><strong><em>Update</em></strong>–another tricksy example:</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+</span><span class="k">struct</span> <span class="n">A</span> <span class="p">{</span>
+    <span class="n">A</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">)</span> <span class="o">:</span> <span class="n">i</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="p">{}</span>
+    <span class="n">A</span><span class="p">()</span> <span class="o">=</span> <span class="k">default</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">A</span> <span class="n">a</span><span class="p">{};</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span><span class="p">.</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>There are no private variables like in our previous example, but there <em>is</em> a user-provided constructor
+like in our previous-previous example–thus <code class="highlighter-rouge">A</code> is not an aggregate.
+The user-provided constructor precludes zero-initialization, <em>right</em>?</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
+$
+</code></pre></div></div>
+
+<p><em>Nope</em>! Breaking it down:</p>
+<ol>
+  <li>List initialization of <code class="highlighter-rouge">A</code>, causes 2.</li>
+  <li>Non-aggregate, class type with a default constructor, and an empty braced-init-list causes value initialization, go to 3.</li>
+  <li>No user-provided <em>default</em> constructor found (<em>my lie by omission above</em>), so <strong>zero-initialize</strong> the object, go to 4.</li>
+  <li>Invoke default-initialization if the implicitly-defined default constructor is non-trivial
+(it is in this case so nothing is done).</li>
+</ol>
+
+<hr>
+
 <p>One last example for good measure:</p>
 
 <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
