@@ -602,7 +602,7 @@ Go figure.
 ... (*blankly stares at you*) (*stare turns to polite smile*) alright let's dive deeper!
 
 
-## Act 5: The Abyss
+## Act 6: The Abyss
 
 C++11 introduced something called a `std::initializer_list`[^initializer_list].
 It has its own type, which is obviously `std::initializer_list<T>`.
