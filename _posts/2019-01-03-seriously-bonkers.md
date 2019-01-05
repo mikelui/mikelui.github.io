@@ -2,7 +2,7 @@
 published: true
 layout: post
 title: "Initialization in C++ is Seriously Bonkers"
-subtitle: "Footguns Galore"
+subtitle: "Just Start With C"
 author: Mike Lui
 sidenav: true
 tags:
@@ -13,7 +13,7 @@ tags:
 I was [recently][niebler] [reminded][aras_twitter] of [why][aras_blog] I [think][jean_blog]
 it's a [bad idea][parent] to teach beginners C++.
 It's a [bad][deane] [idea][wilson] because it is an objective mess--albeit a beautiful, twisted, tragic, wondrous mess.
-Despite the current state of the community, this post is not a polemic against *"modern"* C++.
+Despite the current state of the community, this post is not a polemic against *modern* C++.
 This post is partly a follow-up on [Simon Brand's][simon-brand] article, [Initialization in C++ is bonkers][simon-brand-init],
 and partly a message to every student who's wanted to begin their education by gazing into the abyss.
 {:.lead}
@@ -534,7 +534,7 @@ Turns out `a.i` will be initialized to `0`, even though it doesn't invoke aggreg
 4. Invoke default-initialization if the implicitly-defined default constructor is non-trivial
    (it is in this case so nothing is done).
 
-What if we tried to use aggregate initialize:
+What if we try aggregate initialization:
 
 ```c++
 #include <iostream>
@@ -664,7 +664,7 @@ int main() {
 }
 ```
 
-`vector` has a constructor that takes a `std::initializer_list<T>`, so we can easily initialize vectors as shown above. 
+`std::vector<T>` has a constructor that takes a `std::initializer_list<T>`, so we can easily initialize vectors as shown above. 
 {% alert info %}
 `v_1_int` is a vector created from its constructor taking a `std::initializer_list<int> init` with one element, `5`.  
 `v_5_ints` is a vector created from its constructor taking a **`size_t count`**, which initializes a vector of count (`5`) elements and value-initializes them (all set to `0` in this case).
@@ -737,6 +737,8 @@ At no point in this post was there room for systems programming concepts, discou
 computational-oriented problem solving methodologies, or fundamental algorithms.
 If you are interested in C++ then feel free to take a class specifically on C++,
 but know that the class will probably be specifically on learning C++.
+If you are interested in using *C with classes* or *C with namespaces*,
+then you can at least learn about the `this` implementation and identifier collisions in C beforehand.
 
 C is a great, focused, fast, widely-supported, and widely-used language for solving problems across a variety of domains.
 And it doesn't have at least 18 types of initialization.
