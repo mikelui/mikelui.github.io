@@ -1,7 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://mikelui.io/feed.xml" rel="self" type="application/atom+xml" /><link href="http://mikelui.io/" rel="alternate" type="text/html" /><updated>2019-01-04T13:39:41-05:00</updated><id>http://mikelui.io/</id><title type="html">No TV and No Beer</title><subtitle>Experiences in the digital world and sometimes the real world, too</subtitle><author><name>Mike Lui</name></author><entry><title type="html">Initialization in C++ is Seriously Bonkers</title><link href="http://mikelui.io/2019/01/03/seriously-bonkers.html" rel="alternate" type="text/html" title="Initialization in C++ is Seriously Bonkers" /><published>2019-01-03T00:00:00-05:00</published><updated>2019-01-03T00:00:00-05:00</updated><id>http://mikelui.io/2019/01/03/seriously-bonkers</id><content type="html" xml:base="http://mikelui.io/2019/01/03/seriously-bonkers.html">&lt;p class=&quot;lead&quot;&gt;I was recently reminded of why I think it’s a bad idea to teach beginners C++.
-It’s a bad idea because it is an objective mess–albeit a beautiful, twisted, tragic, wondrous mess.
-This is partly a follow-up on &lt;a href=&quot;https://blog.tartanllama.xyz/&quot;&gt;Simon Brand’s&lt;/a&gt; article, &lt;a href=&quot;https://blog.tartanllama.xyz/initialization-is-bonkers/&quot;&gt;Initialization in C++ is bonkers&lt;/a&gt;,
-and partly a commentary on every student who’s wanted to begin their education by gazing into the abyss.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://mikelui.io/feed.xml" rel="self" type="application/atom+xml" /><link href="http://mikelui.io/" rel="alternate" type="text/html" /><updated>2019-01-05T10:08:11-05:00</updated><id>http://mikelui.io/</id><title type="html">No TV and No Beer</title><subtitle>Experiences in the digital world and sometimes the real world, too</subtitle><author><name>Mike Lui</name></author><entry><title type="html">Initialization in C++ is Seriously Bonkers</title><link href="http://mikelui.io/2019/01/03/seriously-bonkers.html" rel="alternate" type="text/html" title="Initialization in C++ is Seriously Bonkers" /><published>2019-01-03T00:00:00-05:00</published><updated>2019-01-03T00:00:00-05:00</updated><id>http://mikelui.io/2019/01/03/seriously-bonkers</id><content type="html" xml:base="http://mikelui.io/2019/01/03/seriously-bonkers.html">&lt;p class=&quot;lead&quot;&gt;I was &lt;a class=&quot;lead&quot; href=&quot;http://ericniebler.com/2018/12/05/standard-ranges/&quot;&gt;recently&lt;/a&gt; &lt;a href=&quot;https://twitter.com/aras_p/status/1076947443823136768&quot;&gt;reminded&lt;/a&gt; of &lt;a href=&quot;http://aras-p.info/blog/2018/12/28/Modern-C-Lamentations/&quot;&gt;why&lt;/a&gt; I &lt;a href=&quot;https://thephd.github.io/perspective-standardization-in-2018&quot;&gt;think&lt;/a&gt;
+it’s a &lt;a href=&quot;https://sean-parent.stlab.cc/2018/12/30/cpp-ruminations.html&quot;&gt;bad idea&lt;/a&gt; to teach beginners C++.
+It’s a &lt;a href=&quot;http://www.elbeno.com/blog/?p=1598&quot;&gt;bad&lt;/a&gt; &lt;a href=&quot;https://medium.com/@pat_wilson/get-your-shit-together-6ccbfd6bb755&quot;&gt;idea&lt;/a&gt; because it is an objective mess–albeit a beautiful, twisted, tragic, wondrous mess.
+Despite the current state of the community, this post is not a polemic against &lt;em&gt;modern&lt;/em&gt; C++.
+This post is partly a follow-up on &lt;a href=&quot;https://blog.tartanllama.xyz/&quot;&gt;Simon Brand’s&lt;/a&gt; article, &lt;a href=&quot;https://blog.tartanllama.xyz/initialization-is-bonkers/&quot;&gt;Initialization in C++ is bonkers&lt;/a&gt;,
+and partly a message to every student who’s wanted to begin their education by gazing into the abyss.&lt;/p&gt;
 
 &lt;p&gt;Here are some common remarks I get when students find out they’ll be using C:&lt;/p&gt;
 &lt;ul&gt;
@@ -24,7 +26,7 @@ The classes I normally assist/instruct are part an engineering curriculum and no
 and thus have different needs geared more towards embedded systems and systems programming.&lt;/p&gt;
 
 &lt;h1 id=&quot;initialization-in-c&quot;&gt;Initialization in C&lt;/h1&gt;
-&lt;h3 id=&quot;prologue&quot;&gt;Prologue&lt;/h3&gt;
+&lt;h2 id=&quot;prologue&quot;&gt;Prologue&lt;/h2&gt;
 
 &lt;p&gt;First let’s look at initialization in C&lt;sup id=&quot;fnref:c_init&quot;&gt;&lt;a href=&quot;#fn:c_init&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;, since it’s similar to C++ for compatibility reasons.
 This should go by fairly quick since C is so boring and simple (&lt;em&gt;ahem&lt;/em&gt;).
@@ -124,7 +126,7 @@ For example:
 It’s certainly enough to cause a minor headache deciding how to simply default everything to &lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt;.&lt;/p&gt;
 
 &lt;h1 id=&quot;initialization-in-c-1&quot;&gt;Initialization in C++&lt;/h1&gt;
-&lt;h3 id=&quot;act-1-our-heros-journey-begins&quot;&gt;Act 1: Our Hero’s Journey Begins&lt;/h3&gt;
+&lt;h2 id=&quot;act-1-our-heros-journey-begins&quot;&gt;Act 1: Our Hero’s Journey Begins&lt;/h2&gt;
 
 &lt;p&gt;If you’re eager to learn all the &lt;del&gt;terrors&lt;/del&gt; wonders of C++, you should first learn how to initialize your variables.
 All the same &lt;em&gt;behaviors&lt;/em&gt; apply for C++ as in C for the previous code, with some caveats in the &lt;em&gt;rules&lt;/em&gt;
@@ -169,7 +171,7 @@ a.cpp:9:20: warning: ‘a.A::i’ is used uninitialized in this function [-Wunin
 &lt;p&gt;So in essence, this is as we’d expect coming from C.
 So how do we initialize &lt;code class=&quot;highlighter-rouge&quot;&gt;A::i&lt;/code&gt;?&lt;/p&gt;
 
-&lt;h3 id=&quot;act-2-our-hero-stumbles&quot;&gt;Act 2: Our Hero Stumbles&lt;/h3&gt;
+&lt;h2 id=&quot;act-2-our-hero-stumbles&quot;&gt;Act 2: Our Hero Stumbles&lt;/h2&gt;
 
 &lt;p&gt;Well, we could at least use the same ways as we did in C, right?
 C++ is a superset of C, after all, right? (&lt;em&gt;ahem&lt;/em&gt;)&lt;/p&gt;
@@ -244,7 +246,7 @@ In practice, it’s best to explicitly initialize.
 I’m not picking on aggregate initialization in its own right.
 I’m picking on having to partake in a goose-chase through the standard to find out precisely what happens during initialization.&lt;/p&gt;
 
-&lt;h3 id=&quot;act-3-our-hero-journeys-into-the-cave&quot;&gt;Act 3: Our Hero Journeys Into the Cave&lt;/h3&gt;
+&lt;h2 id=&quot;act-3-our-hero-journeys-into-the-cave&quot;&gt;Act 3: Our Hero Journeys Into the Cave&lt;/h2&gt;
 
 &lt;p&gt;Let’s use the C++ way to initialize &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt;, with &lt;strong&gt;constructors&lt;/strong&gt;! (&lt;em&gt;triumphant music&lt;/em&gt;)
 We can give &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt;’s member, &lt;code class=&quot;highlighter-rouge&quot;&gt;i&lt;/code&gt;, an initial value in a &lt;em&gt;user-provided&lt;/em&gt; default constructor:&lt;/p&gt;
@@ -313,7 +315,7 @@ You are now ready your adventures into C++ primed with your handy-dandy
 C++ survival guide with instructions on initializing variables.
 Turn around and be on your way!&lt;/p&gt;
 
-&lt;h3 id=&quot;act-4-our-hero-continues-into-the-blackness&quot;&gt;Act 4: Our Hero Continues Into the Blackness&lt;/h3&gt;
+&lt;h2 id=&quot;act-4-our-hero-continues-into-the-blackness&quot;&gt;Act 4: Our Hero Continues Into the Blackness&lt;/h2&gt;
 &lt;p&gt;We &lt;em&gt;could&lt;/em&gt; stop there.
 But, if we want to use the &lt;em&gt;modern&lt;/em&gt; features of &lt;em&gt;modern C++&lt;/em&gt;, we have to delve further.
 In fact the version of g++ I’ve been using (8.2.1) uses &lt;code class=&quot;highlighter-rouge&quot;&gt;gnu++1y&lt;/code&gt; by default, which equivalent to C++14 with some extra GNU extensions.
@@ -378,7 +380,7 @@ We already said that &lt;code class=&quot;highlighter-rouge&quot;&gt;A a;&lt;/co
   &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;What if this list isn’t empty?&lt;/p&gt;
+&lt;p&gt;What if the list isn’t empty?&lt;/p&gt;
 
 &lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
     &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt; 
@@ -402,7 +404,7 @@ Everything is great!&lt;/p&gt;
 
 &lt;p&gt;How are you feeling? Do you need some water? Are your fists clenching? Maybe take a break, go outside.&lt;/p&gt;
 
-&lt;h3 id=&quot;act-5-sanitys-requiem&quot;&gt;Act 5: Sanity’s Requiem&lt;/h3&gt;
+&lt;h2 id=&quot;act-5-sanitys-requiem&quot;&gt;Act 5: Sanity’s Requiem&lt;/h2&gt;
 &lt;p&gt;What happens if &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; isn’t an aggregate?&lt;/p&gt;
 
 &lt;p&gt;Quick recap, an aggregate is:&lt;/p&gt;
@@ -517,7 +519,7 @@ Turns out &lt;code class=&quot;highlighter-rouge&quot;&gt;a.i&lt;/code&gt; will 
 (it is in this case so nothing is done).&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;What if we tried to use aggregate initialize:&lt;/p&gt;
+&lt;p&gt;What if we try aggregate initialization:&lt;/p&gt;
 
 &lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;iostream&amp;gt;
 &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
@@ -577,7 +579,7 @@ Go figure.&lt;/p&gt;
 
 &lt;p&gt;… (&lt;em&gt;blankly stares at you&lt;/em&gt;) (&lt;em&gt;stare turns to polite smile&lt;/em&gt;) alright let’s dive deeper!&lt;/p&gt;
 
-&lt;h3 id=&quot;act-5-the-abyss&quot;&gt;Act 5: The Abyss&lt;/h3&gt;
+&lt;h2 id=&quot;act-5-the-abyss&quot;&gt;Act 5: The Abyss&lt;/h2&gt;
 
 &lt;p&gt;C++11 introduced something called a &lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&lt;/code&gt;&lt;sup id=&quot;fnref:initializer_list&quot;&gt;&lt;a href=&quot;#fn:initializer_list&quot; class=&quot;footnote&quot;&gt;10&lt;/a&gt;&lt;/sup&gt;.
 It has its own type, which is obviously &lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&amp;lt;T&amp;gt;&lt;/code&gt;.
@@ -656,7 +658,7 @@ This is useful when you want to initialize an object with varying length lists:&
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;vector&lt;/code&gt; has a constructor that takes a &lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&amp;lt;T&amp;gt;&lt;/code&gt;, so we can easily initialize vectors as shown above.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;std::vector&amp;lt;T&amp;gt;&lt;/code&gt; has a constructor that takes a &lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&amp;lt;T&amp;gt;&lt;/code&gt;, so we can easily initialize vectors as shown above.&lt;/p&gt;
 &lt;div class=&quot;alert alert-info&quot; role=&quot;alert&quot;&gt;
   &lt;i class=&quot;fa fa-info-circle&quot;&gt;&lt;/i&gt; &lt;b&gt;Note:&lt;/b&gt; 
 &lt;code class=&quot;highlighter-rouge&quot;&gt;v_1_int&lt;/code&gt; is a vector created from its constructor taking a &lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&amp;lt;int&amp;gt; init&lt;/code&gt; with one element, &lt;code class=&quot;highlighter-rouge&quot;&gt;5&lt;/code&gt;.&lt;br /&gt;
@@ -705,7 +707,7 @@ This is useful when you want to initialize an object with varying length lists:&
 
 &lt;p&gt;At first glance, this isn’t too complicated.
 We have two constructors, one that takes a &lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&amp;lt;int&amp;gt;&lt;/code&gt; and another with default arguments taking an &lt;code class=&quot;highlighter-rouge&quot;&gt;int&lt;/code&gt;.
-Before you look below at the output, try to figure out what will be value for each &lt;code class=&quot;highlighter-rouge&quot;&gt;i&lt;/code&gt;.&lt;/p&gt;
+Before you look below at the output, try to figure out what will be the value for each &lt;code class=&quot;highlighter-rouge&quot;&gt;i&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p class=&quot;pb-5&quot;&gt;Thought about it…? Let’s see what we get.&lt;/p&gt;
 
@@ -722,7 +724,7 @@ If &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; didn’t have 
 &lt;code class=&quot;highlighter-rouge&quot;&gt;a4&lt;/code&gt; uses list initialization, which overload resolution will more favorably match with a constructor taking a &lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&lt;/code&gt;.
 &lt;code class=&quot;highlighter-rouge&quot;&gt;a5&lt;/code&gt; obviously can’t match against a single &lt;code class=&quot;highlighter-rouge&quot;&gt;int&lt;/code&gt;, so the same constructor as &lt;code class=&quot;highlighter-rouge&quot;&gt;a4&lt;/code&gt; is used.&lt;/p&gt;
 
-&lt;h3 id=&quot;epilogue&quot;&gt;Epilogue&lt;/h3&gt;
+&lt;h1 id=&quot;epilogue&quot;&gt;Epilogue&lt;/h1&gt;
 &lt;p&gt;Hopefully you’ve realized this post is (&lt;em&gt;mostly&lt;/em&gt;) tongue-in-cheek and hopefully a bit informative, too.
 Many of the peculiarities described in this post can be ignored and the language will act as you’d expect
 if you remember to initialize your variables before use and initialize your data members during construction.
@@ -740,7 +742,9 @@ Simon mentions in his &lt;a href=&quot;https://blog.tartanllama.xyz/initializati
 At no point in this post was there room for systems programming concepts, discourse on programming paradigms,
 computational-oriented problem solving methodologies, or fundamental algorithms.
 If you are interested in C++ then feel free to take a class specifically on C++,
-but know that the class will probably be specifically on learning C++.&lt;/p&gt;
+but know that the class will probably be specifically on learning C++.
+If you are interested in using &lt;em&gt;C with classes&lt;/em&gt; or &lt;em&gt;C with namespaces&lt;/em&gt;,
+then you can at least learn about the &lt;code class=&quot;highlighter-rouge&quot;&gt;this&lt;/code&gt; implementation and identifier collisions in C beforehand.&lt;/p&gt;
 
 &lt;p&gt;C is a great, focused, fast, widely-supported, and widely-used language for solving problems across a variety of domains.
 And it doesn’t have at least 18 types of initialization.&lt;/p&gt;
@@ -778,7 +782,7 @@ And it doesn’t have at least 18 types of initialization.&lt;/p&gt;
       &lt;p&gt;&lt;a href=&quot;https://en.cppreference.com/w/cpp/utility/initializer_list&quot;&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&lt;/code&gt;&lt;/a&gt; &lt;a href=&quot;#fnref:initializer_list&quot; class=&quot;reversefootnote&quot;&gt;&amp;#8617;&lt;/a&gt;&lt;/p&gt;
     &lt;/li&gt;
   &lt;/ol&gt;
-&lt;/div&gt;</content><author><name>Mike Lui</name></author><category term="C++" /><summary type="html">I was recently reminded of why I think it’s a bad idea to teach beginners C++. It’s a bad idea because it is an objective mess–albeit a beautiful, twisted, tragic, wondrous mess. This is partly a follow-up on Simon Brand’s article, Initialization in C++ is bonkers, and partly a commentary on every student who’s wanted to begin their education by gazing into the abyss.</summary></entry><entry><title type="html">Creating an Accordion Plugin for Jekyll</title><link href="http://mikelui.io/2018/07/22/jekyll-nested-blocks.html" rel="alternate" type="text/html" title="Creating an Accordion Plugin for Jekyll" /><published>2018-07-21T20:00:00-04:00</published><updated>2018-07-21T20:00:00-04:00</updated><id>http://mikelui.io/2018/07/22/jekyll-nested-blocks</id><content type="html" xml:base="http://mikelui.io/2018/07/22/jekyll-nested-blocks.html">&lt;p class=&quot;lead&quot;&gt;Let’s start this blog off with some straight-forward informative posts.
+&lt;/div&gt;</content><author><name>Mike Lui</name></author><category term="C++" /><summary type="html">I was recently reminded of why I think it’s a bad idea to teach beginners C++. It’s a bad idea because it is an objective mess–albeit a beautiful, twisted, tragic, wondrous mess. Despite the current state of the community, this post is not a polemic against modern C++. This post is partly a follow-up on Simon Brand’s article, Initialization in C++ is bonkers, and partly a message to every student who’s wanted to begin their education by gazing into the abyss.</summary></entry><entry><title type="html">Creating an Accordion Plugin for Jekyll</title><link href="http://mikelui.io/2018/07/22/jekyll-nested-blocks.html" rel="alternate" type="text/html" title="Creating an Accordion Plugin for Jekyll" /><published>2018-07-21T20:00:00-04:00</published><updated>2018-07-21T20:00:00-04:00</updated><id>http://mikelui.io/2018/07/22/jekyll-nested-blocks</id><content type="html" xml:base="http://mikelui.io/2018/07/22/jekyll-nested-blocks.html">&lt;p class=&quot;lead&quot;&gt;Let’s start this blog off with some straight-forward informative posts.
 As I’m still updating the look of this site, which uses the popular &lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt; static site generation framework,
 I thought it would be nice to share some useful tidbits I’ve learned.
 This is the first real post so I apologize in advance for any dissociative identity disorder
