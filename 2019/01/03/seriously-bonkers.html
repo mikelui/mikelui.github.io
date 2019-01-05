@@ -319,6 +319,7 @@ Note that I’ve added <code class="highlighter-rouge">-pedantic-errors</code> t
 </code></pre></div></div>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ g++ -Wuninitialized -O2 -pedantic-errors a.cpp
+$
 </code></pre></div></div>
 
 <p>Well at least that works.
@@ -505,6 +506,7 @@ We already said that <code class="highlighter-rouge">A a;</code> creates an obje
 </code></pre></div></div>
 
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
+$
 </code></pre></div></div>
 
 <p><code class="highlighter-rouge">a1.i</code> is initialized with <code class="highlighter-rouge">0</code>, <code class="highlighter-rouge">a2.i</code> is initialized with an empty list, and <code class="highlighter-rouge">a3</code> is copy constructed from <code class="highlighter-rouge">a1</code>.
@@ -627,7 +629,8 @@ What does that mean in practice? I’m not sure! Let’s carry on.</p>
 That makes <code class="highlighter-rouge">A</code> not an aggregate. It’s just a normal class type.
 That means <code class="highlighter-rouge">a.i</code> will be uninitialized, right?</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
+$
 </code></pre></div></div>
 
 <p>Dangit. And just when we thought we were getting the hang of this.
