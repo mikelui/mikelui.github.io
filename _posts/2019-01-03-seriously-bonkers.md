@@ -567,6 +567,40 @@ a.cpp:7:13: error: could not convert ‘{1}’ from ‘<brace-enclosed initializ
 
 ---
 
+***Update***--another tricksy example:
+
+```c++
+#include <iostream>
+struct A {
+    A(int i) : i(i) {}
+    A() = default;
+    int i;
+};
+int main() {
+    A a{};
+    std::cout << a.i << std::endl;
+}
+```
+
+There are no private variables like in our previous example, but there *is* a user-provided constructor
+like in our previous-previous example--thus `A` is not an aggregate.
+The user-provided constructor precludes zero-initialization, *right*?
+
+```
+$ g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
+$
+```
+
+*Nope*! Breaking it down:
+1. List initialization of `A`, causes 2.
+2. Non-aggregate, class type with a default constructor, and an empty braced-init-list causes value initialization, go to 3.
+3. No user-provided *default* constructor found (*my lie by omission above*), so **zero-initialize** the object, go to 4.
+4. Invoke default-initialization if the implicitly-defined default constructor is non-trivial
+   (it is in this case so nothing is done).
+
+
+---
+
 One last example for good measure:
 
 ```c++
