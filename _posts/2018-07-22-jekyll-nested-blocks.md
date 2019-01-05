@@ -5,7 +5,7 @@ title: "Creating an Accordion Plugin for Jekyll"
 subtitle: "Using Nested Liquid Blocks"
 date: 2018-07-22T00:00:00.000Z
 author: Mike Lui
-sidenav: true
+sidenav: false
 tags:
   - web-dev
   - jekyll

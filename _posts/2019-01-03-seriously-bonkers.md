@@ -4,7 +4,7 @@ layout: post
 title: "Initialization in C++ is Seriously Bonkers"
 subtitle: "Just Start With C"
 author: Mike Lui
-sidenav: true
+sidenav: false
 tags:
   - C++
 ---
@@ -567,7 +567,7 @@ a.cpp:7:13: error: could not convert ‘{1}’ from ‘<brace-enclosed initializ
 
 ---
 
-***Update***--another tricksy example:
+***Update***--bonus tricksy example:
 
 ```c++
 #include <iostream>
