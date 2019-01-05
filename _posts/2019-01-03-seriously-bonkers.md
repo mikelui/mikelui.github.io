@@ -135,13 +135,13 @@ int main() {
     init_A(&a1);
 
     /* during definition;
-     * initialize each member, in order... */
+     * Initialize each member, in order. 
+     * Any other uninitialized members are implicitly
+     * initialized as if they had static storage duration. */
     struct A a2 = {0};
 
-    /* ...or allow members to be implicitly initialized,
-     * which defaults to the value it would take during
-     * static initialization (i.e. 0) */
-    struct A a3 = {};
+    /* Error! (Well, technically) Initializer lists are 'non-empty' */
+    /* struct A a3 = {}; */
 
     /* ...or use designated initializers if C99 or later */
     struct A a4 = {.i = 0};
@@ -150,6 +150,12 @@ int main() {
     struct A a5 = default_A;
 }
 ```
+
+---
+***Update***--Originally I had `struct A a3 = {};`, which I believed implicitly initialized all members.
+I've since been informed that this is not standard C! An initializer list in C must be non-empty (compiling with `-pedantic` correctly identifies this).
+
+---
 
 That's pretty much it for C, and it's enough to cause many tricksy bugs to manifest in many student projects.
 It's certainly enough to cause a minor headache deciding how to simply default everything to `0`.
