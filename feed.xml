@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://mikelui.io/feed.xml" rel="self" type="application/atom+xml" /><link href="http://mikelui.io/" rel="alternate" type="text/html" /><updated>2019-01-05T10:08:11-05:00</updated><id>http://mikelui.io/</id><title type="html">No TV and No Beer</title><subtitle>Experiences in the digital world and sometimes the real world, too</subtitle><author><name>Mike Lui</name></author><entry><title type="html">Initialization in C++ is Seriously Bonkers</title><link href="http://mikelui.io/2019/01/03/seriously-bonkers.html" rel="alternate" type="text/html" title="Initialization in C++ is Seriously Bonkers" /><published>2019-01-03T00:00:00-05:00</published><updated>2019-01-03T00:00:00-05:00</updated><id>http://mikelui.io/2019/01/03/seriously-bonkers</id><content type="html" xml:base="http://mikelui.io/2019/01/03/seriously-bonkers.html">&lt;p class=&quot;lead&quot;&gt;I was &lt;a class=&quot;lead&quot; href=&quot;http://ericniebler.com/2018/12/05/standard-ranges/&quot;&gt;recently&lt;/a&gt; &lt;a href=&quot;https://twitter.com/aras_p/status/1076947443823136768&quot;&gt;reminded&lt;/a&gt; of &lt;a href=&quot;http://aras-p.info/blog/2018/12/28/Modern-C-Lamentations/&quot;&gt;why&lt;/a&gt; I &lt;a href=&quot;https://thephd.github.io/perspective-standardization-in-2018&quot;&gt;think&lt;/a&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://mikelui.io/feed.xml" rel="self" type="application/atom+xml" /><link href="http://mikelui.io/" rel="alternate" type="text/html" /><updated>2019-01-05T10:36:00-05:00</updated><id>http://mikelui.io/</id><title type="html">No TV and No Beer</title><subtitle>Experiences in the digital world and sometimes the real world, too</subtitle><author><name>Mike Lui</name></author><entry><title type="html">Initialization in C++ is Seriously Bonkers</title><link href="http://mikelui.io/2019/01/03/seriously-bonkers.html" rel="alternate" type="text/html" title="Initialization in C++ is Seriously Bonkers" /><published>2019-01-03T00:00:00-05:00</published><updated>2019-01-03T00:00:00-05:00</updated><id>http://mikelui.io/2019/01/03/seriously-bonkers</id><content type="html" xml:base="http://mikelui.io/2019/01/03/seriously-bonkers.html">&lt;p class=&quot;lead&quot;&gt;I was &lt;a class=&quot;lead&quot; href=&quot;http://ericniebler.com/2018/12/05/standard-ranges/&quot;&gt;recently&lt;/a&gt; &lt;a href=&quot;https://twitter.com/aras_p/status/1076947443823136768&quot;&gt;reminded&lt;/a&gt; of &lt;a href=&quot;http://aras-p.info/blog/2018/12/28/Modern-C-Lamentations/&quot;&gt;why&lt;/a&gt; I &lt;a href=&quot;https://thephd.github.io/perspective-standardization-in-2018&quot;&gt;think&lt;/a&gt;
 it’s a &lt;a href=&quot;https://sean-parent.stlab.cc/2018/12/30/cpp-ruminations.html&quot;&gt;bad idea&lt;/a&gt; to teach beginners C++.
 It’s a &lt;a href=&quot;http://www.elbeno.com/blog/?p=1598&quot;&gt;bad&lt;/a&gt; &lt;a href=&quot;https://medium.com/@pat_wilson/get-your-shit-together-6ccbfd6bb755&quot;&gt;idea&lt;/a&gt; because it is an objective mess–albeit a beautiful, twisted, tragic, wondrous mess.
 Despite the current state of the community, this post is not a polemic against &lt;em&gt;modern&lt;/em&gt; C++.
@@ -393,7 +393,9 @@ We already said that &lt;code class=&quot;highlighter-rouge&quot;&gt;A a;&lt;/co
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;a1.i&lt;/code&gt; is initialized with &lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;a2.i&lt;/code&gt; is initialized with an empty list, and &lt;code class=&quot;highlighter-rouge&quot;&gt;a3&lt;/code&gt; is copy constructed from &lt;code class=&quot;highlighter-rouge&quot;&gt;a1&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;a1.i&lt;/code&gt; is initialized with &lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;a2.i&lt;/code&gt; is initialized with an empty list, and &lt;code class=&quot;highlighter-rouge&quot;&gt;a3&lt;/code&gt; is copy constructed from &lt;code class=&quot;highlighter-rouge&quot;&gt;a1&lt;/code&gt;.
+You know what a copy constructor is, &lt;em&gt;right&lt;/em&gt;?
+Then you also know about move constructors and rvalue references and forwarding references and pr-values and x-values and gl-val…okay nevermind.&lt;/p&gt;
 
 &lt;p&gt;Unfortunately, the definition of an aggregate has changed in every version since C++11,
 although there is functionally no difference between C++17 and C++20 aggregates, so far.
@@ -452,7 +454,7 @@ a.cpp:8:20: warning: ‘a.A::i’ is used uninitialized in this function [-Wunin
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Here, &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; has a user-provided constructor so list initialization works differently.&lt;br /&gt;
-The following happens on line 8:&lt;/p&gt;
+The following happens on line 7:&lt;/p&gt;
 &lt;ol&gt;
   &lt;li&gt;List initialization of &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt;, causes 2.&lt;/li&gt;
   &lt;li&gt;Non-aggregate with an empty braced-init-list causes value initialization, go to 3.&lt;/li&gt;
@@ -542,7 +544,7 @@ a.cpp:7:13: error: could not convert ‘{1}’ from ‘&amp;lt;brace-enclosed in
 &lt;ol&gt;
   &lt;li&gt;List initialization of &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt;, causes 2.&lt;/li&gt;
   &lt;li&gt;Search for a matching constructor&lt;/li&gt;
-  &lt;li&gt;No way to convert a &lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt; to an &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt;, compilation fails&lt;/li&gt;
+  &lt;li&gt;No way to convert a &lt;code class=&quot;highlighter-rouge&quot;&gt;1&lt;/code&gt; to an &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt;, compilation fails&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;hr /&gt;

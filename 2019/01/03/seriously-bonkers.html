@@ -507,7 +507,9 @@ We already said that <code class="highlighter-rouge">A a;</code> creates an obje
 <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
 </code></pre></div></div>
 
-<p><code class="highlighter-rouge">a1.i</code> is initialized with <code class="highlighter-rouge">0</code>, <code class="highlighter-rouge">a2.i</code> is initialized with an empty list, and <code class="highlighter-rouge">a3</code> is copy constructed from <code class="highlighter-rouge">a1</code>.</p>
+<p><code class="highlighter-rouge">a1.i</code> is initialized with <code class="highlighter-rouge">0</code>, <code class="highlighter-rouge">a2.i</code> is initialized with an empty list, and <code class="highlighter-rouge">a3</code> is copy constructed from <code class="highlighter-rouge">a1</code>.
+You know what a copy constructor is, <em>right</em>?
+Then you also know about move constructors and rvalue references and forwarding references and pr-values and x-values and gl-val…okay nevermind.</p>
 
 <p>Unfortunately, the definition of an aggregate has changed in every version since C++11,
 although there is functionally no difference between C++17 and C++20 aggregates, so far.
@@ -569,7 +571,7 @@ a.cpp:8:20: warning: ‘a.A::i’ is used uninitialized in this function [-Wunin
 </code></pre></div></div>
 
 <p>Here, <code class="highlighter-rouge">A</code> has a user-provided constructor so list initialization works differently.<br>
-The following happens on line 8:</p>
+The following happens on line 7:</p>
 <ol>
   <li>List initialization of <code class="highlighter-rouge">A</code>, causes 2.</li>
   <li>Non-aggregate with an empty braced-init-list causes value initialization, go to 3.</li>
@@ -661,7 +663,7 @@ a.cpp:7:13: error: could not convert ‘{1}’ from ‘&lt;brace-enclosed initia
 <ol>
   <li>List initialization of <code class="highlighter-rouge">A</code>, causes 2.</li>
   <li>Search for a matching constructor</li>
-  <li>No way to convert a <code class="highlighter-rouge">0</code> to an <code class="highlighter-rouge">A</code>, compilation fails</li>
+  <li>No way to convert a <code class="highlighter-rouge">1</code> to an <code class="highlighter-rouge">A</code>, compilation fails</li>
 </ol>
 
 <hr>
