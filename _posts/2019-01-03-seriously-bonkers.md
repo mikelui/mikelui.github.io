@@ -421,6 +421,8 @@ $ g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
 ```
 
 `a1.i` is initialized with `0`, `a2.i` is initialized with an empty list, and `a3` is copy constructed from `a1`.
+You know what a copy constructor is, *right*?
+Then you also know about move constructors and rvalue references and forwarding references and pr-values and x-values and gl-val...okay nevermind.
 
 Unfortunately, the definition of an aggregate has changed in every version since C++11,
 although there is functionally no difference between C++17 and C++20 aggregates, so far.
@@ -468,7 +470,7 @@ a.cpp:8:20: warning: ‘a.A::i’ is used uninitialized in this function [-Wunin
 ```
 
 Here, `A` has a user-provided constructor so list initialization works differently.  
-The following happens on line 8:
+The following happens on line 7:
 1. List initialization of `A`, causes 2.
 2. Non-aggregate with an empty braced-init-list causes value initialization, go to 3.
 3. A user-provided constructor was found, so the default constructor called which does nothing in this case.
@@ -558,7 +560,7 @@ a.cpp:7:13: error: could not convert ‘{1}’ from ‘<brace-enclosed initializ
 `A` is *not* an aggregate, so the following happens:
 1. List initialization of `A`, causes 2.
 2. Search for a matching constructor 
-3. No way to convert a `0` to an `A`, compilation fails
+3. No way to convert a `1` to an `A`, compilation fails
 
 ---
 
