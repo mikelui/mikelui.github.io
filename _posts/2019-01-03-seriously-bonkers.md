@@ -248,6 +248,7 @@ int main() {
 
 ```
 $ g++ -Wuninitialized -O2 -pedantic-errors a.cpp
+$
 ```
 
 Well at least that works.
@@ -418,6 +419,7 @@ int main() {
 
 ```
 $ g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
+$
 ```
 
 `a1.i` is initialized with `0`, `a2.i` is initialized with an empty list, and `a3` is copy constructed from `a1`.
@@ -525,7 +527,8 @@ That makes `A` not an aggregate. It's just a normal class type.
 That means `a.i` will be uninitialized, right?
 
 ```
-g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
+$ g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
+$
 ```
 
 Dangit. And just when we thought we were getting the hang of this.
