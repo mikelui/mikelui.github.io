@@ -213,13 +213,13 @@ For example:
     <span class="n">init_A</span><span class="p">(</span><span class="o">&amp;</span><span class="n">a1</span><span class="p">);</span>
 
     <span class="cm">/* during definition;
-     * initialize each member, in order... */</span>
+     * Initialize each member, in order. 
+     * Any other uninitialized members are implicitly
+     * initialized as if they had static storage duration. */</span>
     <span class="k">struct</span> <span class="n">A</span> <span class="n">a2</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
 
-    <span class="cm">/* ...or allow members to be implicitly initialized,
-     * which defaults to the value it would take during
-     * static initialization (i.e. 0) */</span>
-    <span class="k">struct</span> <span class="n">A</span> <span class="n">a3</span> <span class="o">=</span> <span class="p">{};</span>
+    <span class="cm">/* Error! (Well, technically) Initializer lists are 'non-empty' */</span>
+    <span class="cm">/* struct A a3 = {}; */</span>
 
     <span class="cm">/* ...or use designated initializers if C99 or later */</span>
     <span class="k">struct</span> <span class="n">A</span> <span class="n">a4</span> <span class="o">=</span> <span class="p">{.</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">};</span>
@@ -228,6 +228,12 @@ For example:
     <span class="k">struct</span> <span class="n">A</span> <span class="n">a5</span> <span class="o">=</span> <span class="n">default_A</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div>
+
+<hr />
+<p><strong><em>Update</em></strong>–Originally I had <code class="highlighter-rouge">struct A a3 = {};</code>, which I believed implicitly initialized all members.
+I’ve since been informed that this is not standard C! An initializer list in C must be non-empty (compiling with <code class="highlighter-rouge">-pedantic</code> correctly identifies this).</p>
+
+<hr />
 
 <p>That’s pretty much it for C, and it’s enough to cause many tricksy bugs to manifest in many student projects.
 It’s certainly enough to cause a minor headache deciding how to simply default everything to <code class="highlighter-rouge">0</code>.</p>
