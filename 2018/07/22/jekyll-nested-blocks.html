@@ -1,8 +1,8 @@
 <!DOCTYPE html>
+
 <html>
 
   <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,7 +14,7 @@
 
   <meta name="description" content="Let’s start this blog off with some straight-forward informative posts. As I’m still updating the look of this site, which uses the popular Jekyll static sit...">
 
-  <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,400i,700%7COpen+Sans:300,300i,700,800" rel="stylesheet"> 
+  <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,400i,700|Open+Sans:300,300i,700,800" rel="stylesheet"> 
 
   <link rel="stylesheet" href="/assets/vendor/bootstrap/css/bootstrap.min.css">
   <link rel="stylesheet" href="/assets/vendor/font-awesome/css/font-awesome.min.css">
@@ -25,17 +25,17 @@
 
   <!-- Begin Jekyll SEO tag v2.4.0 -->
 <title>Creating an Accordion Plugin for Jekyll | No TV and No Beer</title>
-<meta name="generator" content="Jekyll v3.6.2">
-<meta property="og:title" content="Creating an Accordion Plugin for Jekyll">
-<meta name="author" content="Mike Lui">
-<meta property="og:locale" content="en_US">
-<meta name="description" content="Let’s start this blog off with some straight-forward informative posts. As I’m still updating the look of this site, which uses the popular Jekyll static site generation framework, I thought it would be nice to share some useful tidbits I’ve learned. This is the first real post so I apologize in advance for any dissociative identity disorder exhibited in the tone and writing.">
-<meta property="og:description" content="Let’s start this blog off with some straight-forward informative posts. As I’m still updating the look of this site, which uses the popular Jekyll static site generation framework, I thought it would be nice to share some useful tidbits I’ve learned. This is the first real post so I apologize in advance for any dissociative identity disorder exhibited in the tone and writing.">
-<link rel="canonical" href="http://mikelui.io/2018/07/22/jekyll-nested-blocks.html">
-<meta property="og:url" content="http://mikelui.io/2018/07/22/jekyll-nested-blocks.html">
-<meta property="og:site_name" content="No TV and No Beer">
-<meta property="og:type" content="article">
-<meta property="article:published_time" content="2018-07-21T20:00:00-04:00">
+<meta name="generator" content="Jekyll v3.6.2" />
+<meta property="og:title" content="Creating an Accordion Plugin for Jekyll" />
+<meta name="author" content="Mike Lui" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Let’s start this blog off with some straight-forward informative posts. As I’m still updating the look of this site, which uses the popular Jekyll static site generation framework, I thought it would be nice to share some useful tidbits I’ve learned. This is the first real post so I apologize in advance for any dissociative identity disorder exhibited in the tone and writing." />
+<meta property="og:description" content="Let’s start this blog off with some straight-forward informative posts. As I’m still updating the look of this site, which uses the popular Jekyll static site generation framework, I thought it would be nice to share some useful tidbits I’ve learned. This is the first real post so I apologize in advance for any dissociative identity disorder exhibited in the tone and writing." />
+<link rel="canonical" href="http://mikelui.io/2018/07/22/jekyll-nested-blocks.html" />
+<meta property="og:url" content="http://mikelui.io/2018/07/22/jekyll-nested-blocks.html" />
+<meta property="og:site_name" content="No TV and No Beer" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2018-07-21T20:00:00-04:00" />
 <script type="application/ld+json">
 {"headline":"Creating an Accordion Plugin for Jekyll","description":"Let’s start this blog off with some straight-forward informative posts. As I’m still updating the look of this site, which uses the popular Jekyll static site generation framework, I thought it would be nice to share some useful tidbits I’ve learned. This is the first real post so I apologize in advance for any dissociative identity disorder exhibited in the tone and writing.","datePublished":"2018-07-21T20:00:00-04:00","dateModified":"2018-07-21T20:00:00-04:00","mainEntityOfPage":{"@type":"WebPage","@id":"http://mikelui.io/2018/07/22/jekyll-nested-blocks.html"},"@type":"BlogPosting","url":"http://mikelui.io/2018/07/22/jekyll-nested-blocks.html","author":{"@type":"Person","name":"Mike Lui"},"@context":"http://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
@@ -126,7 +126,7 @@ A Jekyll plugin will fall into 1 of 5 categories:</p>
 <p>This post is about #<strong>4</strong>.
 If you find yourself feeling icky putting HTML in your markdown more than a few times, then read on.</p>
 
-<hr>
+<hr />
 <h1 id="liquid-tags">Liquid Tags</h1>
 
 <p>Jekyll has a <a href="https://jekyllrb.com/docs/plugins/">nice little tutorial</a> on adding Liquid tags and filters to Jekyll.
@@ -198,8 +198,7 @@ Templates are also more immediately clear about their intent.</p>
   <h4 id="liquid-templates-overview">Liquid Templates Overview</h4>
   <p>Liquid templates look something like this:</p>
 
-  <div class="language-liquid highlighter-rouge">
-<div class="highlight"><pre class="highlight"><code><span class="p">{%</span><span class="w"> </span><span class="nt">capture</span><span class="w"> </span><span class="na">lowercase</span><span class="w"> </span><span class="p">%}</span>
+  <div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{%</span><span class="w"> </span><span class="nt">capture</span><span class="w"> </span><span class="na">lowercase</span><span class="w"> </span><span class="p">%}</span>
   <span class="p">{{</span><span class="w"> </span><span class="s2">"UPPERCASE?"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">downcase</span><span class="w"> </span><span class="p">}}</span>
 <span class="p">{%</span><span class="w"> </span><span class="nt">endcapture</span><span class="w"> </span><span class="p">%}</span>
 
@@ -215,7 +214,7 @@ Another normal paragraph about my friends: <span class="p">{{</span><span class=
 
   <p>This snippet will produce the following:</p>
 
-  <hr>
+  <hr />
   <h3 id="a-markdown-header">A markdown header</h3>
 
   <p>A normal paragraph.
@@ -224,12 +223,11 @@ This is actually lowercase:
 
   <p>Another normal paragraph about my friends: 😈, 👺, 👻, 👼.</p>
 
-  <hr>
+  <hr />
 
   <p>We could actually write an entire post with just custom templates, but that would quickly becomes unwieldy and unnatural.</p>
 
-  <div class="language-liquid highlighter-rouge">
-<div class="highlight"><pre class="highlight"><code><span class="p">{{</span><span class="w"> </span><span class="s2">"A markdown header"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">headerize</span><span class="w"> </span><span class="p">}}</span>
+  <div class="language-liquid highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">{{</span><span class="w"> </span><span class="s2">"A markdown header"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="nf">headerize</span><span class="w"> </span><span class="p">}}</span>
 
 <span class="p">{%</span><span class="w"> </span><span class="nt">paragraph</span><span class="w"> </span><span class="p">%}</span>
   A normal paragraph.
@@ -264,7 +262,7 @@ This is actually lowercase:
 
 </div>
 
-<hr>
+<hr />
 <h1 id="custom-liquid-blocks">Custom Liquid Blocks</h1>
 
 <p>Continuing our story, we decide to use templates to add an accordion into our post.
@@ -300,9 +298,9 @@ Cool.</p>
 
 <p>Let’s start our accordion block.</p>
 
-<hr>
+<hr />
 
-<p class="col-sm-5 float-right mb-sm-0"><a href="https://www.ocregister.com/2016/01/25/without-music-education-weird-al-might-not-be-rocking-an-accordion/"><img src="/img/weird_al_O-O.jpg" alt="weirdal" class="shadow-lg" style="width:100%; box-shadow:0 0 5px"></a></p>
+<p class="col-sm-5 float-right mb-sm-0"><a href="https://www.ocregister.com/2016/01/25/without-music-education-weird-al-might-not-be-rocking-an-accordion/"><img src="/img/weird_al_O-O.jpg" alt="weirdal" class="shadow-lg" style="width:100%; box-shadow:0 0 5px" /></a></p>
 
 <p class="clearfix">I couldn’t think of a quirky accordion title, so here’s a picture of Weird Al.
 (That’s actually not true, there were <em>‘Accordion to Jim’</em>, <em>‘The Sokovia Accordions’</em>,
@@ -344,14 +342,12 @@ touch _plugins/accordion.rb
 After that we can create a new <code class="highlighter-rouge">AccordionTag</code> class that inherits from the <code class="highlighter-rouge">Liquid::Block</code> class.
 Blocks only need to implement 2 methods:</p>
 <ul>
-  <li>
-<code class="highlighter-rouge">initialize</code> is called when we encounter the <code class="highlighter-rouge">{% accordion my-accordion-id %}</code> tag.
+  <li><code class="highlighter-rouge">initialize</code> is called when we encounter the <code class="highlighter-rouge">{% accordion my-accordion-id %}</code> tag.
 Anything that comes directly after <code class="highlighter-rouge">accordion</code> (e.g. <em>“my-accordion-id”</em>) is passed in via the second argument.
 We strip the leading and trailing white space off of it and save it to an instance variable so we can use later when
 we <em>render</em> the entire block.
 Note that we need to call <code class="highlighter-rouge">super</code> first to let Liquid handle any book-keeping (mostly setting some instance variables).</li>
-  <li>
-<code class="highlighter-rouge">render</code> is where the fun happens. We’re given one argument, <code class="highlighter-rouge">context</code>, which is just a handle to the environment
+  <li><code class="highlighter-rouge">render</code> is where the fun happens. We’re given one argument, <code class="highlighter-rouge">context</code>, which is just a handle to the environment
 that needs to be rendered. This includes any assigned variables and all local and global Jekyll data.
 <strong>Here we have to return a string</strong> that will be output from our block and put into our document.
 I’ve added in our <code class="highlighter-rouge">TODO</code> list in the comments.</li>
@@ -423,9 +419,9 @@ To add the <code class="highlighter-rouge">@accordionID</code> and collapse inde
 <span class="k">end</span>
 </code></pre></div></div>
 
-<p>When the collapsibles go to render themselves, they’ll pull out those values and everything will be fine.<br>
-Yep.<br>
-That’s it.<br>
+<p>When the collapsibles go to render themselves, they’ll pull out those values and everything will be fine.<br />
+Yep.<br />
+That’s it.<br />
 Buuuut–what if we decide to nest multiple accordions?
 In that case, each accordion level will be overwriting the data from the previous levels.
 We have to save the data from the previous level, and restore after calling <code class="highlighter-rouge">super</code>, in essence creating a new scope
@@ -551,7 +547,7 @@ None of the markdown inside our collapsible blocks will get rendered in our fina
 The first option is slightly more laborious but is agnostic of the markdown processor.
 The second option may feel slightly cleaner for small amounts of HTML, but needs support from the markdown processor.</p>
 
-<hr>
+<hr />
 
 <p>For the first method, we manually call the markdown converter from our Liquid plugin.</p>
 
@@ -578,7 +574,7 @@ Jekyll’s global configuration is accessed via its <code class="highlighter-rou
 and we grab the markdown converter Jekyll is using for ourselves.
 Note that <code class="highlighter-rouge">registers</code> is more like the <em>guts</em> of the context that templates won’t normally use.</p>
 
-<hr>
+<hr />
 
 <p>For the second method, we just add an <a href="https://kramdown.gettalong.org/syntax.html#html-blocks">extra attribute to the parent tag</a> of our <code class="highlighter-rouge">content</code>.</p>
 
@@ -597,7 +593,7 @@ Note that <code class="highlighter-rouge">registers</code> is more like the <em>
 <span class="k">end</span>
 </code></pre></div></div>
 
-<hr>
+<hr />
 
 <p>I chose to use the first method because I find it more clear when the content is buried in multiple levels of tags.
 Without further ado, our final plugins:</p>
@@ -688,7 +684,7 @@ Try making your own plugins when you find yourself adding in a lot of HTML.</p>
       <p>The <code class="highlighter-rouge">context</code> parameter is a Liquid::Context has some additional functionality in addition to 
   just accessing template variables. Accessing Jekyll site level data is arguably the most useful feature for us.
   For example, we can access our site’s name with <code class="highlighter-rouge">context["site.title"]</code>.
-  You can even search hashmaps and arrays: <code class="highlighter-rouge">context["site.mydict['mykey'][0]"]</code>. Neat, huh? <a href="#fnref:1" class="reversefootnote">↩</a></p>
+  You can even search hashmaps and arrays: <code class="highlighter-rouge">context["site.mydict['mykey'][0]"]</code>. Neat, huh? <a href="#fnref:1" class="reversefootnote">&#8617;</a></p>
     </li>
   </ol>
 </div>
@@ -699,47 +695,16 @@ Try making your own plugins when you find yourself adding in a lot of HTML.</p>
       <div class="clearfix">
 
         
-        <a class="btn btn-primary float-left" href="/2018/07/07/Reboot.html" data-toggle="tooltip" data-placement="top" title="First Post">← Previous<span class="d-none d-md-inline"> Post</span></a>
+        <a class="btn btn-primary float-left" href="/2018/07/07/Reboot.html" data-toggle="tooltip" data-placement="top" title="First Post">&larr; Previous<span class="d-none d-md-inline"> Post</span></a>
         
         
-        <a class="btn btn-primary float-right" href="/2019/01/03/seriously-bonkers.html" data-toggle="tooltip" data-placement="top" title="Initialization in C++ is Seriously Bonkers">Next<span class="d-none d-md-inline"> Post</span> →</a>
+        <a class="btn btn-primary float-right" href="/2019/01/03/seriously-bonkers.html" data-toggle="tooltip" data-placement="top" title="Initialization in C++ is Seriously Bonkers">Next<span class="d-none d-md-inline"> Post</span> &rarr;</a>
         
 
       </div>
 
     </div>
-  <nav id="sidenav"><ul data-gumshoe="">
-<li>
-<div class="dot-tooltip-wrapper"><div class="dot-tooltip">Jekyll Plugins</div></div>
-<a class="dot" href="#jekyll-plugins"></a>
-</li>
-<li>
-<div class="dot-tooltip-wrapper"><div class="dot-tooltip">Liquid Tags</div></div>
-<a class="dot" href="#liquid-tags"></a>
-</li>
-<li>
-<div class="dot-tooltip-wrapper"><div class="dot-tooltip">Custom Liquid Blocks</div></div>
-<a class="dot" href="#custom-liquid-blocks"></a>
-</li>
-<div id="sidenav-collapsible-1" class="collapsible-sibling position-relative ml-collapse">
-<div class="border-wrapper position-absolute d-flex h-100"><div class="border-left align-self-center"></div></div>
-<ul class="nav dotstyle">
-<li>
-<div class="dot-tooltip-wrapper"><div class="dot-tooltip">Nested Liquid Blocks</div></div>
-<a class="dot" href="#nested-liquid-blocks"></a>
-</li>
-<li>
-<div class="dot-tooltip-wrapper"><div class="dot-tooltip">Render unto Caesar</div></div>
-<a class="dot" href="#render-unto-caesar"></a>
-</li>
-</ul>
-</div>
-<li>
-<div class="dot-tooltip-wrapper"><div class="dot-tooltip">Final Accordion Plugin</div></div>
-<a class="dot" href="#final-accordion-plugin"></a>
-</li>
-</ul></nav>
-</div>
+  </div>
 </div>
 
 
@@ -795,7 +760,7 @@ Try making your own plugins when you find yourself adding in a lot of HTML.</p>
             </li>
                                 
         </ul>
-        <p class="copyright text-muted">Copyright © Mike Lui 2019</p>
+        <p class="copyright text-muted">Copyright &copy; Mike Lui 2019</p>
       </div>
     </div>
   </div>
@@ -805,7 +770,7 @@ Try making your own plugins when you find yourself adding in a lot of HTML.</p>
     <script src="/assets/vendor/jquery/jquery.min.js"></script>
 <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/assets/vendor/startbootstrap-clean-blog/js/clean-blog.min.js"></script>
-<script src="/assets/js/scripts.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/gumshoe/3.5.1/js/gumshoe.min.js"></script><script src="/assets/js/side-nav.js"></script>
+<script src="/assets/js/scripts.js"></script>
 
 
 
