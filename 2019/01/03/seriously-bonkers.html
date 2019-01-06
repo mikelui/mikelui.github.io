@@ -134,7 +134,7 @@ and thus have different needs geared more towards embedded systems and systems p
 
 <hr />
 
-<h1 class="text-center" id="record-scratch">RECORD SCRATCH</h1>
+<h1 class="text-center anchor-ignore" id="record-scratch">RECORD SCRATCH</h1>
 
 <p><a href="https://www.reddit.com/r/cpp/comments/ad07zw/initialization_in_c_is_seriously_bonkers/edcjuxi/">u/AlexAlabuzhev on reddit</a>
 was able to sum up my entire post with a simple gif. (<em>I believe original credit goes to <a href="https://mobile.twitter.com/timur_audio/status/1004017362381795329">Timur Doumler</a></em>)</p>
@@ -149,7 +149,7 @@ Let’s take a moment to appreciate how much better artists can be at communicat
 
 <p>Oh hey you’re still with me. You’re a real trooper. If I could give you a star, I absolutely would! Chocolate milk for you at lunch! 🍫</p>
 
-<h2 id="we-now-resume-our-normalprogramming">We now resume our normal…programming.</h2>
+<h2 class="anchor-ignore" id="we-now-resume-our-normalprogramming">We now resume our normal…programming.</h2>
 
 <hr />
 
@@ -1067,7 +1067,19 @@ We should be able to acknowledge the warts on our loved ones and still love them
 <script src="/assets/js/scripts.js"></script>
 
 
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.1/anchor.min.js"></script>
+  <script type="application/javascript">
+    anchors.options.placement = 'left'
+    anchors.options.visible = 'touch'
+    anchors.add('h1, h2').remove('header h1, header h2, .post-preview h1, .post-preview h2, .anchor-ignore')
+  </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+                         "HTML-CSS": { linebreaks: { automatic: true } },
+                         SVG: { linebreaks: { automatic: true } },
+                         TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
+  </script>
 
 
 
