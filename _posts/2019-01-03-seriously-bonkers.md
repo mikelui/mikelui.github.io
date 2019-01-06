@@ -145,7 +145,7 @@ struct A {
 } const default_A = {0};
 
 void init_A(struct A *ptr) {
-    a->i = 0;
+    ptr->i = 0;
 }
 
 int main() {
@@ -788,6 +788,12 @@ Many of the peculiarities described in this post can be ignored and the language
 if you remember to initialize your variables before use and initialize your data members during construction.
 Knowing all of the corner cases of C++ is not necessary to write competent code, and you will otherwise learn
 common pitfalls and idioms along the way. 
+*To be clear*, list initialization is a good thing.
+If you write a default constructor, it gets called and you're expected to initialize everything there.
+Otherwise, everything gets zero-initialized and then default member initializers kick in.
+Uninitialized behavior needs to stay around because somewhere, out in the ether,
+there is probably code that *depends* on variables being uninitialized.
+Regardless, list initialize everything if you're using C++ and you can.
 
 The point I've hopefully gotten across is that C++ is a big, crusty language (for many historical reasons).
 This entire post was a rabbit hole on initialization rules.
@@ -815,6 +821,7 @@ In lieu, here is the community's discussion/critique at:
 3. [Reddit](https://www.reddit.com/r/cpp/comments/ad07zw/initialization_in_c_is_seriously_bonkers/)
 
 *A response to the most common critique*: Yes, you could be taught the sane ways to initialize variables and never see *the abyss*.
+I added in a *to-be-clear* in the Epilogue and in case I was not clear before.
 Personally, I rarely use templates, but I still use C++. That's not the point.
 For early programmers, one could completely ignore the STL and just use the standard C library and ignore references and ignore exceptions and ignore inheritance.
 Now we're approaching C with classes, except it isn't C and you still don't understand pointers and memory allocation or the stack and heap or virtual memory or volatile ports better than before.
