@@ -6,6 +6,8 @@ subtitle: "Important Concepts"
 background: /img/The-Simpsons-Season-23-Episode-11-25-6c0b.jpg
 date: 2018-07-07T00:00:00.000Z
 author: Mike Lui
+anchors: true
+mathjax: true
 ---
 
 Hi.

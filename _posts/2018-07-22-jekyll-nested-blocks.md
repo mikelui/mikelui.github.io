@@ -6,6 +6,7 @@ subtitle: "Using Nested Liquid Blocks"
 date: 2018-07-22T00:00:00.000Z
 author: Mike Lui
 sidenav: false
+anchors: true
 tags:
   - web-dev
   - jekyll

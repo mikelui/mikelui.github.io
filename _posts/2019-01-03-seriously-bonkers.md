@@ -4,6 +4,7 @@ layout: post
 title: "Initialization in C++ is Seriously Bonkers"
 subtitle: "Just Start With C"
 author: Mike Lui
+anchors: true
 sidenav: false
 tags:
   - C++
@@ -47,7 +48,7 @@ and thus have different needs geared more towards embedded systems and systems p
 ---
 
 # RECORD SCRATCH
-{:.text-center}
+{:.text-center .anchor-ignore}
 
 [u/AlexAlabuzhev on reddit](https://www.reddit.com/r/cpp/comments/ad07zw/initialization_in_c_is_seriously_bonkers/edcjuxi/)
 was able to sum up my entire post with a simple gif. (*I believe original credit goes to [Timur Doumler](https://mobile.twitter.com/timur_audio/status/1004017362381795329)*)
@@ -64,6 +65,7 @@ Let's take a moment to appreciate how much better artists can be at communicatin
 Oh hey you're still with me. You're a real trooper. If I could give you a star, I absolutely would! Chocolate milk for you at lunch! 🍫
 
 ## We now resume our normal...programming.
+{:.anchor-ignore}
 
 ---
 
