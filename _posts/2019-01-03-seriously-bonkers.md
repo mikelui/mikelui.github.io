@@ -50,7 +50,7 @@ and thus have different needs geared more towards embedded systems and systems p
 {:.text-center}
 
 [u/AlexAlabuzhev on reddit](https://www.reddit.com/r/cpp/comments/ad07zw/initialization_in_c_is_seriously_bonkers/edcjuxi/)
-was able to sum up my entire post with a simple gif.
+was able to sum up my entire post with a simple gif. (*I believe original credit goes to [Timur Doumler](https://mobile.twitter.com/timur_audio/status/1004017362381795329)*)
 
 
 ![bubba_gump_init](/img/c++_init_forest.gif){: .shadow-lg style="width:100%; box-shadow:0 0 5px"}
