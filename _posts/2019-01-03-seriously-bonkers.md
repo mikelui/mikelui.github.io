@@ -807,6 +807,13 @@ then you can at least learn about the `this` implementation and identifier colli
 C is a great, focused, fast, widely-supported, and widely-used language for solving problems across a variety of domains.
 And it doesn't have at least 18 types of initialization.
 
+---
+I don't have a comments thingamabob (yet?).
+In lieu, here is the community's discussion/critique at:  
+1. [Lobste.rs](https://news.ycombinator.com/item?id=18832311) 
+2. [Hacker News](https://lobste.rs/s/tul188/initialization_c_is_seriously_bonkers)
+3. [Reddit](https://www.reddit.com/r/cpp/comments/ad07zw/initialization_in_c_is_seriously_bonkers/)
+
 [simon-brand]: https://blog.tartanllama.xyz/
 [simon-brand-init]: https://blog.tartanllama.xyz/initialization-is-bonkers/
 
