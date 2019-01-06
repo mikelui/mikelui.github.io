@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://mikelui.io/feed.xml" rel="self" type="application/atom+xml" /><link href="http://mikelui.io/" rel="alternate" type="text/html" /><updated>2019-01-05T10:36:00-05:00</updated><id>http://mikelui.io/</id><title type="html">No TV and No Beer</title><subtitle>Experiences in the digital world and sometimes the real world, too</subtitle><author><name>Mike Lui</name></author><entry><title type="html">Initialization in C++ is Seriously Bonkers</title><link href="http://mikelui.io/2019/01/03/seriously-bonkers.html" rel="alternate" type="text/html" title="Initialization in C++ is Seriously Bonkers" /><published>2019-01-03T00:00:00-05:00</published><updated>2019-01-03T00:00:00-05:00</updated><id>http://mikelui.io/2019/01/03/seriously-bonkers</id><content type="html" xml:base="http://mikelui.io/2019/01/03/seriously-bonkers.html">&lt;p class=&quot;lead&quot;&gt;I was &lt;a class=&quot;lead&quot; href=&quot;http://ericniebler.com/2018/12/05/standard-ranges/&quot;&gt;recently&lt;/a&gt; &lt;a href=&quot;https://twitter.com/aras_p/status/1076947443823136768&quot;&gt;reminded&lt;/a&gt; of &lt;a href=&quot;http://aras-p.info/blog/2018/12/28/Modern-C-Lamentations/&quot;&gt;why&lt;/a&gt; I &lt;a href=&quot;https://thephd.github.io/perspective-standardization-in-2018&quot;&gt;think&lt;/a&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.6.2">Jekyll</generator><link href="http://mikelui.io/feed.xml" rel="self" type="application/atom+xml" /><link href="http://mikelui.io/" rel="alternate" type="text/html" /><updated>2019-01-05T22:06:38-05:00</updated><id>http://mikelui.io/</id><title type="html">No TV and No Beer</title><subtitle>Experiences in the digital world and sometimes the real world, too</subtitle><author><name>Mike Lui</name></author><entry><title type="html">Initialization in C++ is Seriously Bonkers</title><link href="http://mikelui.io/2019/01/03/seriously-bonkers.html" rel="alternate" type="text/html" title="Initialization in C++ is Seriously Bonkers" /><published>2019-01-03T00:00:00-05:00</published><updated>2019-01-03T00:00:00-05:00</updated><id>http://mikelui.io/2019/01/03/seriously-bonkers</id><content type="html" xml:base="http://mikelui.io/2019/01/03/seriously-bonkers.html">&lt;p class=&quot;lead&quot;&gt;I was &lt;a href=&quot;http://ericniebler.com/2018/12/05/standard-ranges/&quot;&gt;recently&lt;/a&gt; &lt;a href=&quot;https://twitter.com/aras_p/status/1076947443823136768&quot;&gt;reminded&lt;/a&gt; of &lt;a href=&quot;http://aras-p.info/blog/2018/12/28/Modern-C-Lamentations/&quot;&gt;why&lt;/a&gt; I &lt;a href=&quot;https://thephd.github.io/perspective-standardization-in-2018&quot;&gt;think&lt;/a&gt;
 it’s a &lt;a href=&quot;https://sean-parent.stlab.cc/2018/12/30/cpp-ruminations.html&quot;&gt;bad idea&lt;/a&gt; to teach beginners C++.
 It’s a &lt;a href=&quot;http://www.elbeno.com/blog/?p=1598&quot;&gt;bad&lt;/a&gt; &lt;a href=&quot;https://medium.com/@pat_wilson/get-your-shit-together-6ccbfd6bb755&quot;&gt;idea&lt;/a&gt; because it is an objective mess–albeit a beautiful, twisted, tragic, wondrous mess.
 Despite the current state of the community, this post is not a polemic against &lt;em&gt;modern&lt;/em&gt; C++.
@@ -24,6 +24,27 @@ I’ll introduce some of those here and go a bit beyond, too.&lt;/p&gt;
 the thoughts and opinions in this post–and every post–are my own and &lt;strong&gt;&lt;em&gt;not&lt;/em&gt;&lt;/strong&gt; the university’s.
 The classes I normally assist/instruct are part an engineering curriculum and not computer science,
 and thus have different needs geared more towards embedded systems and systems programming.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 class=&quot;text-center&quot; id=&quot;record-scratch&quot;&gt;RECORD SCRATCH&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.reddit.com/r/cpp/comments/ad07zw/initialization_in_c_is_seriously_bonkers/edcjuxi/&quot;&gt;u/AlexAlabuzhev on reddit&lt;/a&gt;
+was able to sum up my entire post with a simple gif.&lt;/p&gt;
+
+&lt;p&gt;[&lt;img src=&quot;/img/c++_init_forest.gif&quot; alt=&quot;bubba_gump_init&quot; class=&quot;shadow-lg&quot; style=&quot;width:100%; box-shadow:0 0 5px&quot; /&gt;]&lt;/p&gt;
+
+&lt;p&gt;That about sums up this post.
+I’m not hating on C++, but it’s got a lot of stuff you don’t need early on.&lt;/p&gt;
+
+&lt;p&gt;That’s it. Go home. Walk the dog. Do some laundry. Call mom and tell her you love her. Try a new recipe. Nothing to see here, folks.
+Let’s take a moment to appreciate how much better artists can be at communicating ideas than engineers (&lt;em&gt;read: me&lt;/em&gt;) … okay moment’s up!&lt;/p&gt;
+
+&lt;p&gt;Oh hey you’re still with me. You’re a real trooper. If I could give you a star, I absolutely would! Chocolate milk for you at lunch! 🍫&lt;/p&gt;
+
+&lt;h2 id=&quot;we-now-resume-our-normalprogramming&quot;&gt;We now resume our normal…programming.&lt;/h2&gt;
+
+&lt;hr /&gt;
 
 &lt;h1 id=&quot;initialization-in-c&quot;&gt;Initialization in C&lt;/h1&gt;
 &lt;h2 id=&quot;prologue&quot;&gt;Prologue&lt;/h2&gt;
@@ -106,13 +127,13 @@ For example:
     &lt;span class=&quot;n&quot;&gt;init_A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;a1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 
     &lt;span class=&quot;cm&quot;&gt;/* during definition;
-     * initialize each member, in order... */&lt;/span&gt;
+     * Initialize each member, in order. 
+     * Any other uninitialized members are implicitly
+     * initialized as if they had static storage duration. */&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
 
-    &lt;span class=&quot;cm&quot;&gt;/* ...or allow members to be implicitly initialized,
-     * which defaults to the value it would take during
-     * static initialization (i.e. 0) */&lt;/span&gt;
-    &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{};&lt;/span&gt;
+    &lt;span class=&quot;cm&quot;&gt;/* Error! (Well, technically) Initializer lists are 'non-empty' */&lt;/span&gt;
+    &lt;span class=&quot;cm&quot;&gt;/* struct A a3 = {}; */&lt;/span&gt;
 
     &lt;span class=&quot;cm&quot;&gt;/* ...or use designated initializers if C99 or later */&lt;/span&gt;
     &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a4&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
@@ -121,6 +142,12 @@ For example:
     &lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a5&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;default_A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Update&lt;/em&gt;&lt;/strong&gt;–Originally I had &lt;code class=&quot;highlighter-rouge&quot;&gt;struct A a3 = {};&lt;/code&gt;, which I believed implicitly initialized all members.
+I’ve since been informed that this is not standard C! An initializer list in C must be non-empty (compiling with &lt;code class=&quot;highlighter-rouge&quot;&gt;-pedantic&lt;/code&gt; correctly identifies this).&lt;/p&gt;
+
+&lt;hr /&gt;
 
 &lt;p&gt;That’s pretty much it for C, and it’s enough to cause many tricksy bugs to manifest in many student projects.
 It’s certainly enough to cause a minor headache deciding how to simply default everything to &lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt;.&lt;/p&gt;
@@ -211,6 +238,7 @@ Note that I’ve added &lt;code class=&quot;highlighter-rouge&quot;&gt;-pedantic
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ g++ -Wuninitialized -O2 -pedantic-errors a.cpp
+$
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Well at least that works.
@@ -391,6 +419,7 @@ We already said that &lt;code class=&quot;highlighter-rouge&quot;&gt;A a;&lt;/co
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
+$
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;a1.i&lt;/code&gt; is initialized with &lt;code class=&quot;highlighter-rouge&quot;&gt;0&lt;/code&gt;, &lt;code class=&quot;highlighter-rouge&quot;&gt;a2.i&lt;/code&gt; is initialized with an empty list, and &lt;code class=&quot;highlighter-rouge&quot;&gt;a3&lt;/code&gt; is copy constructed from &lt;code class=&quot;highlighter-rouge&quot;&gt;a1&lt;/code&gt;.
@@ -508,7 +537,8 @@ What does that mean in practice? I’m not sure! Let’s carry on.&lt;/p&gt;
 That makes &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; not an aggregate. It’s just a normal class type.
 That means &lt;code class=&quot;highlighter-rouge&quot;&gt;a.i&lt;/code&gt; will be uninitialized, right?&lt;/p&gt;
 
-&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
+$
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;Dangit. And just when we thought we were getting the hang of this.
@@ -549,6 +579,39 @@ a.cpp:7:13: error: could not convert ‘{1}’ from ‘&amp;lt;brace-enclosed in
 
 &lt;hr /&gt;
 
+&lt;p&gt;&lt;strong&gt;&lt;em&gt;Update&lt;/em&gt;&lt;/strong&gt;–bonus tricksy example:&lt;/p&gt;
+
+&lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;iostream&amp;gt;
+&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;struct&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;A&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{};&lt;/span&gt;
+    &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cout&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;std&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;endl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;There are no private variables like in our previous example, but there &lt;em&gt;is&lt;/em&gt; a user-provided constructor
+like in our previous-previous example–thus &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt; is not an aggregate.
+The user-provided constructor precludes zero-initialization, &lt;em&gt;right&lt;/em&gt;?&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;$ g++ -std=c++11 -pedantic-errors -Wuninitialized -O2 a.cpp
+$
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;Nope&lt;/em&gt;! Breaking it down:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;List initialization of &lt;code class=&quot;highlighter-rouge&quot;&gt;A&lt;/code&gt;, causes 2.&lt;/li&gt;
+  &lt;li&gt;Non-aggregate, class type with a default constructor, and an empty braced-init-list causes value initialization, go to 3.&lt;/li&gt;
+  &lt;li&gt;No user-provided &lt;em&gt;default&lt;/em&gt; constructor found (&lt;em&gt;my lie by omission above&lt;/em&gt;), so &lt;strong&gt;zero-initialize&lt;/strong&gt; the object, go to 4.&lt;/li&gt;
+  &lt;li&gt;Invoke default-initialization if the implicitly-defined default constructor is non-trivial
+(it is in this case so nothing is done).&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr /&gt;
+
 &lt;p&gt;One last example for good measure:&lt;/p&gt;
 
 &lt;div class=&quot;language-c++ highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;cp&quot;&gt;#include &amp;lt;iostream&amp;gt;
@@ -581,7 +644,7 @@ Go figure.&lt;/p&gt;
 
 &lt;p&gt;… (&lt;em&gt;blankly stares at you&lt;/em&gt;) (&lt;em&gt;stare turns to polite smile&lt;/em&gt;) alright let’s dive deeper!&lt;/p&gt;
 
-&lt;h2 id=&quot;act-5-the-abyss&quot;&gt;Act 5: The Abyss&lt;/h2&gt;
+&lt;h2 id=&quot;act-6-the-abyss&quot;&gt;Act 6: The Abyss&lt;/h2&gt;
 
 &lt;p&gt;C++11 introduced something called a &lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&lt;/code&gt;&lt;sup id=&quot;fnref:initializer_list&quot;&gt;&lt;a href=&quot;#fn:initializer_list&quot; class=&quot;footnote&quot;&gt;10&lt;/a&gt;&lt;/sup&gt;.
 It has its own type, which is obviously &lt;code class=&quot;highlighter-rouge&quot;&gt;std::initializer_list&amp;lt;T&amp;gt;&lt;/code&gt;.
@@ -750,6 +813,15 @@ then you can at least learn about the &lt;code class=&quot;highlighter-rouge&quo
 
 &lt;p&gt;C is a great, focused, fast, widely-supported, and widely-used language for solving problems across a variety of domains.
 And it doesn’t have at least 18 types of initialization.&lt;/p&gt;
+
+&lt;hr /&gt;
+&lt;p&gt;I don’t have a comments thingamabob (yet?).
+In lieu, here is the community’s discussion/critique at:&lt;/p&gt;
+&lt;ol&gt;
+  &lt;li&gt;&lt;a href=&quot;https://news.ycombinator.com/item?id=18832311&quot;&gt;Lobste.rs&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://lobste.rs/s/tul188/initialization_c_is_seriously_bonkers&quot;&gt;Hacker News&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.reddit.com/r/cpp/comments/ad07zw/initialization_in_c_is_seriously_bonkers/&quot;&gt;Reddit&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;div class=&quot;footnotes&quot;&gt;
   &lt;ol&gt;
