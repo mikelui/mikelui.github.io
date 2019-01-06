@@ -810,9 +810,20 @@ And it doesn't have at least 18 types of initialization.
 ---
 I don't have a comments thingamabob (yet?).
 In lieu, here is the community's discussion/critique at:  
-1. [Lobste.rs](https://news.ycombinator.com/item?id=18832311) 
-2. [Hacker News](https://lobste.rs/s/tul188/initialization_c_is_seriously_bonkers)
+1. [Lobste.rs](https://lobste.rs/s/tul188/initialization_c_is_seriously_bonkers) 
+2. [Hacker News](https://news.ycombinator.com/item?id=18832311)
 3. [Reddit](https://www.reddit.com/r/cpp/comments/ad07zw/initialization_in_c_is_seriously_bonkers/)
+
+*A response to the most common critique*: Yes, you could be taught the sane ways to initialize variables and never see *the abyss*.
+Personally, I rarely use templates, but I still use C++. That's not the point.
+For early programmers, one could completely ignore the STL and just use the standard C library and ignore references and ignore exceptions and ignore inheritance.
+Now we're approaching C with classes, except it isn't C and you still don't understand pointers and memory allocation or the stack and heap or virtual memory or volatile ports better than before.
+And now whenever I actually need C, I have to context switch back to a *different* language that I could have just learned anyway from the start.
+If you're going to use C++, use C++. And if you want to use C++ without all the C++-ness, then just learn C 🙂.
+And goodness gracious, blistering barnacles, to reiterate from ***the first paragraph***, I don't have beef with C++.
+We should be able to acknowledge the warts on our loved ones and still love them ❤️.
+
+> And that's all I have to say about that.
 
 [simon-brand]: https://blog.tartanllama.xyz/
 [simon-brand-init]: https://blog.tartanllama.xyz/initialization-is-bonkers/
