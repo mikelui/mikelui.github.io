@@ -18,8 +18,6 @@ This post is partly a follow-up on [Simon Brand's][simon-brand] article, [Initia
 and partly a message to every student who's wanted to begin their education by gazing into the abyss.
 {:.lead}
 
-{:.lead}
-
 [niebler]: http://ericniebler.com/2018/12/05/standard-ranges/
 [aras_twitter]: https://twitter.com/aras_p/status/1076947443823136768
 [aras_blog]: http://aras-p.info/blog/2018/12/28/Modern-C-Lamentations/
@@ -46,7 +44,28 @@ the thoughts and opinions in this post--and every post--are my own and ***not***
 The classes I normally assist/instruct are part an engineering curriculum and not computer science,
 and thus have different needs geared more towards embedded systems and systems programming.
 
+---
 
+# RECORD SCRATCH
+{:.text-center}
+
+[u/AlexAlabuzhev on reddit](https://www.reddit.com/r/cpp/comments/ad07zw/initialization_in_c_is_seriously_bonkers/edcjuxi/)
+was able to sum up my entire post with a simple gif.
+
+
+[![bubba_gump_init](/img/c++_init_forest.gif){: .shadow-lg style="width:100%; box-shadow:0 0 5px"}](https://www.ocregister.com/2016/01/25/without-music-education-weird-al-might-not-be-rocking-an-accordion/)
+
+That about sums up this post.
+I'm not hating on C++, but it's got a lot of stuff you don't need early on.
+
+That's it. Go home. Walk the dog. Do some laundry. Call mom and tell her you love her. Try a new recipe. Nothing to see here, folks.
+Let's take a moment to appreciate how much better artists can be at communicating ideas than engineers (*read: me*) ... okay moment's up!
+
+Oh hey you're still with me. You're a real trooper. If I could give you a star, I absolutely would! Chocolate milk for you at lunch! 🍫
+
+## We now resume our normal...programming.
+
+---
 
 # Initialization in C
 ## Prologue
