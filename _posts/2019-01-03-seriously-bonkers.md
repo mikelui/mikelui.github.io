@@ -53,7 +53,7 @@ and thus have different needs geared more towards embedded systems and systems p
 was able to sum up my entire post with a simple gif.
 
 
-[![bubba_gump_init](/img/c++_init_forest.gif){: .shadow-lg style="width:100%; box-shadow:0 0 5px"}](https://www.ocregister.com/2016/01/25/without-music-education-weird-al-might-not-be-rocking-an-accordion/)
+![bubba_gump_init](/img/c++_init_forest.gif){: .shadow-lg style="width:100%; box-shadow:0 0 5px"}
 
 That about sums up this post.
 I'm not hating on C++, but it's got a lot of stuff you don't need early on.
