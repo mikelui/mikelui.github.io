@@ -225,7 +225,7 @@ For example:
 <span class="p">}</span> <span class="k">const</span> <span class="n">default_A</span> <span class="o">=</span> <span class="p">{</span><span class="mi">0</span><span class="p">};</span>
 
 <span class="kt">void</span> <span class="nf">init_A</span><span class="p">(</span><span class="k">struct</span> <span class="n">A</span> <span class="o">*</span><span class="n">ptr</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">a</span><span class="o">-&gt;</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">ptr</span><span class="o">-&gt;</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 
 <span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
@@ -901,7 +901,13 @@ If <code class="highlighter-rouge">A</code> didn’t have that constructor, then
 Many of the peculiarities described in this post can be ignored and the language will act as you’d expect
 if you remember to initialize your variables before use and initialize your data members during construction.
 Knowing all of the corner cases of C++ is not necessary to write competent code, and you will otherwise learn
-common pitfalls and idioms along the way.</p>
+common pitfalls and idioms along the way. 
+<em>To be clear</em>, list initialization is a good thing.
+If you write a default constructor, it gets called and you’re expected to initialize everything there.
+Otherwise, everything gets zero-initialized and then default member initializers kick in.
+Uninitialized behavior needs to stay around because somewhere, out in the ether,
+there is probably code that <em>depends</em> on variables being uninitialized.
+Regardless, list initialize everything if you’re using C++ and you can.</p>
 
 <p>The point I’ve hopefully gotten across is that C++ is a big, crusty language (for many historical reasons).
 This entire post was a rabbit hole on initialization rules.
@@ -931,6 +937,7 @@ In lieu, here is the community’s discussion/critique at:</p>
 </ol>
 
 <p><em>A response to the most common critique</em>: Yes, you could be taught the sane ways to initialize variables and never see <em>the abyss</em>.
+I added in a <em>to-be-clear</em> in the Epilogue and in case I was not clear before.
 Personally, I rarely use templates, but I still use C++. That’s not the point.
 For early programmers, one could completely ignore the STL and just use the standard C library and ignore references and ignore exceptions and ignore inheritance.
 Now we’re approaching C with classes, except it isn’t C and you still don’t understand pointers and memory allocation or the stack and heap or virtual memory or volatile ports better than before.
