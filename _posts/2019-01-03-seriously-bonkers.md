@@ -792,7 +792,7 @@ Knowing all of the corner cases of C++ is not necessary to write competent code,
 common pitfalls and idioms along the way. 
 *To be clear*, list initialization is a good thing™.
 If you write a default constructor, it gets called and you're expected to initialize everything there.
-Otherwise, everything gets zero-initialized and then default member initializers kick in.
+Otherwise, everything gets zero-initialized and then default member initializers kick in regardless.
 Uninitialized behavior needs to stay around because somewhere, out in the ether,
 there is probably code that *depends* on variables being uninitialized.
 Regardless, list initialize everything if you're using C++ and you can.
