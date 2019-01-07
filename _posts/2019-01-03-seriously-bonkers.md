@@ -790,7 +790,7 @@ Many of the peculiarities described in this post can be ignored and the language
 if you remember to initialize your variables before use and initialize your data members during construction.
 Knowing all of the corner cases of C++ is not necessary to write competent code, and you will otherwise learn
 common pitfalls and idioms along the way. 
-*To be clear*, list initialization is a good thing.
+*To be clear*, list initialization is a good thing™.
 If you write a default constructor, it gets called and you're expected to initialize everything there.
 Otherwise, everything gets zero-initialized and then default member initializers kick in.
 Uninitialized behavior needs to stay around because somewhere, out in the ether,
