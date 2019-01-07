@@ -349,7 +349,7 @@ $
 </code></pre></div></div>
 
 <p>Well at least that works.
-As in C, we can also do <code class="highlighter-rouge">A a = {};</code> and it will have the same effect of zero-initializing <code class="highlighter-rouge">a.i</code>.
+We can also do <code class="highlighter-rouge">A a = {};</code> and it will have the same effect of zero-initializing <code class="highlighter-rouge">a.i</code>.
 That’s because <code class="highlighter-rouge">A</code> is an <em>aggregate type</em><sup id="fnref:agg_init"><a href="#fn:agg_init" class="footnote">4</a></sup>.
 What’s an aggregate type?</p>
 
@@ -906,8 +906,7 @@ common pitfalls and idioms along the way.
 If you write a default constructor, it gets called and you’re expected to initialize everything there.
 Otherwise, everything gets zero-initialized and then default member initializers kick in regardless.
 Uninitialized behavior needs to stay around because somewhere, out in the ether,
-there is probably code that <em>depends</em> on variables being uninitialized.
-Regardless, list initialize everything if you’re using C++ and you can.</p>
+there is probably code that <em>depends</em> on variables being uninitialized.</p>
 
 <p>The point I’ve hopefully gotten across is that C++ is a big, crusty language (for many historical reasons).
 This entire post was a rabbit hole on initialization rules.
