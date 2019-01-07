@@ -279,7 +279,7 @@ $
 ```
 
 Well at least that works.
-As in C, we can also do `A a = {};` and it will have the same effect of zero-initializing `a.i`.
+We can also do `A a = {};` and it will have the same effect of zero-initializing `a.i`.
 That's because `A` is an *aggregate type*[^agg_init].
 What's an aggregate type?
 
@@ -795,7 +795,6 @@ If you write a default constructor, it gets called and you're expected to initia
 Otherwise, everything gets zero-initialized and then default member initializers kick in regardless.
 Uninitialized behavior needs to stay around because somewhere, out in the ether,
 there is probably code that *depends* on variables being uninitialized.
-Regardless, list initialize everything if you're using C++ and you can.
 
 The point I've hopefully gotten across is that C++ is a big, crusty language (for many historical reasons).
 This entire post was a rabbit hole on initialization rules.
