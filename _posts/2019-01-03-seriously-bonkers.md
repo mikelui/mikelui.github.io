@@ -13,7 +13,7 @@ tags:
 
 I was [recently][niebler] [reminded][aras_twitter] of [why][aras_blog] I [think][jean_blog]
 it's a [bad idea][parent] to teach beginners C++.
-It's a [bad][deane] [idea][wilson] because it is an objective mess--albeit a beautiful, twisted, tragic, wondrous mess.
+It's a [bad][deane] [idea][wilson] because it is an objective mess---albeit a beautiful, twisted, tragic, wondrous mess.
 Despite the current state of the community, this post is not a polemic against *modern* C++.
 This post is partly a follow-up on [Simon Brand's][simon-brand] article, [Initialization in C++ is bonkers][simon-brand-init],
 and partly a message to every student who's wanted to begin their education by gazing into the abyss.
@@ -41,7 +41,7 @@ oddities.
 I'll introduce some of those here and go a bit beyond, too.
 
 Let me preface by pointing out that, although I currently work for Drexel University's Electrical and Computer Engineering department,
-the thoughts and opinions in this post--and every post--are my own and ***not*** the university's.
+the thoughts and opinions in this post---and every post---are my own and ***not*** the university's.
 The classes I normally assist/instruct are part an engineering curriculum and not computer science,
 and thus have different needs geared more towards embedded systems and systems programming.
 
@@ -103,7 +103,7 @@ int main() {
 ```
 
 So this is obviously the same, right?
-We have no idea what value `i` might have when we print--it could be anything.
+We have no idea what value `i` might have when we print---it could be anything.
 
 *Nope*.
 
@@ -173,7 +173,7 @@ int main() {
 ```
 
 ---
-***Update***--Originally I had `struct A a3 = {};`, which I believed implicitly initialized all members.
+***Update***---Originally I had `struct A a3 = {};`, which I believed implicitly initialized all members.
 I've since been informed that this is not standard C! An initializer list in C must be non-empty (compiling with `-pedantic` correctly identifies this).
 
 ---
@@ -424,7 +424,7 @@ Clearly, list initialization works differently than just calling a constructor.
 
 `A a{};` produces the same behavior as `A a = {};`.
 In both, `a` is initialized with an empty braced-init-list.
-Also, `A a = {};` isn't called aggregate initialization anymore--now it's *copy-list-initialization* (*sigh*).
+Also, `A a = {};` isn't called aggregate initialization anymore---now it's *copy-list-initialization* (*sigh*).
 We already said that `A a;` creates an object with indeterminate value and calls the default constructor.
 
 The following happens in lines 7/8 (remember, this is ***post-C++11***):
@@ -594,7 +594,7 @@ a.cpp:7:13: error: could not convert ‘{1}’ from ‘<brace-enclosed initializ
 
 ---
 
-***Update***--bonus tricksy example:
+***Update***---bonus tricksy example:
 
 ```c++
 #include <iostream>
@@ -610,7 +610,7 @@ int main() {
 ```
 
 There are no private variables like in our previous example, but there *is* a user-provided constructor
-like in our previous-previous example--thus `A` is not an aggregate.
+like in our previous-previous example---thus `A` is not an aggregate.
 The user-provided constructor precludes zero-initialization, *right*?
 
 ```
@@ -656,7 +656,8 @@ a.cpp:11:25: warning: ‘b.B::<anonymous>.A::i’ is used uninitialized in this 
 I'm not sure! 🤷
 All of `b`'s bases and members *should* be getting zero-initialized here.
 I've asked about this on [Stack Overflow](https://stackoverflow.com/questions/54028846/why-is-a-member-not-getting-zero-initialized-in-this-example),
-and as of publishing this post haven't received a sufficient answer other than a possible compiler bug.
+and ~~as of publishing this post haven't received a sufficient answer other than a possible compiler bug.~~
+there is some consensus that this is a compiler bug. These rules are subtle and complicated for *everyone*.
 For comparison, clang's static analyzer (not the normal compiler warnings) does not warn about uninitialized values.
 Go figure.
 
@@ -815,6 +816,10 @@ C is a great, focused, fast, widely-supported, and widely-used language for solv
 And it doesn't have at least 18 types of initialization.
 
 ---
+***Update***---I had completely forgotten that I [commented on this exact topic](https://lobste.rs/s/0wvqqc/stop_teaching_c_as_first_language)
+a month ago. The power of the subconscious on full display.
+
+---
 I don't have a comments thingamabob (yet?).
 In lieu, here is the community's discussion/critique at:  
 1. [Lobste.rs](https://lobste.rs/s/tul188/initialization_c_is_seriously_bonkers) 
@@ -830,7 +835,6 @@ And now whenever I actually need C, I have to context switch back to a *differen
 If you're going to use C++, use C++. And if you want to use C++ without all the C++-ness, then just learn C 🙂.
 And goodness gracious, blistering barnacles, to reiterate from ***the first paragraph***, I don't have beef with C++.
 We should be able to acknowledge the warts on our loved ones and still love them ❤️.
-
 > And that's all I have to say about that.
 
 [simon-brand]: https://blog.tartanllama.xyz/
